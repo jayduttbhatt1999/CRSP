@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>My Bootstrap Index Page</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  
+</head>
+
+<body>
+    <style>
+        nav {
+        transition: background-color 0.3s ease-in-out;
+        }
+    
+        nav.scrolled {
+        background-color: #333;
+        }
+      </style>
+      <script>
+            window.addEventListener('scroll', function() {
+            var navbar = document.querySelector('nav');
+            navbar.classList.toggle('scrolled', window.scrollY > 0);
+            });
+        </script>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">My Bootstrap Index Page</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#banner">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#team">Our Team</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Register</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Banner -->
+  <section id="banner" class="bg-primary text-white py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h1>Welcome to my Bootstrap Index Page</h1>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu nulla a urna faucibus interdum.</p>
+          <a href="#" class="btn btn-light">Learn More</a>
+        </div>
+        <div class="col-md-6">
+          <img src="https://via.placeholder.com/500x350" alt="Banner Image" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Team Section -->
+<section id="team" class="bg-light py-5">
+    <div class="container">
+      <h2 class="text-center mb-5">Our Team</h2>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://via.placeholder.com/300x300" alt="Team Member Image" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">John Doe</h5>
+              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu nulla a urna faucibus interdum.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://via.placeholder.com/300x300" alt="Team Member Image" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Jane Doe</h5>
+              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu nulla a urna faucibus interdum.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+              <img src="https://via.placeholder.com/300x300" alt="Team Member Image" class="card-img-top">
+              <div class="card-body">
+                <h5 class="card-title">John Doe</h5>
+                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu nulla a urna faucibus interdum.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>About Us</h2>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu nulla a urna faucibus interdum. Fusce at pharetra quam, sed facilisis neque. Integer a metus aliquet, rutrum nisl eget, interdum enim.</p>
+        </div>
+        <div class="col-md-6">
+          <img src="https://via.placeholder.com/500x350" alt="About Image" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </section>
+</body>

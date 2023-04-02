@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <div class="card" style="margin-top: 60px; border-width: 2px; border-color: rgba(0,0,0,.075);">
+          <div class="card-header bg-primary text-white" style=" border-width: 2px; border-color: rgba(0,0,0,.075); background-color: rgba(0,0,0,.075); ">
+            <h4 style="color: black; text-align: left;">Hello {{ user.username }}! Please Fill your details</h4>
+          </div>
+          <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="profile_pic">Profile Image:</label>
+                <div class="mb-2">
+                  <img src="{{ user.profile_pic.url }}" alt="Profile Pic" style="max-width: 200px;">
+                </div>
+                <input type="file" class="form-control-file" id="profile_pic" name="profile_pic">
+              </div>
+              <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
+              </div>
+
+              <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" readonly>
+              </div>
+
+              <div class="form-group">
+                <label for="department">Department:</label>
+                <input type="text" class="form-control" id="department" name="dept" value="{{ profile.department }}" required>
+              </div>
+
+              <div class="form-group">
+                <label for="university">University Name:</label>
+                <input type="text" class="form-control" id="university" name="university" value="{{ profile.university }}" required>
+              </div>
+
+              <div class="form-group">
+                <label for="gscholar">gScholar Link:</label>
+                <input type="text" class="form-control" id="gscholar" name="gScholar" value="{{ profile.gscholar }}" required>
+              </div>
+
+              <div class="form-group">
+                <label for="interests">Area of Interest:</label>
+                <br>
+                <label for="interestsInfo">Minimum 3 and Maximum 5</label>
+                <br>
+                <input type="checkbox" id="interest1" name="interests" value="Interest 1">
+                <label for="interest1">Interest 1</label>
+                <br>
+                <input type="checkbox" id="interest2" name="interests" value="Interest 2">
+                <label for="interest2">Interest 2</label>
+                <br>
+                <input type="checkbox" id="interest3" name="interests" value="Interest 3">
+                <label for="interest3">Interest 3</label>
+                <br>
+                <input type="checkbox" id="interest4" name="interests" value="Interest 4">
+                <label for="interest4">Interest 4</label>
+                <br>
+                <input type="checkbox" id="interest5" name="interests" value="Interest 5">
+                <label for="interest5">Interest 5</label>
+                <br>
+                <input type="checkbox" id="interest6" name="interests" value="Interest 6">
+                <label for="interest6">Interest 6</label>
+                <br>
+                <input type="checkbox" id="interest7" name="interests" value="Interest 7">
+                <label for="interest7">Interest 7</label>
+                <br>
+                <input type="checkbox" id="interest8" name="interests" value="Interest 8">
+                <label for="interest8">Interest 8</label>
+                <br>
+                <input type="checkbox" id="interest9" name="interests" value="Interest 9">
+                <label for="interest9">Interest 9</label>
+              </div>  
+              <script>
+                function validateCheckbox() {
+                  var checkboxes = document.getElementsByName("interests");
+                  var checkedCount = 0;
+                  for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked) {
+                      checkedCount++;
+                    }
+                  }
+                  if (checkedCount < 3) {
+                    alert("Please select at least 3 interests.");
+                    return false;
+                  }
+                  else if (checkedCount > 5){
+                    alert("Please select maximum 5 interests.");
+                  }
+                  return true;
+                }
+                </script>                
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block" onclick="return validateCheckbox()">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3 mb-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                {% if profile.profile_pic %}
+                    <img src="{{ profile.profile_pic }}" class="card-img-top">
+                {% else %}
+                    <img src="https://img.freepik.com/premium-vector/accoun-vector-icon-with-long-shadow-white-illustration-isolated-blue-round-background-graphic-web-design_549897-771.jpg" class="card-img-top">
+                {% endif %}
+                <div class="card-body">
+                    <h4 class="card-title">Hello, {{ user.username }}!</h4>
+                    <p class="card-text"><strong>Department:</strong> {{ profile.department }}</p>
+                    <p class="card-text"><strong>University:</strong> {{ profile.university }}</p>
+                    <p class="card-text"><strong>Google Scholar:</strong> <a href="{{ profile.gscholar }}" target="_blank">{{ profile.gscholar }}</a></p>
+                    <p class="card-text"><strong>Area of Interest:</strong> {{ profile.area_of_interest }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>My Posts</h5>
+                </div>
+                <div class="card-body">
+                    {% for post in posts %}
+                        <div class="card mb-3">
+                            <a href="{% url 'posts' post.id %}">
+                                <div class="card-header">{{ post.title }}</div>
+                                <div class="card-body">
+                                    <p class="card-text">{{ post.abstract }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    {% empty %}
+                        <p>No posts yet.</p>
+                        
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

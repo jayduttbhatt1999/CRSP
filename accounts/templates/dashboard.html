@@ -1,0 +1,130 @@
+{% extends 'base1.html' %} 
+
+{% block content %}
+
+
+<div class="container" style="margin-top: 30px;">
+  <div class="row">
+    <div class="col-md-9">
+      <h2>Recently Published</h2>
+      {% for post in posts %}
+{#          <a href="{% url 'posts/{{ post.pid }}' %}">#}
+          <a href="{%  url 'posts' post.id %}">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ post.title }}</h5>
+          <p class="card-text">{{ post.abstract }}</p>
+           <p class ="card-text">{{ post.keywords }}</p>
+        </div>
+        <div class="card-footer text-muted">Posted on {{ post.published_on }}</div>
+      </div>
+          </a>
+      {% empty %}
+      <p>Your connections have not posted anything!</p>
+
+
+      <!-- <a href = '#'>
+        <div class="card mb-3">
+          <div class="card-body" style="color: #012950f5;">
+            <h5 class="card-title">Post 1</h5>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, eos labore? Nesciunt temporibus hic ipsa deserunt amet soluta, ducimus vitae! Et placeat labore maiores expedita vero sequi doloribus ea at.</p>
+          </div>
+          <div class="card-footer text-muted">Posted on 04/04/2004</div>
+        </div>
+      </a> -->
+
+
+      <!-- <a href = "#">
+      <div class="card mb-3">
+        <div class="card-body" style="color: #012950f5;">
+          <h5 class="card-title">Post 2</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo nam saepe blanditiis incidunt, laboriosam consequuntur dolor laborum delectus vel facere quam eum quis. Ut perferendis laborum magnam reiciendis. Ipsum, ab!</p>
+        </div>
+        <div class="card-footer text-muted">Posted on 11/26/1999</div>
+      </div>
+      </a>
+      <a href = "#">
+      <div class="card mb-3">
+        <div class="card-body" style="color: #012950f5;">
+          <h5 class="card-title">Post 3</h5>
+          <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae, rem animi. Labore repudiandae inventore, dignissimos exercitationem nam rem, eligendi aliquam, iure illum minus voluptates provident. Atque officiis nostrum facere veritatis.</p>
+        </div>
+        <div class="card-footer text-muted">Posted on 04/09/1966</div>
+      </div>
+      </a>
+      <a href = "#">
+      <div class="card mb-3">
+        <div class="card-body" style="color: #012950f5;">
+          <h5 class="card-title">Post 4</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium autem beatae nemo aliquam cumque nam et error, atque quidem, optio expedita provident inventore alias excepturi ut in debitis unde ratione.</p>
+        </div>
+        <div class="card-footer text-muted">Posted on 06/05/1964</div>
+      </div>
+      </a>
+      <div class="text-center">
+      <button class="btn btn-primary btn-primary show-more" style="background: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+      -o-transition: 0.08s ease-in;
+      -ms-transition: 0.08s ease-in;
+      -moz-transition: 0.08s ease-in;
+      -webkit-transition: 0.08s ease-in;">Show more</button>
+    </div> -->
+
+
+      {% endfor %}
+    </div>
+
+
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-header">Saved Posts</div>
+
+        <ul class="list-group list-group-flush">
+        {% if savedlist %}
+            {% for savedpost in savedlist %}
+                  <li class="list-group-item"><a href="{% url 'posts' savedpost.post.id %}">{{ savedpost.post.title }}</a></li>
+            {% endfor %}
+        </ul>
+              {% else %}
+            <p> No suggested connections at this time.</p>
+      {% endif %}
+      </div>
+      <div class="card mt-4">
+        <div class="card-header">Suggestions to Read</div>
+        <ul class="list-group list-group-flush">
+
+          {% if suggestedpost %}
+            {% for suggested in suggestedpost %}
+                  <li class="list-group-item"><a href="{% url 'posts' suggested.id %}">{{ suggested.title }}</a></li>
+            {% endfor %}
+        </ul>
+              {% else %}
+            <p> No suggested connections at this time.</p>
+      {% endif %}
+      </div>
+      <div class="card mt-4">
+        <div class="card-header">People to Connect</div>
+        {% if suggestions %}
+          <ul class="list-group list-group-flush">
+            {% for user in suggestions %}
+                <li class="list-group-item"><a href="{% url 'profile' user.username %}">{{ user.username }}</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p> No suggested connections at this time.</p>
+      {% endif %}
+      </div>
+    </div>
+    <a href="{% url 'create_posts' %}"
+  class="btn btn-primary rounded-circle btn-lg d-flex justify-content-center align-items-center fixed-bottom float-right m-3 "
+  style="width: 60px; height: 60px; background-color: #4bb8c2; border-color: #4bb8c2; transition: 0.08s ease-in;
+  -o-transition: 0.08s ease-in;
+  -ms-transition: 0.08s ease-in;
+  -moz-transition: 0.08s ease-in;
+  -webkit-transition: 0.08s ease-in;">
+  <span class="fa fa-plus"></span>
+</a>
+  </div>
+
+
+</div>
+{% endblock %}

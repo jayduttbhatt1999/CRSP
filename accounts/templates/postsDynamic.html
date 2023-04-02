@@ -1,0 +1,50 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-9">
+      <h2>Title</h2>
+      <p>Published on {{ paper.publish_date|date:'F d, Y' }} by {{ paper.published_by }}</p>
+        <p>{{ paper.read_count }} reads</p>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Abstract</h5>
+          <p class="card-text">{{ paper.content }}</p>
+        </div>
+        <div class="text-center">
+            <embed src="{{ pdf_url }}" type="application/pdf" width="100%" height="600px" />
+          </div>
+      </div>
+      <a href="{{ paper.file.url }}" class="btn btn-primary">Download</a>
+        <a href="{% url 'save_paper' paper.id %}" class="btn btn-success">Save</a>
+      
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-header">Saved Posts</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Post 1</li>
+          <li class="list-group-item">Post 2</li>
+          <li class="list-group-item">Post 3</li>
+        </ul>
+      </div>
+      <div class="card mt-4">
+        <div class="card-header">Suggestions to Read</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Post 1</li>
+          <li class="list-group-item">Post 2</li>
+          <li class="list-group-item">Post 3</li>
+        </ul>
+      </div>
+      <div class="card mt-4">
+        <div class="card-header">People to Connect</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Person 1</li>
+          <li class="list-group-item">Person 2</li>
+          <li class="list-group-item">Person 3</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

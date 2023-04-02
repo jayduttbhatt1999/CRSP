@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section id="banner" class="bg-primary text-white py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+          <h1>Welcome to UWinCRSP</h1>
+          <p class="lead">A common sharing platform for researches.</p>
+          <h3>Colloborate with researchers.</h3>
+          <p class="lead">With UWinCRSP, you can easily connect with researchers in your field and colloborate on projects, share data, and discuss ideas.</p>
+          <a href="registration" class="btn btn-light">Join for Free</a>
+        </div>
+        <div class="col-md-6">
+          <img src="https://images.unsplash.com/photo-1587440871875-191322ee64b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" alt="Banner Image" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="colloborate" class="py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMzczODV8MHwxfHNlYXJjaHwxMHx8cmVzZWFyY2h8ZW58MHwwfHx8MTY3ODc2NjIxMA&ixlib=rb-4.0.3&q=80&w=1080" alt="Banner Image" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <h2>Share your research.</h2>
+            <p class="lead">Publish your research on UWinCRSP and showcase your work to a network of peers who can comment, suggest improvements and promote your findings.</p>
+            <a href="registration" class="btn btn-primary">Share Now!</a>  
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="search" class="py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <h2>Discover Researches</h2>
+            <p class="lead">Access all published articles for free.</p>
+            <div class="input-group mb-3 rounded-pill">
+              <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-btn">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button" id="search-btn">Go</button>
+              </div>
+            </div>
+            <h4 class="py-2">Visit topic pages</h4>
+            <div class="container">
+              <div class="row d-flex align-items-center">
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill">Engineering</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill">Methamatics</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill">Biology</a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill">Computer Science</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill">Climate Change</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill">Medicine</a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill">Physics</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill">Social Science</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill">Politics</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="About Image" class="img-fluid">
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="feedback" class="py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="About Image" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <h2>Get feedback and citations.</h2>
+            <p class="lead">Recieive feedback on your work and track your impact with citation counts.</p>
+            <p class="lead">Get discovered by other researchers interesred in your research.</p>
+            <a href="registration" class="btn btn-primary">Register for free</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <h2>About Us</h2>
+            <p class="lead">Presenly there was no sharing platform in University for sharing ongoing or published researches. So, people accross departments didn't knew about it. The aim of this project is to provide a common sharing platform for faculties and students of different departments of UoW and keep them updated about the advancements taking place by the members of University.</p>
+        </div>
+        <div class="col-md-6">
+            <img src="https://images.ctfassets.net/tj4axnfouxci/5JejT9tJBz8BcGqljstDIH/762f0169740868711728126ab5e301aa/Windsor_300_Ouelette_Primary_Desktop.jpg" alt="About Image" class="img-fluid">
+          </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="team" class="bg-light py-5">
+    <div class="container">
+      <h2 class="text-center mb-5">Our Team</h2>
+      <div class="row d-flex align-items-center">
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://media.licdn.com/dms/image/D5603AQEbEE1JaM9K_w/profile-displayphoto-shrink_800_800/0/1664916154962?e=1683763200&v=beta&t=pWauu0hZROod4UoXTjsRXHs1h2V09wn3wKjmv7OTZRI" alt="Team Member Image" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Keneel Shah</h5>
+              <p class="card-text">Masters of Applied Computing, University of Windsor</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://media.licdn.com/dms/image/C4E03AQFa75smXtHkcQ/profile-displayphoto-shrink_800_800/0/1622382343851?e=1683763200&v=beta&t=dA_PxcY99AO0mAps1V-6SMvXr7m8Zeg5ovMJL-XRaD8" alt="Team Member Image" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Siddhant Yadav</h5>
+              <p class="card-text">Masters of Applied Computing, University of Windsor</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+              <img src="https://media.licdn.com/dms/image/D5603AQG-V_8N79iPIA/profile-displayphoto-shrink_800_800/0/1676576701913?e=2147483647&v=beta&t=--ETdFoDAlE8AsdS2nU2CsPXiXFC3PchImQ0f7WUmiI" alt="Team Member Image" class="card-img-top">
+              <div class="card-body">
+                <h5 class="card-title">Varnita Sharma</h5>
+                <p class="card-text">Masters of Applied Computing, University of Windsor</p>              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </section>
+{% endblock %}

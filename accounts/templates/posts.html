@@ -1,0 +1,109 @@
+{% extends 'base1.html' %} 
+{% block content %}
+
+<div class="container" >
+  <div class="row" >
+    <div class="col-md-9">
+        <h2 style="margin-top: 40px; font-family: sans-serif;">{{ posts.title }}</h2>
+       
+      <p>Published on {{ posts.published_on|date:'F d, Y' }} 
+        by <a href="{% url 'profile' posts.uploaded_by.username %}">{{ posts.uploaded_by }}</a></p>
+          <p>{{ posts.views }} reads <i class="fa fa-eye" aria-hidden="true"></i> </p>
+
+          <p>Co-authors: {{ posts.authors }}</p>
+          <p>Keywords:
+              {% for skil in posts.get_skills %}
+              {{ skil }};
+              {% endfor %}
+          </p>
+        
+        <a href="{{ pdf_url }}" class="btn btn-primary"
+        style="background: #4bb8c2; border-width: 2px; border-style: solid;
+        border-color: #4bb8c2; transition: 0.08s ease-in;
+        -o-transition: 0.08s ease-in;
+        -ms-transition: 0.08s ease-in;
+        -moz-transition: 0.08s ease-in;
+        -webkit-transition: 0.08s ease-in;">Preview  </a>
+        
+        {% if posts.allow_downloading %}
+        <a href="{%  url 'pdf_download' posts.id %}" class="btn btn-primary"
+        style="background: #4bb8c2; border-width: 2px; border-style: solid; 
+        border-color: #4bb8c2; transition: 0.08s ease-in;
+        -o-transition: 0.08s ease-in;
+        -ms-transition: 0.08s ease-in;
+        -moz-transition: 0.08s ease-in;
+        -webkit-transition: 0.08s ease-in;">Download <i class="fa fa-download" aria-hidden="true"></i> </a>
+    {% endif %}
+
+        {% if user.is_authenticated %}
+            {% if is_saved %}
+                <a href="{% url 'unsave_post' posts.id %}" class="btn btn-danger" style="transition: 0.08s ease-in;
+        -o-transition: 0.08s ease-in;
+        -ms-transition: 0.08s ease-in;
+        -moz-transition: 0.08s ease-in;
+        -webkit-transition: 0.08s ease-in;">Unsave</a>
+            {% else %}
+                <a href="{% url 'save_post' posts.id %}" class=" btn btn-success" style="transition: 0.08s ease-in;
+        -o-transition: 0.08s ease-in;
+        -ms-transition: 0.08s ease-in;
+        -moz-transition: 0.08s ease-in;
+        -webkit-transition: 0.08s ease-in;">Save</a>
+            {% endif %}
+        {% endif %}
+{#        <a href="#" class="btn btn-success" style="transition: 0.08s ease-in;#}
+{#        -o-transition: 0.08s ease-in;#}
+{#        -ms-transition: 0.08s ease-in;#}
+{#        -moz-transition: 0.08s ease-in;#}
+{#        -webkit-transition: 0.08s ease-in;">Save</a>#}
+
+      
+      
+          <div class="card mb-3" style="margin-top: 20px;">
+            <div class="card-body">
+              <h4 class="card-title">Abstract <i class='fas fa-pencil-alt' aria-hidden="true" ></i> </h4>
+              <p class="card-text">{{ posts.abstract }}</p>
+            </div>
+{#            <script>#}
+{#                  var pdf = new PDFObject({#}
+{#                  url: "http://127.0.0.1:8000{{ pdf_url }}",#}
+{#                  id: "pdfRendered",#}
+{#                      pdfOpenParams: {#}
+{#                      view: "FitH"  }#}
+{#                      }).embed("pdfRenderer");</script>#}
+{#              <div id="pdfRenderer"></div>#}
+
+{#            <div class="embed-responsive embed-responsive-4by3">#}
+{##}
+{#              <iframe class="embed-responsive-item" src="{{ pdf_url }}" allowfullscreen></iframe>#}
+{#                <iframe class="embed-responsive-item" src="http://127.0.0.1:8000/PDFReview_I5wwmfM.pdf" allowfullscreen></iframe>#}
+{##}
+{#                <embed src="http://127.0.0.1:8000/papers/Keneel_Resume__3FFGqR4.pdf" type="application/pdf" width="100%" height="600px" />#}
+{#          </div>#}
+
+            <!-- <div class="text-center" style="margin-top: 10px;">
+                <embed src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" type="application/pdf" width="100%" height="600px" />
+              </div> -->
+
+          </div>
+
+    </div>
+<div class="col-md-3">
+
+    <div class="card mt-4">
+       <div class="card-header">Suggestions to Read</div>
+       <ul class="list-group list-group-flush">
+        {% if suggestedpost %}
+            {% for suggested in suggestedpost %}
+                  <li class="list-group-item"><a href="{% url 'posts' suggested.id %}">{{ suggested.title }}</a></li>
+            {% endfor %}
+        </ul>
+              {% else %}
+            <p> No suggested connections at this time.</p>
+      {% endif %}
+   </div>
+</div>
+  </div>
+
+</div>
+{% endblock %}
+

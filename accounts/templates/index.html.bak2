@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!--Style begin-->
+<style>
+  p{
+    text-align: justify;
+    text-justify: auto;
+  }
+    h1{   
+      display: inline-block;
+      color: white;
+      font-size: 58px;
+      text-shadow: .03em .03em 0 black;
+      transition: all 0.3s;
+      }
+
+      h1:hover {
+        transform: scale(1.1);
+      }
+      
+     h1:after {
+    content: attr(data-shadow);
+    position: absolute;
+    top: .06em; left: .06em;
+    z-index: -1;
+    text-shadow: none;
+    background-image:
+      linear-gradient(
+        45deg,
+        transparent 35%,
+        black 75%,
+        black 95%,
+        transparent 0
+        );
+    background-size: .05em .05em;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  
+    animation: shad-anim 20s linear infinite;
+    }
+
+@keyframes shad-anim {
+  0% {background-position: 0 0}
+  0% {background-position: 100% -100%}
+  }
+
+
+  .type-text{    
+  color: white;
+  font-family: "arial";
+  font-size: 24px;
+  display: grid;
+  place-items: center;
+  width: 650px;
+  }
+
+.typed {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid;
+  width: 0;
+  animation: typing 1.5s steps(30, end) forwards, blinking 1s infinite;
+}
+  
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blinking {
+  0% {border-color: transparent}
+  50% {border-color:  white}
+  100% {border-color: transparent}
+}
+
+.register-now{
+  
+  text-align:left;
+  padding-left:17px;
+
+}
+.register-now:before{
+  content:"→";
+  position:absolute;
+  color: #4bb8c2;
+  left: 83%;
+  opacity: 0;
+  -webkit-transition: all 250ms cubic-bezier(0.680, -0.550, 0.265, 1.550); 
+}
+
+.register-now:hover:before{
+  left:84%;
+  opacity:1;
+}
+
+.register-now:hover {
+  width:170px;
+}
+
+.image-background{
+  width: 100%;
+  height: 700px;
+  background-image: url(https://artifacts.ai/wp-content/uploads/2020/07/Open-Science-2.jpg);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+</style>
+
+<!--Style End-->
+
+
+<div class="image-background">
+  <!-- <img src="https://visme.co/blog/wp-content/uploads/2019/10/animated-presentation-software-header-wide.gif"> -->
+
+<section id="banner" class="bg-primary text-white py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6" style="margin-top: 90px; margin-left: -70px;">
+          <h1 class="main-head" data-shadow="Welcome to UWinCRSP!">Welcome to UWinCRSP</h1>
+          <div class="word"></div>
+          <p class="lead" style="color: white; font-size: 22px;" ><b>C</b>ommon <b>R</b>esearch <b>S</b>haring <b>P</b>latform.</p>
+          <div class="type-text">
+            <h4 class="typed">Collaborate with enthusiastic researchers from the University.</h4>
+          </div>
+          <!--<p class="lead">With UWinCRSP, you can easily connect with researchers in your field and colloborate on projects, share data, and discuss ideas.</p>-->
+          <a href="registration.html" class="btn btn-light" style="color: #012950f5; border-radius: 15px; width: 50%; text-align: center; display: flexbox ; border-radius: 15px; transition: 0.08s ease-in;
+          -o-transition: 0.08s ease-in;
+          -ms-transition: 0.08s ease-in;
+          -moz-transition: 0.08s ease-in;
+          -webkit-transition: 0.08s ease-in;
+          ">Join Now
+          </a>
+        </div>
+        <!-- <div class="col-md-6">
+          <img src="https://img.freepik.com/free-vector/flat-national-science-day-background_23-2149252077.jpg" alt="Banner Image" class="img-fluid" style="margin-left: 100px; height: 700px; width: 50%;">
+        </div> -->
+      </div>
+    </div>
+  </section>
+
+  <section id="colloborate" class="py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMzczODV8MHwxfHNlYXJjaHwxMHx8cmVzZWFyY2h8ZW58MHwwfHx8MTY3ODc2NjIxMA&ixlib=rb-4.0.3&q=80&w=1080" alt="Banner Image" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+			<h2 class="sliding-in-r2l">Share your research</h2>
+            <p class="lead">Publish your research on UWinCRSP and showcase your work to a network of peers who can comment, suggest improvements and promote your findings. With UWinCRSP, you can easily look for researchers in your field and collaborate, share, discuss, or connect.</p>
+            <a href="registration.html" class="btn btn-primary" style="border-radius: 15px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+            -o-transition: 0.08s ease-in;
+            -ms-transition: 0.08s ease-in;
+            -moz-transition: 0.08s ease-in;
+            -webkit-transition: 0.08s ease-in;">Share Now
+            </a>  
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="collaborate" class="py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <img src="https://storage.googleapis.com/fplswordpressblog/2022/07/quantitative-vs-qualitative-research-methods.jpg" alt="Banner Image" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <h2 class="sliding-in-r2l">Share your research</h2>
+            <p class="lead">Publish your research on UWinCRSP and showcase your work to a network of peers who can comment, suggest improvements and promote your findings. With UWinCRSP, you can easily look for researchers in your field and collaborate, share, discuss, or connect.</p>
+            <a href="registration.html" class="btn btn-primary" style="border-radius: 15px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+            -o-transition: 0.08s ease-in;
+            -ms-transition: 0.08s ease-in;
+            -moz-transition: 0.08s ease-in;
+            -webkit-transition: 0.08s ease-in;">Share Now
+            </a>  
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="search" class="py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <h2>Discover Researches</h2>
+            <p class="lead">Access all published articles for free.</p>
+            <div class="input-group mb-3 rounded-pill">
+              <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-btn" style="border: none;
+              background: transparent;
+              margin: 0;
+              padding: 7px 8px;
+              font-size: 14px;
+              color: inherit;
+              border: 1px solid transparent;
+              border-radius: inherit;
+              border: 1px solid currentColor;
+              border-radius: 5px;">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button" style="background-color: #4bb8c2">
+                  <i class="fa fa-search"></i>
+                  </button>
+              </div>
+            </div>
+            <h4 class="py-2">Search for subjects that most interest you.</h4>
+            <div class="container">
+              <div class="row d-flex align-items-center">
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  -o-transition: 0.08s ease-in;
+                  -ms-transition: 0.08s ease-in;
+                  -moz-transition: 0.08s ease-in;
+                  -webkit-transition: 0.08s ease-in; ">Engineering</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  -o-transition: 0.08s ease-in;
+                  -ms-transition: 0.08s ease-in;
+                  -moz-transition: 0.08s ease-in;
+                  -webkit-transition: 0.08s ease-in; ">Mathematics</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  -o-transition: 0.08s ease-in;
+                  -ms-transition: 0.08s ease-in;
+                  -moz-transition: 0.08s ease-in;
+                  -webkit-transition: 0.08s ease-in;">Biology</a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  -o-transition: 0.08s ease-in;
+                  -ms-transition: 0.08s ease-in;
+                  -moz-transition: 0.08s ease-in;
+                  -webkit-transition: 0.08s ease-in;">Computer Science</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  -o-transition: 0.08s ease-in;
+                  -ms-transition: 0.08s ease-in;
+                  -moz-transition: 0.08s ease-in;
+                  -webkit-transition: 0.08s ease-in;">Climate Change</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  -o-transition: 0.08s ease-in;
+                  -ms-transition: 0.08s ease-in;
+                  -moz-transition: 0.08s ease-in;
+                  -webkit-transition: 0.08s ease-in;">Medicine</a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  -o-transition: 0.08s ease-in;
+                  -ms-transition: 0.08s ease-in;
+                  -moz-transition: 0.08s ease-in;
+                  -webkit-transition: 0.08s ease-in;">Physics</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  -o-transition: 0.08s ease-in;
+                  -ms-transition: 0.08s ease-in;
+                  -moz-transition: 0.08s ease-in;
+                  -webkit-transition: 0.08s ease-in;">Social Science</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  -o-transition: 0.08s ease-in;
+                  -ms-transition: 0.08s ease-in;
+                  -moz-transition: 0.08s ease-in;
+                  -webkit-transition: 0.08s ease-in;">Politics</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <img src="https://cdn.sanity.io/images/0vv8moc6/ophtimeeurope/25206d0b11c616c56f13fbbe123ea31dd3ad05fb-2167x2176.png?fit=crop&auto=format" alt="About Image" class="img-fluid">
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="feedback" class="py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <img src="https://poster-images.ustudio.com/IU4kKZ9gCNf3-Audience%20Reach%20Measuring%20the%20impact%20of%20your%20stories.png" alt="About Image" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <h2>Get feedback and citations.</h2>
+            <p class="lead">Recieive feedback on your work and track your impact with citation counts.</p>
+            <p class="lead">Get discovered by other researchers interested in your research.</p>
+            <a href="registration.html" class="btn btn-primary register-now" 
+            style="border-radius: 15px; transition: 0.08s ease-in;
+            -o-transition: 0.08s ease-in;
+            -ms-transition: 0.08s ease-in;
+            -moz-transition: 0.08s ease-in;
+            -webkit-transition: 0.08s ease-in;
+            background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2;">
+            Join Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!--  <section id="about" class="py-5">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <h2>About Us</h2>
+            <p class="lead">Presenly there was no sharing platform in University for sharing ongoing or published researches. So, people accross departments didn't knew about it. The aim of this project is to provide a common sharing platform for faculties and students of different departments of UoW and keep them updated about the advancements taking place by the members of University.</p>
+        </div>
+        <div class="col-md-6">
+            <img src="https://images.ctfassets.net/tj4axnfouxci/5JejT9tJBz8BcGqljstDIH/762f0169740868711728126ab5e301aa/Windsor_300_Ouelette_Primary_Desktop.jpg" alt="About Image" class="img-fluid">
+          </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="team" class="bg-light py-5">
+    <div class="container">
+      <h2 class="text-center mb-5">Our Team</h2>
+      <div class="row d-flex align-items-center">
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://media.licdn.com/dms/image/D5603AQEbEE1JaM9K_w/profile-displayphoto-shrink_800_800/0/1664916154962?e=1683763200&v=beta&t=pWauu0hZROod4UoXTjsRXHs1h2V09wn3wKjmv7OTZRI" alt="Team Member Image" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Keneel Shah</h5>
+              <p class="card-text">Masters of Applied Computing, University of Windsor</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://media.licdn.com/dms/image/C4E03AQFa75smXtHkcQ/profile-displayphoto-shrink_800_800/0/1622382343851?e=1683763200&v=beta&t=dA_PxcY99AO0mAps1V-6SMvXr7m8Zeg5ovMJL-XRaD8" alt="Team Member Image" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Siddhant Yadav</h5>
+              <p class="card-text">Masters of Applied Computing, University of Windsor</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+              <img src="https://media.licdn.com/dms/image/D5603AQG-V_8N79iPIA/profile-displayphoto-shrink_800_800/0/1676576701913?e=2147483647&v=beta&t=--ETdFoDAlE8AsdS2nU2CsPXiXFC3PchImQ0f7WUmiI" alt="Team Member Image" class="card-img-top">
+              <div class="card-body">
+                <h5 class="card-title">Varnita Sharma</h5>
+                <p class="card-text">Masters of Applied Computing, University of Windsor</p>              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </section>-->
+{% endblock %}

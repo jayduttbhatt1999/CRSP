@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+<!-- # email,password, password1, name, dept, scholar -->
+{% block content %}
+  <h2>Registration</h2>
+  <form method="post">
+    {% csrf_token %}
+    <h3>Name</h3> {{ form.name }}
+    <h3>Email</h3> {{ form.email }}
+    <h3>Password</h3> {{ form.password }}
+    <h3>Re-enter Password</h3> {{ form.password1 }}
+    <h3>Department Name</h3> {{ form.dept }}
+    <h3>Google Scholar Link</h3> {{ form.scholar }}
+    <button type="submit">Register</button>
+  </form>
+{% endblock %}
+
+{% block css %}
+  <style>
+    /* Define CSS styles for desktop screens */
+    form {
+      width: 50%;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    /* Define CSS styles for mobile screens */
+    @media screen and (max-width: 600px) {
+      form {
+        width: 90%;
+      }
+    }
+  </style>
+{% endblock %}
