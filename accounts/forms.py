@@ -13,4 +13,3 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('email', 'password', 'password1', 'name', 'dept', 'scholar')
 
 
-# email,password, password1, name, dept, scholar

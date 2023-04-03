@@ -87,22 +87,10 @@ def get_post_suggestion(user):
     profile = Profile.objects.get(user =user)
     # print(profile)
     skills = profile.get_skills_id()
-    # print(skills)
-    # following = [c.following_id for c in user.following.all()]
     suggested_posts = Post.objects.filter(skills__in=skills).exclude(uploaded_by=user).distinct()
-    # print(123)
-    # print('suggestedposts',suggested_posts)
-    # print(234)
-    # suggestions = []
-    # for post in suggested_posts:
-    #     if post.skills.filter(name__in=skills).exists():
-    #         suggestions.append(post)
-    #
-    # print('suggestions',suggestions)
+
     return suggested_posts
-# class CustomUser(AbstractUser):
-#     dept = models.CharField(max_length=50)
-#     gScholar = models.URLField()
+
 
 class SavedPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -111,4 +99,3 @@ class SavedPost(models.Model):
 
     class Meta:
         unique_together = ('user', 'post')
-
