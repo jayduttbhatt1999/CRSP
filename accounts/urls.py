@@ -5,7 +5,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login_'), # With /
     path('login', views.login_view, name='login'), # Without /
 
-
     path('registration/', views.registration_view, name='registration_'),
     path('registration', views.registration_view, name='registration'),
 
