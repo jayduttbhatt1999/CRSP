@@ -6,13 +6,13 @@
     <div class="col-md-9">
         <h2 style="margin-top: 40px; font-family: sans-serif;">{{ posts.title }}</h2>
        
-      <p>Published on {{ posts.published_on|date:'F d, Y' }} 
-        by <a href="{% url 'profile' posts.uploaded_by.username %}">{{ posts.uploaded_by }}</a></p>
-          <p>{{ posts.views }} reads <i class="fa fa-eye" aria-hidden="true"></i> </p>
+      <p>Published on {{ post.published_on|date:'F d, Y' }} by <a href="{% url 'profile' post.uploaded_by.username %}">{{ post.uploaded_by }}</a></p>
+  <p>{{ post.views }} reads <i class="fa fa-eye" aria-hidden="true"></i></p>
+          <p>Title: {{ post.title }}</p>
 
-          <p>Co-authors: {{ posts.authors }}</p>
+          <p>Co-authors: {{ post.authors }}</p>
           <p>Keywords:
-              {% for skil in posts.get_skills %}
+              {% for skil in post.get_skills %}
               {{ skil }};
               {% endfor %}
           </p>
@@ -25,8 +25,8 @@
         -moz-transition: 0.08s ease-in;
         -webkit-transition: 0.08s ease-in;">Preview  </a>
         
-        {% if posts.allow_downloading %}
-        <a href="{%  url 'pdf_download' posts.id %}" class="btn btn-primary"
+        {% if post.allow_downloading %}
+        <a href="{%  url 'pdf_download' post.id %}" class="btn btn-primary"
         style="background: #4bb8c2; border-width: 2px; border-style: solid; 
         border-color: #4bb8c2; transition: 0.08s ease-in;
         -o-transition: 0.08s ease-in;
@@ -36,32 +36,30 @@
     {% endif %}
 
         {% if user.is_authenticated %}
-            {% if is_saved %}
-                <a href="{% url 'unsave_post' posts.id %}" class="btn btn-danger" style="transition: 0.08s ease-in;
-        -o-transition: 0.08s ease-in;
-        -ms-transition: 0.08s ease-in;
-        -moz-transition: 0.08s ease-in;
-        -webkit-transition: 0.08s ease-in;">Unsave</a>
-            {% else %}
-                <a href="{% url 'save_post' posts.id %}" class=" btn btn-success" style="transition: 0.08s ease-in;
-        -o-transition: 0.08s ease-in;
-        -ms-transition: 0.08s ease-in;
-        -moz-transition: 0.08s ease-in;
-        -webkit-transition: 0.08s ease-in;">Save</a>
-            {% endif %}
+           {% if is_saved %}
+  <a href="{% url 'unsave_post' post.id %}" class="btn btn-danger" style="transition: 0.08s ease-in;
+    -o-transition: 0.08s ease-in;
+    -ms-transition: 0.08s ease-in;
+    -moz-transition: 0.08s ease-in;
+    -webkit-transition: 0.08s ease-in;">Unsave</a>
+{% else %}
+  <a href="{% url 'save_post' post.id %}" class="btn btn-success" style="transition: 0.08s ease-in;
+    -o-transition: 0.08s ease-in;
+    -ms-transition: 0.08s ease-in;
+    -moz-transition: 0.08s ease-in;
+    -webkit-transition: 0.08s ease-in;">Save</a>
+{% endif %}
         {% endif %}
 {#        <a href="#" class="btn btn-success" style="transition: 0.08s ease-in;#}
 {#        -o-transition: 0.08s ease-in;#}
 {#        -ms-transition: 0.08s ease-in;#}
 {#        -moz-transition: 0.08s ease-in;#}
 {#        -webkit-transition: 0.08s ease-in;">Save</a>#}
-
-      
       
           <div class="card mb-3" style="margin-top: 20px;">
             <div class="card-body">
               <h4 class="card-title">Abstract <i class='fas fa-pencil-alt' aria-hidden="true" ></i> </h4>
-              <p class="card-text">{{ posts.abstract }}</p>
+              <p class="card-text text-justify">{{ post.abstract }}</p>
             </div>
 {#            <script>#}
 {#                  var pdf = new PDFObject({#}
@@ -94,7 +92,7 @@
        <ul class="list-group list-group-flush">
         {% if suggestedpost %}
             {% for suggested in suggestedpost %}
-                  <li class="list-group-item"><a href="{% url 'posts' suggested.id %}">{{ suggested.title }}</a></li>
+                  <li class="list-group-item"><a href="{% url 'post' suggested.id %}">{{ suggested.title }}</a></li>
             {% endfor %}
         </ul>
               {% else %}

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 #
 # User.add_to_class('dept', models.CharField(max_length=50))
@@ -27,6 +28,10 @@ from django.contrib.auth.models import User
 class Skill(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
+    def __str__(self):
+        return self.name
+
+
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     gscholar = models.URLField(max_length=200, blank=True)
@@ -34,17 +39,21 @@ class Profile(models.Model):
     university = models.CharField(max_length=100, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     skills = models.ManyToManyField('Skill')
-    #
+
     def get_skills(self):
-            return [skill.name for skill in self.skills.all()]
+        return [skill.name for skill in self.skills.all()]
 
     def get_skills_id(self):
-            return [skill.id for skill in self.skills.all()]
+        return [skill.id for skill in self.skills.all()]
+
+    def __str__(self):
+        return str(self.user.username)
+
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
     authors = models.CharField(max_length=200)
-    # keywords = models.CharField(max_length=200)
+    keywords = models.CharField(max_length=200, blank=True)
     skills = models.ManyToManyField('Skill')
     abstract = models.CharField(max_length=2000)
     paper = models.FileField(upload_to='papers/')
@@ -52,14 +61,18 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published_on = models.DateTimeField(auto_now_add=True)
-    uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     views = models.IntegerField(default=0)
 
     def get_skills(self):
-            return [skill.name for skill in self.skills.all()]
+        return [skill.name for skill in self.skills.all()]
 
-    def is_saved_by(self,user):
+    def is_saved_by(self, user):
         return self.savedpost_set.filter(uploaded_by=user).exists()
+
+    def __str__(self):
+        return str(self.uploaded_by)
+
 
 class Connection(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
@@ -69,8 +82,12 @@ class Connection(models.Model):
     class Meta:
         unique_together = ('follower', 'following')
 
+    def __str__(self):
+        return str(self.follower)
+
+
 def get_suggested_connections(user):
-    profile = Profile.objects.get(user =user.id)
+    profile = Profile.objects.get(user=user.id)
     skills = profile.get_skills()
     following = [c.following_id for c in user.following.all()]
     users = User.objects.exclude(id=user.id).exclude(id__in=following)
@@ -83,8 +100,9 @@ def get_suggested_connections(user):
     print(suggestions)
     return suggestions
 
+
 def get_post_suggestion(user):
-    profile = Profile.objects.get(user =user)
+    profile = Profile.objects.get(user=user)
     # print(profile)
     skills = profile.get_skills_id()
     suggested_posts = Post.objects.filter(skills__in=skills).exclude(uploaded_by=user).distinct()

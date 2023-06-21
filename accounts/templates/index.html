@@ -171,65 +171,59 @@
             <h2>Discover Researches</h2>
             <p class="lead">Access all published articles for free.</p>
             <div class="input-group mb-3 rounded-pill">
-              <input type="text" class="form-control" placeholder="Search" aria-label="Search" 
-              aria-describedby="search-btn" style="border: none;
-              background: transparent;
-              margin: 0;
-              padding: 7px 8px;
-              font-size: 14px;
-              color: inherit;
-              border: 1px solid transparent;
-              border-radius: inherit;
-              border: 1px solid currentColor;
-              border-radius: 5px;">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button" style="background-color: #4bb8c2">
-                  <i class="fa fa-search"></i>
-                  </button>
-              </div>
+             <form method="GET" action="{% url 'post_search' %}" class="input-group">
+        <input type="text" class="form-control" id="tags" name="query" value="{{ query }}" placeholder="Search" aria-label="Search" aria-describedby="search-btn" style="border: none; background: transparent; margin: 0; padding: 7px 8px; font-size: 14px; color: inherit; border: 1px solid transparent; border-radius: inherit;">
+
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" style="background-color: #4bb8c2">
+                    <i class="fa fa-search"></i>
+                </button>
             </div>
+             </form>
+            </div>
+
             <h4 class="py-2">Search for subjects that most interest you.</h4>
             <div class="container">
               <div class="row d-flex align-items-center">
                 <div class="col-md-4 mb-3">
-                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  <a href="{% url 'search' %}?query=Machine%20Learning" id = "q1" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
                   -o-transition: 0.08s ease-in;
                   -ms-transition: 0.08s ease-in;
                   -moz-transition: 0.08s ease-in;
                   -webkit-transition: 0.08s ease-in; ">Machine Learning</a>
                 </div>
                 <div class="col-md-4 mb-3">
-                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  <a href="{% url 'search' %}?query=Encryption" id ="q1" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
                   -o-transition: 0.08s ease-in;
                   -ms-transition: 0.08s ease-in;
                   -moz-transition: 0.08s ease-in;
-                  -webkit-transition: 0.08s ease-in; ">Encryption</a>
+                  -webkit-transition: 0.08s ease-in; ">{{ search_query }}Encryption</a>
                 </div>
                 <div class="col-md-4 mb-3">
-                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  <a href="{% url 'search' %}?query=Database" id ="q1" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
                   -o-transition: 0.08s ease-in;
                   -ms-transition: 0.08s ease-in;
                   -moz-transition: 0.08s ease-in;
-                  -webkit-transition: 0.08s ease-in;">Database</a>
+                  -webkit-transition: 0.08s ease-in;">{{ search_query }}Database</a>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-4 mb-3">
-                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  <a href="{% url 'search' %}?query=Data%20Structure" id ="q1" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
                   -o-transition: 0.08s ease-in;
                   -ms-transition: 0.08s ease-in;
                   -moz-transition: 0.08s ease-in;
-                  -webkit-transition: 0.08s ease-in;">Data Structures</a>
+                  -webkit-transition: 0.08s ease-in;">{{ search_query }}Data Structures</a>
                 </div>
                 <div class="col-md-4 mb-3">
-                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  <a href="{% url 'search' %}?query=Algorithm" id ="q1" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
                   -o-transition: 0.08s ease-in;
                   -ms-transition: 0.08s ease-in;
                   -moz-transition: 0.08s ease-in;
-                  -webkit-transition: 0.08s ease-in;">Algorithms</a>
+                  -webkit-transition: 0.08s ease-in;">{{ search_query }}Algorithms</a>
                 </div>
                 <div class="col-md-4 mb-3">
-                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  <a href="{% url 'search' %}?query=Cybersecurity" id  = "q1" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
                   -o-transition: 0.08s ease-in;
                   -ms-transition: 0.08s ease-in;
                   -moz-transition: 0.08s ease-in;
@@ -238,25 +232,25 @@
               </div>
               <div class="row">
                 <div class="col-md-4 mb-3">
-                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                  <a href="{% url 'search' %}?query=Robotics" id ="q1" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
                   -o-transition: 0.08s ease-in;
                   -ms-transition: 0.08s ease-in;
                   -moz-transition: 0.08s ease-in;
-                  -webkit-transition: 0.08s ease-in;">Robotics</a>
+                  -webkit-transition: 0.08s ease-in;">{{ search_query }}Robotics</a>
                 </div>
                 <div class="col-md-4 mb-3">
-                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
-                  -o-transition: 0.08s ease-in;
-                  -ms-transition: 0.08s ease-in;
-                  -moz-transition: 0.08s ease-in;
-                  -webkit-transition: 0.08s ease-in;">Artifical-Intelligence</a>
+                    <a href="{% url 'search' %}?query=Artificial%20Intelligence" id="q1" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                    -o-transition: 0.08s ease-in;
+                    -ms-transition: 0.08s ease-in;
+                    -moz-transition: 0.08s ease-in;
+                    -webkit-transition: 0.08s ease-in;">{{ search_query }}AI</a>
                 </div>
                 <div class="col-md-4 mb-3">
-                  <a href="#" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
-                  -o-transition: 0.08s ease-in;
-                  -ms-transition: 0.08s ease-in;
-                  -moz-transition: 0.08s ease-in;
-                  -webkit-transition: 0.08s ease-in;">Cloud Computing</a>
+                    <a href="{% url 'search' %}?query=Cloud%20Computing" id="q1" class="btn btn-primary btn-block rounded-pill" style="border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+                    -o-transition: 0.08s ease-in;
+                    -ms-transition: 0.08s ease-in;
+                    -moz-transition: 0.08s ease-in;
+                    -webkit-transition: 0.08s ease-in;">{{ search_query }}Cloud Computing</a>
                 </div>
               </div>
             </div>
