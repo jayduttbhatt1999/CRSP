@@ -1,5 +1,9 @@
-
+import os
 from multiprocessing import AuthenticationError
+
+from django.contrib.admin.utils import unquote
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from accounts.forms import CustomUserCreationForm
@@ -10,10 +14,13 @@ from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_pos
 from .models import get_suggested_connections
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.urls import reverse_lazy
+
+
 # from autocomplete_light import shortcuts as autocomplete_light
+
 
 # Function for checking user First login
 def first_login(request):
@@ -24,8 +31,9 @@ def first_login(request):
         # print("1st login")
         return redirect('profile_fill')
 
-#Function is not currently inuse
-#function is for sending a mail to user when they sign up
+
+# Function is not currently inuse
+# function is for sending a mail to user when they sign up
 def send_registration_email(email):
     subject = 'Registration successful'
     message = 'Thai Gayu Register'
@@ -33,7 +41,9 @@ def send_registration_email(email):
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)
 
-# Function to check user is already authenciated and all the profile are set or not, if not then redirect them to profill fill page
+
+# Function to check user is already authenciated and all the profile are set or not,
+# if not then redirect them to profill fill page
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')  # Redirect to the dashboard if the user is already logged in
@@ -42,7 +52,7 @@ def login_view(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request,user)
+            login(request, user)
             try:
                 # print("in try")
                 profile = Profile.objects.get(user=request.user)
@@ -59,6 +69,7 @@ def login_view(request):
     else:
         # invalid credentials
         return render(request, 'login.html')
+
 
 # Function for registering a person
 def registration_view(request):
@@ -90,7 +101,8 @@ def registration_view(request):
     else:
         return render(request, 'registration.html')
 
-#Function to just start the index page
+
+# Function to just start the index page
 def index(request):
     # if request.user.is_authenticated:
     #     return redirect('dashboard')  # Redirect to the dashboard if the user is already logged in
@@ -100,17 +112,19 @@ def index(request):
 # Function to get details of user and all the suggestion values and pass it to the template
 @login_required(login_url='login')
 def dashboard_view(request):
-    following = Connection.objects.filter(follower=request.user).values_list('following', flat=True)
-    # get the posts published by those users
-    posts = Post.objects.filter(uploaded_by__in=following).order_by('-published_on')
-    suggestions = get_suggested_connections(request.user)
-    savedlist = SavedPost.objects.filter(user=request.user)
-    postsuggestion = get_post_suggestion(request.user)
-    # print("post suggestion",postsuggestion)
-    if posts is not None:
-        return render(request, 'dashboard.html', {'posts': posts, 'suggestions' : suggestions, 'savedlist': savedlist, 'suggestedpost':postsuggestion})
-    else:
-        return render(request, 'dashboard.html')
+    try:
+        following = Connection.objects.filter(follower=request.user).values_list('following', flat=True)
+        posts = Post.objects.filter(uploaded_by__in=following).order_by('-published_on')
+        suggestions = get_suggested_connections(request.user)
+        savedlist = SavedPost.objects.filter(user=request.user)
+        postsuggestion = get_post_suggestion(request.user)
+
+        return render(request, 'dashboard.html', {'posts': posts, 'suggestions': suggestions, 'savedlist': savedlist,
+                                                  'suggestedpost': postsuggestion})
+    except ObjectDoesNotExist:
+        # Handle the case when the profile or related objects do not exist
+        return render(request, 'dashboard.html', {'error_message': 'Profile does not exist.'})
+
 
 # Function to logout and redirecting to login page
 def logout_view(request):
@@ -125,40 +139,43 @@ def logout_view(request):
         return redirect('home')
 
 
-def posts_view(request,post_id):
-    # print(post_id)
+def posts_view(request, post_id):
     try:
-        posts = Post.objects.get(id=post_id)
-        posts.views += 1 # Increment the views count
-        posts.save()
+        post = Post.objects.get(id=post_id)
+        post.views += 1  # Increment the views count
+        post.save()
         if request.user.is_authenticated:
-            is_saved=SavedPost.objects.filter(user=request.user,post=post_id).exists()
+            is_saved = SavedPost.objects.filter(user=request.user, post=post_id).exists()
             postsuggestion = get_post_suggestion(request.user)
-            # print(is_saved)
-        # if request.user.is_authenticated:
-        #     save_post = request.
+        # else:
+        #     return render(request, 'login.html')
     except Post.DoesNotExist:
         return render(request, '404.html', status=404)
-    
+
+    # is_saved = True
+    # postsuggestion = "Sample suggestion"
+
     context = {
-        'posts': posts,
-        'pdf_url': posts.paper.url,
-        'is_saved':is_saved,
+        'post': post,
+        'pdf_url': post.paper.url,
+        'is_saved': is_saved,
         'suggestedpost': postsuggestion
     }
     return render(request, 'posts.html', context)
 
+
 def save_paper(request, paper_id):
     return render(request, 'posts.html')
 
-def profile_view_test(request,username):
+
+def profile_view_test(request, username):
     try:
-        userObj=User.objects.get(username=username)
+        userObj = User.objects.get(username=username)
         profile = Profile.objects.get(user=userObj)
         posts = Post.objects.filter(uploaded_by=userObj).order_by('-published_on')
         context = {'user': userObj, 'profile': profile, 'posts': posts}
     except Profile.DoesNotExist:
-        return redirect(request,'profile_fill')
+        return redirect(request, 'profile_fill')
 
     return render(request, 'profile.html', context)
 
@@ -190,14 +207,14 @@ def profile_fill_view(request):
         skills_list = skills_input.split(',')
         skills = []
         for skill_name in skills_list:
-            skill, created = Skill.objects.get_or_create (name= skill_name.strip())
+            skill, created = Skill.objects.get_or_create(name=skill_name.strip())
             skills.append(skill)
         profile.skills.set(skills)
 
         print(profile)
 
         profile.save()
-        return redirect('profile',request.user)
+        return redirect('profile', request.user)
 
     return render(request, 'profile_fill.html', {'profile': profile})
 
@@ -208,20 +225,22 @@ def create_posts_view(request):
         # Get the form data from the request object
         title = request.POST['title']
         authors = request.POST['authors']
-        # keywords = request.POST['keywords']
+        keywords = request.POST['keywords']
         allow_download = 'allow_download' in request.POST
         abstract = request.POST['abstract']
-        published_on=request.POST.get('published_on')
+        published_on = request.POST.get('published_on')
         # Get the uploaded PDF file
         skills_input = request.POST.get('keywords')
-        skills_input=skills_input.lower()
+        skills_input = skills_input.lower()
         skills_list = skills_input.split(',')
 
         skills = []
         for skill_name in skills_list:
             skill, created = Skill.objects.get_or_create(name=skill_name.strip())
             skills.append(skill)
-        
+
+        pdf = None  # Initialize the variable with a default value
+
         if request.FILES.get('pdf'):
             print("IN IF")
             pdf = request.FILES['pdf']
@@ -229,58 +248,65 @@ def create_posts_view(request):
             filename = fs.save(pdf.name, pdf)
             uploaded_file_url = fs.url(filename)
             pdf = uploaded_file_url
-            # print(uploaded_file_url)
-        if pdf:
-            # Create a new Post object with the form data and user
-            post = Post(
-                title=title,
-                authors=authors,
-                allow_downloading=allow_download,
-                abstract=abstract,
-                paper=pdf,
-                uploaded_by=request.user,
-                published_on=published_on
-            )
-            post.save()
 
-            post.skills.set(skills)
-            # Redirect to the detail view of the new post
-            return redirect('posts', post.id)
+        # Create a new Post object with the form data and user
+        post = Post(
+            title=title,
+            authors=authors,
+            allow_downloading=allow_download,
+            abstract=abstract,
+            uploaded_by=request.user,
+            published_on=published_on
+        )
+
+        if pdf:
+            post.paper = pdf
+
+        post.save()
+
+        post.skills.set(skills)
+        # Redirect to the detail view of the new post
+        return redirect('posts', post.id)
+
     # Render the form template if the request method is GET
     return render(request, 'create_posts.html')
+
 
 # Function to create a connection between users
 def follow_user(request, username):
     try:
-        following_user = Profile.objects.get(user=username)
+        following_user = Profile.objects.get(user__username=username).user
     except Profile.DoesNotExist:
-        following_user = Profile.objects.create(user=username)
+        following_user = User.objects.create(username=username)
     try:
         connection = Connection.objects.get(follower=request.user, following=following_user)
         connection.delete()
     except Connection.DoesNotExist:
         Connection.objects.create(follower=request.user, following=following_user)
+
     return redirect('profile', username=username)
 
-#Function to gather all the details present in the profile model to show in profile page
-def profile_view(request,username):
+
+# Function to gather all the details present in the profile model to show in profile page
+def profile_view(request, username):
     try:
-        userObj=User.objects.get(username=username)
+        userObj = User.objects.get(username=username)
         profile = Profile.objects.get(user=userObj)
         posts = Post.objects.filter(uploaded_by=userObj).order_by('-published_on')
-        is_following = Connection.objects.filter(follower=request.user,following=userObj).exists()
-        context = {'user': request.user, 'profile': profile, 'posts': posts, 'is_following' : is_following}
-    except Profile.DoesNotExist:
-        return redirect(request,'profile_fill')
+        is_following = Connection.objects.filter(follower=request.user, following=userObj).exists()
+        context = {'user': request.user, 'profile': profile, 'posts': posts, 'is_following': is_following}
+    except (User.DoesNotExist, Profile.DoesNotExist):
+        return redirect('profile_fill')
 
     return render(request, 'profile.html', context)
-    
 
-#Function to just redirect to AboutUs page
+
+# Function to just redirect to AboutUs page
 def aboutUs(request):
     return render(request, 'aboutUs.html')
 
-#Function to save post for a user and store in the mode
+
+# Function to save post for a user and store in the mode
 @login_required
 def save_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -289,7 +315,7 @@ def save_post(request, post_id):
     return redirect('posts', post_id=post_id)
 
 
-#Function to unsave a post for a user
+# Function to unsave a post for a user
 @login_required
 def unsave_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -302,14 +328,67 @@ def unsave_post(request, post_id):
         # messages.warning(request, 'You have not saved this post.')
     return redirect('posts', post_id=post_id)
 
-#Function to force download a pdf if given the options
-# need to change the path whoeve is using it in their system
+    # Function to force download a pdf if given the options
+    # need to change the path whoeve is using it in their system
+
+
 def pdf_download(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    post_path="C:/Users/Owner/PycharmProjects/CRSP/media"+post.paper.url
+    post_path = "C:/Users/shahs/PycharmProjects/CRSP/media/papers" + post.paper.url
     print(post_path)
     # pdf_path = os.path.join('/path/to/pdf/files', str(pdf_file.pdf_file))
-    with open(post_path,'rb') as pdf:
+    with open(post_path, 'rb') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{post.paper.name}"'
         return response
+
+
+# def search_view(request):
+#     if 'search' in request.GET:
+#         search_query = request.GET['search']
+#         results = Post.objects.filter(
+#             Q(authors__icontains=search_query) |
+#             Q(paper__icontains=search_query) |
+#             Q(abstract__icontains=search_query) |
+#             Q(uploaded_by__icontains=search_query) |
+#             Q(title__icontains=search_query)
+#         )
+#     else:
+#         results = []
+#
+#     context = {
+#         'results': results,
+#         'search_query': search_query
+#     }
+#     return render(request, 'search_post_list.html', context)
+
+
+def post_search(request):
+    query = request.GET.get('query', '')
+    if query:
+        multiple_query = Q(Q(title__icontains=query) | Q(authors__icontains=query) | Q(paper__icontains=query) | Q(abstract__icontains=query))
+        posts = Post.objects.filter(multiple_query)
+    else:
+        posts = Post.objects.all()
+    return render(request, 'search_post_list.html', {'search_result': posts, 'query': query})
+
+
+def autosuggest(request):
+    print(request.GET)
+    term = request.GET.get('term')
+    if term:
+        queryset = Post.objects.filter(
+            Q(title__icontains=term) | Q(authors__icontains=term) | Q(paper__icontains=term)
+        )
+        suggestions = [post.title for post in queryset]
+        return JsonResponse(suggestions, safe=False)
+    return JsonResponse([], safe=False)
+
+
+def search(request):
+    query = request.GET.get('query')
+    if query:
+        posts = Post.objects.filter(Q(keywords__icontains=query) | Q(title__icontains=query))
+    else:
+        posts = Post.objects.all()
+    return render(request, 'search_post_list.html', {'search_result': posts})
