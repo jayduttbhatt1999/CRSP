@@ -27,6 +27,7 @@ from django.contrib.auth.models import User
 class Skill(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
+
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     gscholar = models.URLField(max_length=200, blank=True)
@@ -34,12 +35,16 @@ class Profile(models.Model):
     university = models.CharField(max_length=100, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     skills = models.ManyToManyField('Skill')
-    #
+
+    def __str__(self):
+        return self.user.username
+
     def get_skills(self):
-            return [skill.name for skill in self.skills.all()]
+        return [skill.name for skill in self.skills.all()]
 
     def get_skills_id(self):
-            return [skill.id for skill in self.skills.all()]
+        return [skill.id for skill in self.skills.all()]
+
 
 class Post(models.Model):
     title = models.CharField(max_length=200)

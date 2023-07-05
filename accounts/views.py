@@ -1,7 +1,11 @@
-
+import profile
 from multiprocessing import AuthenticationError
+
+import username as username
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+
+import accounts
 from accounts.forms import CustomUserCreationForm
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -11,9 +15,11 @@ from .models import get_suggested_connections
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 from django.http import HttpResponse
+from .models import Profile
 from django.conf import settings
 from django.urls import reverse_lazy
 # from autocomplete_light import shortcuts as autocomplete_light
+
 
 # Function for checking user First login
 def first_login(request):
@@ -24,6 +30,7 @@ def first_login(request):
         # print("1st login")
         return redirect('profile_fill')
 
+
 #Function is not currently inuse
 #function is for sending a mail to user when they sign up
 def send_registration_email(email):
@@ -32,6 +39,7 @@ def send_registration_email(email):
     from_email = 'moviesnucleus@gmail.com'
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)
+
 
 # Function to check user is already authenciated and all the profile are set or not, if not then redirect them to profill fill page
 def login_view(request):
@@ -59,6 +67,7 @@ def login_view(request):
     else:
         # invalid credentials
         return render(request, 'login.html')
+
 
 # Function for registering a person
 def registration_view(request):
@@ -90,6 +99,7 @@ def registration_view(request):
     else:
         return render(request, 'registration.html')
 
+
 #Function to just start the index page
 def index(request):
     # if request.user.is_authenticated:
@@ -111,6 +121,7 @@ def dashboard_view(request):
         return render(request, 'dashboard.html', {'posts': posts, 'suggestions' : suggestions, 'savedlist': savedlist, 'suggestedpost':postsuggestion})
     else:
         return render(request, 'dashboard.html')
+
 
 # Function to logout and redirecting to login page
 def logout_view(request):
@@ -139,7 +150,7 @@ def posts_view(request,post_id):
         #     save_post = request.
     except Post.DoesNotExist:
         return render(request, '404.html', status=404)
-    
+
     context = {
         'posts': posts,
         'pdf_url': posts.paper.url,
@@ -148,8 +159,10 @@ def posts_view(request,post_id):
     }
     return render(request, 'posts.html', context)
 
+
 def save_paper(request, paper_id):
     return render(request, 'posts.html')
+
 
 def profile_view_test(request,username):
     try:
@@ -161,6 +174,46 @@ def profile_view_test(request,username):
         return redirect(request,'profile_fill')
 
     return render(request, 'profile.html', context)
+
+
+def user_profile_list(request):
+    profile_list = Profile.objects.all()
+    return render(request, 'users.html', {'profile_list':profile_list})
+
+
+def search_publishers(request):
+    if request.method=="POST":
+        searched = request.POST['searched']
+        publishers = User.objects.filter(username__startswith=searched)
+        # profile = User.objects.get(pro)
+        # profile_list = Profile.objects.filter(profile_pic__in=publishers)
+        return render(request, 'search_publishers.html', {
+            'searched': searched,
+            'publishers': publishers,
+            # 'profile': profile,
+            # 'user': userObj,
+            # 'profile': profile
+                                                          })
+    else:
+        return render(request, 'search_publishers.html', {})
+
+
+def searched_publishers(request):
+    try:
+        userObj=User.objects.get(username=username)
+        profile = Profile.objects.get(user=userObj)
+        posts = Post.objects.filter(uploaded_by=userObj).order_by('-published_on')
+        context = {'user': userObj, 'profile': profile, 'posts': posts}
+    except Profile.DoesNotExist:
+        return redirect(request,'profile_fill')
+
+    return render(request, 'search_publishers.html', context)
+    # if request.method=="POST":
+    #     searched = request.POST['searched']
+    #     profiles = Profile.objects.filter(profile=searched)
+    #     return render(request, 'search_publishers.html', {'searched': searched, 'profiles': profiles})
+    # else:
+    #     return render(request, 'search_publishers.html', {})
 
 
 @login_required(login_url='login')
@@ -221,7 +274,7 @@ def create_posts_view(request):
         for skill_name in skills_list:
             skill, created = Skill.objects.get_or_create(name=skill_name.strip())
             skills.append(skill)
-        
+
         if request.FILES.get('pdf'):
             print("IN IF")
             pdf = request.FILES['pdf']
@@ -274,7 +327,7 @@ def profile_view(request,username):
         return redirect(request,'profile_fill')
 
     return render(request, 'profile.html', context)
-    
+
 
 #Function to just redirect to AboutUs page
 def aboutUs(request):

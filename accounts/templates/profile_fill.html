@@ -1,110 +1,123 @@
-{% extends 'base1.html' %} 
+{% extends 'base1.html' %}
 {% block content %}
 
-<style>
-   button{
-  transition: all 0.1s;
-}
-button:hover{
-  transform: scale(0.9);
-}
-</style>
+    <style>
+        button {
+            transition: all 0.1s;
+        }
 
-<div class="container">
-    <div class="row">
-      <div class="col-md-6 mx-auto">
-        <div class="card" style="margin-top: 60px; border-width: 2px; border-color: rgba(0,0,0,.075);" >
-          <div class="card-header" style=" border-width: 2px; border-color: rgba(0,0,0,.075); background-color: rgba(0,0,0,.075); ">
-            <h4 style="color: black; text-align: left;">Hello {{ user.username }}! Fill your details to get started</h4>
-          </div>
+        button:hover {
+            transform: scale(0.9);
+        }
+    </style>
 
-          <div class="card-body">
-            <form method="POST" enctype="multipart/form-data"> 
-              {% csrf_token %}
-              <div class="form-group">
-                <label for="profile_image"><b>Profile Image:</b></label>
-                <div class="mb-2">
-                  <img src="{{ user.profile_image.url }}" alt="Profile Image" style="max-width: 200px;">
-                </div>
-                <input type="file" class="form-control-file" id="profile_pic" name="profile_pic">
-              </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card" style="margin-top: 60px; border-width: 2px; border-color: rgba(0,0,0,.075);">
+                    <div class="card-header"
+                         style=" border-width: 2px; border-color: rgba(0,0,0,.075); background-color: rgba(0,0,0,.075); ">
+                        <h4 style="color: black; text-align: left;">Hello {{ user.username }}! Fill your details to get
+                            started</h4>
+                    </div>
 
-              <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" readonly>
-              </div>
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="profile_image"><b>Profile Image:</b></label>
+                                <div class="mb-2">
+                                    <img src="{{ user.profile_image.url }}" alt="Profile Image"
+                                         style="max-width: 200px;">
+                                </div>
+                                <input type="file" class="form-control-file" id="profile_pic" name="profile_pic">
+                            </div>
 
-              <div class="form-group">
-                <label for="first_name" id="important">First Name:</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
-              </div>
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" class="form-control" id="username" name="username"
+                                       value="{{ user.username }}" readonly>
+                            </div>
 
-              <div class="form-group">
-                <label for="last_name" id="important">Last Name:</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
-              </div>
+                            <div class="form-group">
+                                <label for="first_name" id="important">First Name:</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name"
+                                       value="{{ user.first_name }}">
+                            </div>
 
-              <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" readonly>
-              </div>
+                            <div class="form-group">
+                                <label for="last_name" id="important">Last Name:</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name"
+                                       value="{{ user.last_name }}">
+                            </div>
 
-              <div class="form-group">
-                <label for="department" id="important">Department:</label>
-                <input type="text" class="form-control" id="department" name="dept" value="{{ profile.department }} " required>
-              </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                       value="{{ user.email }}" readonly>
+                            </div>
 
-              <div class="form-group">
-                <label for="university" id="important">University Name:</label>
-                <input type="text" class="form-control" id="university" name="university" value="{{ profile.university }}">
-              </div>
+                            <div class="form-group">
+                                <label for="department" id="important">Department:</label>
+                                <input type="text" class="form-control" id="department" name="dept"
+                                       value="{{ profile.department }} " required>
+                            </div>
 
-              <div class="form-group">
-                <label for="gscholar" id="important">Google Scholar Link:</label>
-                <input type="text" class="form-control" id="gscholar" name="gScholar" value=" {{ profile.gscholar }}"required>
-              </div>
+                            <div class="form-group">
+                                <label for="university" id="important">University Name:</label>
+                                <input type="text" class="form-control" id="university" name="university"
+                                       value="{{ profile.university }}">
+                            </div>
 
-              <div class="form-group">
-                <label for="interests" id="important">Enter Skills (separeted by comma):</label>
-                <br>
-                  <input type="text" name ="skills" >
+                            <div class="form-group">
+                                <label for="gscholar" id="important">Google Scholar Link:</label>
+                                <input type="text" class="form-control" id="gscholar" name="gScholar"
+                                       value=" {{ profile.gscholar }}" required>
+                            </div>
 
-              </div>  
+                            <div class="form-group">
+                                <label for="interests" id="important">Enter Skills (separeted by comma):</label>
+                                <br>
+                                <input type="text" name="skills">
 
-{#              <script>#}
-{#                function validateCheckbox() {#}
-{#                  var checkboxes = document.getElementsByName("interests");#}
-{#                  var checkedCount = 0;#}
-{#                  for (var i = 0; i < checkboxes.length; i++) {#}
-{#                    if (checkboxes[i].checked) {#}
-{#                      checkedCount++;#}
-{#                    }#}
-{#                  }#}
-{#                  if (checkedCount < 3) {#}
-{#                    alert("Please select at least 3 interests.");#}
-{#                    return false;#}
-{#                  }#}
-{#                  else if (checkedCount > 5){#}
-{#                    alert("Please select maximum 5 interests.");#}
-{#                  }#}
-{#                  return true;#}
-{#                }#}
-{#                </script>  #}
+                            </div>
 
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block " onclick="return validateCheckbox()" 
-                style="background: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; 
+                            {#              <script>#}
+                            {#                function validateCheckbox() {#}
+                            {#                  var checkboxes = document.getElementsByName("interests");#}
+                            {#                  var checkedCount = 0;#}
+                            {#                  for (var i = 0; i < checkboxes.length; i++) {#}
+                            {#                    if (checkboxes[i].checked) {#}
+                            {#                      checkedCount++;#}
+                            {#                    }#}
+                            {#                  }#}
+                            {#                  if (checkedCount < 3) {#}
+                            {#                    alert("Please select at least 3 interests.");#}
+                            {#                    return false;#}
+                            {#                  }#}
+                            {#                  else if (checkedCount > 5){#}
+                            {#                    alert("Please select maximum 5 interests.");#}
+                            {#                  }#}
+                            {#                  return true;#}
+                            {#                }#}
+                            {#                </script>  #}
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block "
+                                        onclick="return validateCheckbox()"
+                                        style="background: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2;
                 transition: 0.08s ease-in;
   -o-transition: 0.08s ease-in;
   -ms-transition: 0.08s ease-in;
   -moz-transition: 0.08s ease-in;
   -webkit-transition: 0.08s ease-in;
-                " >Save Changes</button>
-              </div>
-            </form>
-          </div>
+                ">Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 {% endblock %}

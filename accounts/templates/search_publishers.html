@@ -30,7 +30,7 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css'>
     <!--Style begin-->
     <style media="screen">
-        body {
+         body {
             overflow-x: hidden;
         }
 
@@ -261,9 +261,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile_' %}">Publishers</a>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown"
@@ -321,8 +318,46 @@
         </button>
     </div>
 {% endif %}
-<div>
+<div class="container">
     {% block content %}
+        {% if searched %}
+            <h3> Here are the result for {{ searched }}</h3>
+            <br/>
+            {% if publishers %}
+                {% for publisher in publishers %}
+                    <div class="card mb-3" style="max-width: 1000px;">
+                        <div class="row g-0">
+{#                            <div class="col-md-4">#}
+
+{#                                {% if profile.profile_pic %}#}
+{#                                         <img src="{{ profile.profile_pic }}" class="img-fluid rounded-start"#}
+{#                                         alt="Not uploaded">#}
+{#                                {% endif %}#}
+
+{#                            </div>#}
+
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ publisher.first_name }} {{ publisher.last_name }}</h5>
+                                    <h6 class="card-text">{{ publisher.first_name}}'s Uwin email id is {{ publisher.email }}</h6>
+                                    <h6 class="card-text">Last updated post in on {{ publisher.last_login }}</h6>
+{#                                    <p class="card-text">University - {{ profile.university }}</p>#}
+
+                                    <p class="card-text"> {{ publisher.first_name }} is active from {{ publisher.date_joined}}</p>
+{#                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>#}
+                                    <a href="{% url 'profile' publisher %}" class="btn btn-primary stretched-link">Go To
+                                        Profile</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {#                <a href="{{ profile }}">  {{ publisher }} - {{ publisher.email }}</a><br/>#}
+                {% endfor %}
+            {% else %}
+                <h1> Hey! This publisher does not exist in our database</h1>
+            {% endif %}
+        {% endif %}
+
     {% endblock %}
 </div>
 

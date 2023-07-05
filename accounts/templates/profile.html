@@ -27,7 +27,7 @@
                         {% if is_following %}
                             <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-danger">Unfollow</a>
                         {% else %}
-                            <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-primary">Follow</a>
+                            <a href="{% url 'follow_user' profile.user.i %}" class="btn btn-primary">Follow</a>
                         {% endif %}
                     {% endif %}
 
@@ -45,9 +45,9 @@
                         <div class="card mb-3">
                             <a href="{% url 'posts' post.id %}">
                                 <div class="card-header">{{ post.title }}</div>
-                                <div class="card-body">
-                                    <p class="card-text">{{ post.abstract }}</p>
-                            </div>
+{#                                <div class="card-body">#}
+{#                                    <p class="card-text">{{ post.abstract }}</p>#}
+{#                            </div>#}
                             </a>
                         </div>
                     {% empty %}
