@@ -27,6 +27,9 @@ from django.contrib.auth.models import User
 class Skill(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -60,6 +63,9 @@ class Post(models.Model):
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
     views = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.title
+
     def get_skills(self):
             return [skill.name for skill in self.skills.all()]
 
@@ -70,6 +76,9 @@ class Connection(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
     following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
     created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.following
 
     class Meta:
         unique_together = ('follower', 'following')
@@ -101,6 +110,9 @@ class SavedPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     saved_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.post
 
     class Meta:
         unique_together = ('user', 'post')

@@ -33,7 +33,7 @@ urlpatterns = [
     path('profile/<str:username>/', views.profile_view, name='profile_'),  # with/
 
     path('follow_user/<str:username>', views.follow_user, name='follow_user'),  # without/
-    path('follow_user/<str:username>/', views.follow_user, name='follow_user_'),  # with/
+    # path('follow_user/<str:username>/', views.follow_user, name='follow_user_'),  # with/
 
     path('save_post/<int:post_id>/', views.save_post, name='save_post_'),
     path('unsave_post/<int:post_id>/', views.unsave_post, name='unsave_post_'),

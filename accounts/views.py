@@ -1,13 +1,13 @@
 import profile
 from multiprocessing import AuthenticationError
 
-import username as username
+# import username as username
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 
 import accounts
 from accounts.forms import CustomUserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User as username, User
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_post_suggestion
@@ -316,7 +316,7 @@ def follow_user(request, username):
     return redirect('profile', username=username)
 
 #Function to gather all the details present in the profile model to show in profile page
-def profile_view(request,username):
+def profile_view(request, username):
     try:
         userObj=User.objects.get(username=username)
         profile = Profile.objects.get(user=userObj)
