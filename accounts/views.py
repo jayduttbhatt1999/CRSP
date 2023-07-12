@@ -219,7 +219,7 @@ def searched_publishers(request):
 def post_search(request):
     query = request.GET.get('query', '')
     if query:
-        multiple_query = Q(Q(title_icontains=query) | Q(authorsicontains=query) | Q(papericontains=query) | Q(abstract_icontains=query))
+        multiple_query = Q(Q(title__icontains=query) | Q(authors__icontains=query) | Q(paper__icontains=query) | Q(abstract__icontains=query))
         posts = Post.objects.filter(multiple_query)
     else:
         posts = Post.objects.all()
