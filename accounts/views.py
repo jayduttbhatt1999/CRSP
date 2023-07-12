@@ -1,6 +1,7 @@
 import profile
 from multiprocessing import AuthenticationError
 
+from django.db.models import Q
 # import username as username
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -14,7 +15,7 @@ from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_pos
 from .models import get_suggested_connections
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Profile
 from django.conf import settings
 from django.urls import reverse_lazy
@@ -215,6 +216,35 @@ def searched_publishers(request):
     # else:
     #     return render(request, 'search_publishers.html', {})
 
+def post_search(request):
+    query = request.GET.get('query', '')
+    if query:
+        multiple_query = Q(Q(title_icontains=query) | Q(authorsicontains=query) | Q(papericontains=query) | Q(abstract_icontains=query))
+        posts = Post.objects.filter(multiple_query)
+    else:
+        posts = Post.objects.all()
+    return render(request, 'search_post_list.html', {'search_result': posts, 'query': query})
+
+
+def autosuggest(request):
+    print(request.GET)
+    term = request.GET.get('term')
+    if term:
+        queryset = Post.objects.filter(
+            Q(title_icontains=term) | Q(authorsicontains=term) | Q(paper_icontains=term)
+        )
+        suggestions = [post.title for post in queryset]
+        return JsonResponse(suggestions, safe=False)
+    return JsonResponse([], safe=False)
+
+
+def search(request):
+    query = request.GET.get('query')
+    if query:
+        posts = Post.objects.filter(Q(keywords_icontains=query) | Q(title_icontains=query))
+    else:
+        posts = Post.objects.all()
+    return render(request, 'search_post_list.html', {'search_result': posts})
 
 @login_required(login_url='login')
 def profile_fill_view(request):
@@ -314,6 +344,7 @@ def follow_user(request, username):
     except Connection.DoesNotExist:
         Connection.objects.create(follower=request.user, following=following_user)
     return redirect('profile', username=username)
+
 
 #Function to gather all the details present in the profile model to show in profile page
 def profile_view(request, username):

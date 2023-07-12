@@ -44,5 +44,9 @@ urlpatterns = [
     path('pdf_download/<int:post_id>', views.pdf_download, name='pdf_download'),
     path('search_publishers/', views.search_publishers, name='search_publishers_'),  # without/
     path('search_publishers/', views.searched_publishers, name='searched_publishers_'),
-    path('profile/', views.user_profile_list, name='profile_')
+    path('profile/', views.user_profile_list, name='profile_'),
+
+    path('autosuggest', views.autosuggest, name="autosuggest"),
+    path('search/', views.post_search, name='post_search'),
+    path('search/', views.search, name='search'),
 ]

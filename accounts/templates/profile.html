@@ -13,11 +13,11 @@
                     {% endif %}
 
                 <div class="card-body">
-                    <h4 class="card-title">{{ profile.user.username }}</h4>
+                    <h4 class="card-title">{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
                     <p class="card-text"><strong>Department:</strong> {{ profile.department }}</p>
                     <p class="card-text"><strong>University:</strong> {{ profile.university }}</p>
                     <p class="card-text"><strong>Google Scholar:</strong> <a href="{{ profile.gscholar }}" target="_blank">{{ profile.gscholar }}</a></p>
-                  
+
                     <p class="card-text"><strong>Area of Interest:</strong>
                         {% for skil in profile.get_skills %}
                             {{ skil }},
