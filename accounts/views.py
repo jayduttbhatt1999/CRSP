@@ -6,11 +6,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from accounts.forms import CustomUserCreationForm
+from accounts.forms import CustomUserCreationForm, CommentForm
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_post_suggestion
+from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_post_suggestion, Comment
 from .models import get_suggested_connections
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
@@ -142,24 +142,24 @@ def logout_view(request):
 def posts_view(request, post_id):
     try:
         post = Post.objects.get(id=post_id)
-        post.views += 1  # Increment the views count
+        post.views += 1
         post.save()
+
         if request.user.is_authenticated:
             is_saved = SavedPost.objects.filter(user=request.user, post=post_id).exists()
             postsuggestion = get_post_suggestion(request.user)
-        # else:
-        #     return render(request, 'login.html')
+
+        form = CommentForm()
+
     except Post.DoesNotExist:
         return render(request, '404.html', status=404)
-
-    # is_saved = True
-    # postsuggestion = "Sample suggestion"
 
     context = {
         'post': post,
         'pdf_url': post.paper.url,
         'is_saved': is_saved,
-        'suggestedpost': postsuggestion
+        'suggestedpost': postsuggestion,
+        'comment_form': form
     }
     return render(request, 'posts.html', context)
 
@@ -366,7 +366,8 @@ def pdf_download(request, post_id):
 def post_search(request):
     query = request.GET.get('query', '')
     if query:
-        multiple_query = Q(Q(title__icontains=query) | Q(authors__icontains=query) | Q(paper__icontains=query) | Q(abstract__icontains=query))
+        multiple_query = Q(Q(title__icontains=query) | Q(authors__icontains=query) | Q(paper__icontains=query) | Q(
+            abstract__icontains=query))
         posts = Post.objects.filter(multiple_query)
     else:
         posts = Post.objects.all()
@@ -392,3 +393,51 @@ def search(request):
     else:
         posts = Post.objects.all()
     return render(request, 'search_post_list.html', {'search_result': posts})
+
+
+@login_required
+# def add_comment(request, post_id):
+#     if request.method == 'POST':
+#         form = CommentForm(request.POST)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             comment.post_id = post_id
+#             comment.name = request.user.username
+#             comment.save()
+#             return redirect('posts', post_id=post_id)
+#     else:
+#         form = CommentForm()
+#         post1 = Post.objects.get(id=post_id)
+#         get_comment = post1.comments.all()
+#         comment_form = CommentForm()
+#         return render(request, 'posts.html', {'post': post1, 'get_comment': get_comment, 'comment_form': comment_form})
+#     return redirect('posts', post_id=post_id)
+#
+def add_comment(request, post_id):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post_id = post_id
+            comment.name = request.user.username
+            comment.save()
+            return redirect('posts', post_id=post_id)
+    else:
+        form = CommentForm()
+        post1 = get_object_or_404(Post, id=post_id)
+        get_comment = post1.comments.all()
+        comment_form = CommentForm()
+        return render(request, 'posts.html', {'post': post1, 'get_comment': get_comment, 'comment_form': comment_form})
+    return redirect('posts', post_id=post_id)
+
+
+def add_reply(request, comment_id):
+    if request.method == 'POST':
+        reply_content = request.POST.get('reply_content')
+        comment = get_object_or_404(Comment, id=comment_id)
+
+        comment.reply_content = reply_content
+        comment.save()
+
+        return redirect('posts', post_id=comment.post_id)
+    return redirect('home')
