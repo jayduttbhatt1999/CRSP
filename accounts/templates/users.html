@@ -25,19 +25,21 @@
             {% for profile in profile_list %}
                 <div class="card mb-3" style="max-width: 1000px;">
                     <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="{{ profile.profile_pic }}" class="img-fluid rounded-start"
-                                 alt=" Not uploaded">
-                        </div>
+
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">{{ profile.user.first_name.upper }} {{ profile.user.last_name.upper }} </h5>
                                 <p class="card-text">University - {{ profile.university }}</p>
 
                                 <p class="card-text">Department - {{ profile.department }}</p>
-                                <p class="card-text"><small class="text-muted">Last seen {{ profile.user.last_login }}</small></p>
+                                <p class="card-text"><small class="text-muted">Last
+                                    seen {{ profile.user.last_login }}</small></p>
                                 <a href="{{ profile }}" class="btn btn-primary stretched-link">Go To Profile</a>
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="{{ profile.profile_pic }}" class="img-fluid rounded-start"
+                                 alt=" Not uploaded">
                         </div>
                     </div>
                 </div>
