@@ -13,11 +13,11 @@
                     {% endif %}
 
                 <div class="card-body">
-                    <h4 class="card-title">{{ profile.user.username }}</h4>
+                    <h4 class="card-title">{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
                     <p class="card-text"><strong>Department:</strong> {{ profile.department }}</p>
                     <p class="card-text"><strong>University:</strong> {{ profile.university }}</p>
                     <p class="card-text"><strong>Google Scholar:</strong> <a href="{{ profile.gscholar }}" target="_blank">{{ profile.gscholar }}</a></p>
-                  
+
                     <p class="card-text"><strong>Area of Interest:</strong>
                         {% for skil in profile.get_skills %}
                             {{ skil }},
@@ -27,7 +27,7 @@
                         {% if is_following %}
                             <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-danger">Unfollow</a>
                         {% else %}
-                            <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-primary">Follow</a>
+{#                            <a href="{% url 'follow_user' profile.user.i %}" class="btn btn-primary">Follow</a>#}
                         {% endif %}
                     {% endif %}
 
@@ -45,9 +45,9 @@
                         <div class="card mb-3">
                             <a href="{% url 'posts' post.id %}">
                                 <div class="card-header">{{ post.title }}</div>
-                                <div class="card-body">
-                                    <p class="card-text">{{ post.abstract }}</p>
-                            </div>
+{#                                <div class="card-body">#}
+{#                                    <p class="card-text">{{ post.abstract }}</p>#}
+{#                            </div>#}
                             </a>
                         </div>
                     {% empty %}

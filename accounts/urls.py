@@ -1,6 +1,5 @@
 from django.urls import path
 from accounts import views
-from accounts.views import post_search, autosuggest
 
 urlpatterns = [
     path('login/', views.login_view, name='login_'),  # With /
@@ -30,20 +29,22 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout_'),
     path('logout', views.logout_view, name='logout'),
 
-    path('profile/<str:username>', views.profile_view, name='profile'),
-    path('profile/<str:username>/', views.profile_view, name='profile'),
-
-    # path('profile/<str:username>', views.profile_view, name='profile'),  # without/
-    # path('profile/<str:username>/', views.profile_view, name='profile_'),  # with/
+    path('profile/<str:username>', views.profile_view, name='profile'),  # without/
+    path('profile/<str:username>/', views.profile_view, name='profile_'),  # with/
 
     path('follow_user/<str:username>', views.follow_user, name='follow_user'),  # without/
-    path('follow_user/<str:username>/', views.follow_user, name='follow_user_'),  # with/
+    # path('follow_user/<str:username>/', views.follow_user, name='follow_user_'),  # with/
 
-    path('save_post/<int:post_id>/', views.save_post, name='save_post'),
-    path('unsave_post/<int:post_id>/', views.unsave_post, name='unsave_post'),
+    path('save_post/<int:post_id>/', views.save_post, name='save_post_'),
+    path('unsave_post/<int:post_id>/', views.unsave_post, name='unsave_post_'),
+    path('save_post/<int:post_id>', views.save_post, name='save_post'),
+    path('unsave_post/<int:post_id>', views.unsave_post, name='unsave_post'),
 
     path('pdf_download/<int:post_id>/', views.pdf_download, name='pdf_download_'),
     path('pdf_download/<int:post_id>', views.pdf_download, name='pdf_download'),
+    path('search_publishers/', views.search_publishers, name='search_publishers_'),  # without/
+    path('search_publishers/', views.searched_publishers, name='searched_publishers_'),
+    path('profile/', views.user_profile_list, name='profile_'),
 
     path('autosuggest', views.autosuggest, name="autosuggest"),
     path('search/', views.post_search, name='post_search'),
