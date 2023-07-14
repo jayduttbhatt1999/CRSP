@@ -115,7 +115,6 @@ class SavedPost(models.Model):
         return self.post
 
     class Meta:
-<<<<<<< HEAD
         unique_together = ('user', 'post')
 
 
@@ -131,6 +130,4 @@ class Comment(models.Model):
     def __str__(self):
         return self.body
 
-=======
         unique_together = ('user', 'post')
->>>>>>> development

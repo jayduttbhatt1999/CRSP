@@ -422,7 +422,6 @@ def pdf_download(request, post_id):
     with open(post_path,'rb') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{post.paper.name}"'
-<<<<<<< HEAD
         return response
 
 
@@ -524,6 +523,3 @@ def add_reply(request, comment_id):
 
         return redirect('posts', post_id=comment.post_id)
     return redirect('home')
-=======
-        return response
->>>>>>> development

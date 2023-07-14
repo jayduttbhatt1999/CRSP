@@ -5,19 +5,11 @@
 <div class="container" >
   <div class="row" >
     <div class="col-md-9">
-<<<<<<< HEAD
         <h2 style="margin-top: 40px; font-family: sans-serif;">{{ post.title }}</h2>
 
       <p>Published on {{ post.published_on|date:'F d, Y' }} by <a href="{% url 'profile' post.uploaded_by.username %}">{{ post.uploaded_by }}</a></p>
   <p>{{ post.views }} reads <i class="fa fa-eye" aria-hidden="true"></i></p>
           <p>Title: {{ post.title }}</p>
-=======
-        <h2 style="margin-top: 40px; font-family: sans-serif;">{{ posts.title }}</h2>
-       
-      <p>Published on {{ posts.published_on|date:'F d, Y' }} by <a href="{% url 'profile' posts.uploaded_by.username %}">{{ post.uploaded_by }}</a></p>
-  <p>{{ posts.views }} reads <i class="fa fa-eye" aria-hidden="true"></i></p>
-          <p>Title: {{ posts.title }}</p>
->>>>>>> development
 
           <p>Co-authors: {{ posts.authors }}</p>
           <p>Keywords:
@@ -35,13 +27,8 @@
         -webkit-transition: 0.08s ease-in;">Preview  </a>
 
         {% if post.allow_downloading %}
-<<<<<<< HEAD
         <a href="{%  url 'pdf_download' post.id %}" class="btn btn-primary"
         style="background: #4bb8c2; border-width: 2px; border-style: solid;
-=======
-        <a href="{%  url 'pdf_download' posts.id %}" class="btn btn-primary"
-        style="background: #4bb8c2; border-width: 2px; border-style: solid; 
->>>>>>> development
         border-color: #4bb8c2; transition: 0.08s ease-in;
         -o-transition: 0.08s ease-in;
         -ms-transition: 0.08s ease-in;
@@ -72,13 +59,8 @@
 
           <div class="card mb-3" style="margin-top: 20px;">
             <div class="card-body">
-<<<<<<< HEAD
               <h4 class="card-title">Abstract <i class='fas fa-pencil-alt ml-2' aria-hidden="true" ></i></h4>
               <p class="card-text text-justify">{{ post.abstract }}</p>
-=======
-              <h4 class="card-title">Abstract <i class='fas fa-pencil-alt' aria-hidden="true" ></i> </h4>
-              <p class="card-text text-justify">{{ posts.abstract }}</p>
->>>>>>> development
             </div>
 {#            <script>#}
 {#                  var pdf = new PDFObject({#}
