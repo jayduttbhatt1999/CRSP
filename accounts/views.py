@@ -5,13 +5,18 @@ from django.db.models import Q
 # import username as username
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+<<<<<<< HEAD
+from accounts.forms import CustomUserCreationForm, CommentForm
+from django.contrib.auth.models import User
+=======
 
 import accounts
 from accounts.forms import CustomUserCreationForm
 from django.contrib.auth.models import User as username, User
+>>>>>>> development
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_post_suggestion
+from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_post_suggestion, Comment
 from .models import get_suggested_connections
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
@@ -140,23 +145,44 @@ def logout_view(request):
 def posts_view(request,post_id):
     # print(post_id)
     try:
+<<<<<<< HEAD
+        post = Post.objects.get(id=post_id)
+        post.views += 1
+        post.save()
+
+=======
         posts = Post.objects.get(id=post_id)
         posts.views += 1 # Increment the views count
         posts.save()
+>>>>>>> development
         if request.user.is_authenticated:
             is_saved=SavedPost.objects.filter(user=request.user,post=post_id).exists()
             postsuggestion = get_post_suggestion(request.user)
+<<<<<<< HEAD
+
+        form = CommentForm()
+
+=======
             # print(is_saved)
         # if request.user.is_authenticated:
         #     save_post = request.
+>>>>>>> development
     except Post.DoesNotExist:
         return render(request, '404.html', status=404)
 
     context = {
+<<<<<<< HEAD
+        'post': post,
+        'pdf_url': post.paper.url,
+        'is_saved': is_saved,
+        'suggestedpost': postsuggestion,
+        'comment_form': form
+=======
         'posts': posts,
         'pdf_url': posts.paper.url,
         'is_saved':is_saved,
         'suggestedpost': postsuggestion
+>>>>>>> development
     }
     return render(request, 'posts.html', context)
 
@@ -397,3 +423,103 @@ def pdf_download(request, post_id):
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{post.paper.name}"'
         return response
+
+
+# def search_view(request):
+#     if 'search' in request.GET:
+#         search_query = request.GET['search']
+#         results = Post.objects.filter(
+#             Q(authors__icontains=search_query) |
+#             Q(paper__icontains=search_query) |
+#             Q(abstract__icontains=search_query) |
+#             Q(uploaded_by__icontains=search_query) |
+#             Q(title__icontains=search_query)
+#         )
+#     else:
+#         results = []
+#
+#     context = {
+#         'results': results,
+#         'search_query': search_query
+#     }
+#     return render(request, 'search_post_list.html', context)
+
+
+def post_search(request):
+    query = request.GET.get('query', '')
+    if query:
+        multiple_query = Q(Q(title__icontains=query) | Q(authors__icontains=query) | Q(paper__icontains=query) | Q(
+            abstract__icontains=query))
+        posts = Post.objects.filter(multiple_query)
+    else:
+        posts = Post.objects.all()
+    return render(request, 'search_post_list.html', {'search_result': posts, 'query': query})
+
+
+def autosuggest(request):
+    print(request.GET)
+    term = request.GET.get('term')
+    if term:
+        queryset = Post.objects.filter(
+            Q(title__icontains=term) | Q(authors__icontains=term) | Q(paper__icontains=term)
+        )
+        suggestions = [post.title for post in queryset]
+        return JsonResponse(suggestions, safe=False)
+    return JsonResponse([], safe=False)
+
+
+def search(request):
+    query = request.GET.get('query')
+    if query:
+        posts = Post.objects.filter(Q(keywords__icontains=query) | Q(title__icontains=query))
+    else:
+        posts = Post.objects.all()
+    return render(request, 'search_post_list.html', {'search_result': posts})
+
+
+@login_required
+# def add_comment(request, post_id):
+#     if request.method == 'POST':
+#         form = CommentForm(request.POST)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             comment.post_id = post_id
+#             comment.name = request.user.username
+#             comment.save()
+#             return redirect('posts', post_id=post_id)
+#     else:
+#         form = CommentForm()
+#         post1 = Post.objects.get(id=post_id)
+#         get_comment = post1.comments.all()
+#         comment_form = CommentForm()
+#         return render(request, 'posts.html', {'post': post1, 'get_comment': get_comment, 'comment_form': comment_form})
+#     return redirect('posts', post_id=post_id)
+#
+def add_comment(request, post_id):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post_id = post_id
+            comment.name = request.user.username
+            comment.save()
+            return redirect('posts', post_id=post_id)
+    else:
+        form = CommentForm()
+        post1 = get_object_or_404(Post, id=post_id)
+        get_comment = post1.comments.all()
+        comment_form = CommentForm()
+        return render(request, 'posts.html', {'post': post1, 'get_comment': get_comment, 'comment_form': comment_form})
+    return redirect('posts', post_id=post_id)
+
+
+def add_reply(request, comment_id):
+    if request.method == 'POST':
+        reply_content = request.POST.get('reply_content')
+        comment = get_object_or_404(Comment, id=comment_id)
+
+        comment.reply_content = reply_content
+        comment.save()
+
+        return redirect('posts', post_id=comment.post_id)
+    return redirect('home')

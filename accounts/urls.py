@@ -49,4 +49,7 @@ urlpatterns = [
     path('autosuggest', views.autosuggest, name="autosuggest"),
     path('search/', views.post_search, name='post_search'),
     path('search/', views.search, name='search'),
+    path('add_comment/<int:post_id>/', views.add_comment, name='add_comment'),
+    # path('add_reply/<int:comment_id>/', views.reply, name='add_reply'),
+    path('add_reply/<int:comment_id>/', views.add_reply, name='add_reply'),
 ]

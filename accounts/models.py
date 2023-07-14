@@ -116,3 +116,18 @@ class SavedPost(models.Model):
 
     class Meta:
         unique_together = ('user', 'post')
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    name = models.CharField(max_length=100, blank=True)
+    body = models.TextField()
+    # date_added = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    # p_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    reply_content = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.body
+
+        unique_together = ('user', 'post')
