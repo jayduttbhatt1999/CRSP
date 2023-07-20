@@ -255,6 +255,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+
             <ul class="navbar-nav">
 
                 {% if user.is_authenticated %}
@@ -262,7 +263,7 @@
                         <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile_' %}">Publishers</a>
+                        <a class="nav-link" href="{% url 'profile_' %}">Users</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -275,6 +276,27 @@
                             <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                         </div>
                     </li>
+{#                    <nav class="navbar-light">#}
+{#                        <form class="form-inline" action="{% url 'search_publishers_' %}">#}
+{#                             {% csrf_token %}#}
+{#                           <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"#}
+{#                                                                       aria-label="Search">#}
+{#                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>#}
+{#                        </form>#}
+{#                    </nav>#}
+{#                    <form method="post" class="form-inline my-2 my-lg-0" action="{% url 'search_publishers_' %}">#}
+
+
+{#                                                                        <div class="nav-item input-group mb-3" style="max-width: 1000px;">#}
+                    {##}
+                    {#                                                                            <input class="form-control" type="search" name="searched"#}
+                    {#                                                                                   placeholder="Find Uwin Publishers"#}
+                    {#                                                                                   aria-label="Search">#}
+                    {#                                                                            <div class="input-group-append">#}
+                    {#                                                                                <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>#}
+                    {#                                                                            </div>#}
+                    {#                                                                        </div>#}
+                    </form>
 
                 {% else %}
                     <li class="nav-item">

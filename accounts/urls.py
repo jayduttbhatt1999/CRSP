@@ -33,7 +33,7 @@ urlpatterns = [
     path('profile/<str:username>/', views.profile_view, name='profile_'),  # with/
 
     path('follow_user/<str:username>', views.follow_user, name='follow_user'),  # without/
-    # path('follow_user/<str:username>/', views.follow_user, name='follow_user_'),  # with/
+    path('follow_user/<str:username>/', views.follow_user, name='follow_user_'),  # with/
 
     path('save_post/<int:post_id>/', views.save_post, name='save_post_'),
     path('unsave_post/<int:post_id>/', views.unsave_post, name='unsave_post_'),
@@ -52,4 +52,8 @@ urlpatterns = [
     path('add_comment/<int:post_id>/', views.add_comment, name='add_comment'),
     # path('add_reply/<int:comment_id>/', views.reply, name='add_reply'),
     path('add_reply/<int:comment_id>/', views.add_reply, name='add_reply'),
+    # path('profile/<str:username>/personal_comment/', views.personal_comment, name='personal_comment'),
+    # path('profile/<str:username>/personal_reply/', views.personal_reply, name='personal_reply'),
+    path('profile/message/', views.chatroom, name='chatroom'),
+    # path('profile/message/<str:username>_')
 ]

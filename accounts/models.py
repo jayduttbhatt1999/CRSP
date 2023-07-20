@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
@@ -131,3 +133,13 @@ class Comment(models.Model):
         return self.body
 
         unique_together = ('user', 'post')
+
+
+class Chatroom(models.Model):
+    name = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Message(models.Model):
+    value = models.CharField(max_length=100000)
+    date = models.DateTimeField(default=datetime.now, blank=True)
+    user = models.CharField(max_length=100000)
+    room = models.CharField(max_length=100000)
