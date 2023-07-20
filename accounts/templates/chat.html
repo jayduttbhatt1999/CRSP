@@ -1,98 +1,84 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-<section style="background-color: #eee;">
-  <div class="container py-5">
+        .chat-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px;
+        }
 
-    <div class="row d-flex justify-content-center">
-      <div class="col-md-8 col-lg-6 col-xl-4">
+        .chat {
+            display: flex;
+            flex-direction: column;
+        }
 
-        <div class="card">
-          <div class="card-header d-flex justify-content-between align-items-center p-3"
-            style="border-top: 4px solid #ffa900;">
-            <h5 class="mb-0">Chat messages</h5>
-            <div class="d-flex flex-row align-items-center">
-              <span class="badge bg-warning me-3">20</span>
-              <i class="fas fa-minus me-3 text-muted fa-xs"></i>
-              <i class="fas fa-comments me-3 text-muted fa-xs"></i>
-              <i class="fas fa-times text-muted fa-xs"></i>
-            </div>
-          </div>
-          <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
+        .message {
+            max-width: 70%;
+            margin: 5px 10px;
+            padding: 10px;
+            border-radius: 8px;
+        }
 
-            <div class="d-flex justify-content-between">
-              <p class="small mb-1">Timona Siera</p>
-              <p class="small mb-1 text-muted">23 Jan 2:00 pm</p>
-            </div>
-            <div class="d-flex flex-row justify-content-start">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-              <div>
-                <p class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">For what reason
-                  would it
-                  be advisable for me to think about business content?</p>
-              </div>
-            </div>
+        .received {
+            background-color: #DCF8C6;
+            align-self: flex-start;
+        }
 
-            <div class="d-flex justify-content-between">
-              <p class="small mb-1 text-muted">23 Jan 2:05 pm</p>
-              <p class="small mb-1">Johny Bullock</p>
-            </div>
-            <div class="d-flex flex-row justify-content-end mb-4 pt-1">
-              <div>
-                <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-warning">Thank you for your believe in
-                  our
-                  supports</p>
-              </div>
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-            </div>
+        .sent {
+            background-color: #DCF8C6;
+            align-self: flex-end;
+        }
 
-            <div class="d-flex justify-content-between">
-              <p class="small mb-1">Timona Siera</p>
-              <p class="small mb-1 text-muted">23 Jan 5:37 pm</p>
-            </div>
-            <div class="d-flex flex-row justify-content-start">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-              <div>
-                <p class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">Lorem ipsum dolor
-                  sit amet
-                  consectetur adipisicing elit similique quae consequatur</p>
-              </div>
-            </div>
+        .timestamp {
+            font-size: 0.8rem;
+            color: #777;
+        }
 
-            <div class="d-flex justify-content-between">
-              <p class="small mb-1 text-muted">23 Jan 6:10 pm</p>
-              <p class="small mb-1">Johny Bullock</p>
-            </div>
-            <div class="d-flex flex-row justify-content-end mb-4 pt-1">
-              <div>
-                <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-warning">Dolorum quasi voluptates quas
-                  amet in
-                  repellendus perspiciatis fugiat</p>
-              </div>
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-            </div>
+        .input-box {
+            display: flex;
+            margin-top: 20px;
+        }
 
-          </div>
-          <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-            <div class="input-group mb-0">
-              <input type="text" class="form-control" placeholder="Type message"
-                aria-label="Recipient's username" aria-describedby="button-addon2" />
-              <button class="btn btn-warning" type="button" id="button-addon2" style="padding-top: .55rem;">
-                Button
-              </button>
+        #message-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #send-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+    </style>
+    <div class="chat-container">
+        <div class="chat">
+            <div class="message received">
+                <p>Hi there!</p>
+                <span class="timestamp">12:34 PM</span>
             </div>
-          </div>
+            <div class="message sent">
+                <p>Hello! How are you?</p>
+                <span class="timestamp">12:35 PM</span>
+            </div>
+            <!-- Add more messages here -->
         </div>
-
-      </div>
+        <div class="input-box">
+            <input type="text" id="message-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
     </div>
-
-  </div>
-</section>
-
 {% endblock %}

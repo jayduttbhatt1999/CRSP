@@ -54,6 +54,6 @@ urlpatterns = [
     path('add_reply/<int:comment_id>/', views.add_reply, name='add_reply'),
     # path('profile/<str:username>/personal_comment/', views.personal_comment, name='personal_comment'),
     # path('profile/<str:username>/personal_reply/', views.personal_reply, name='personal_reply'),
-    path('profile/message/', views.chatroom, name='chatroom'),
+    path('profile/<str:username>/chat', views.chat, name='chat_page'),
     # path('profile/message/<str:username>_')
 ]

@@ -554,7 +554,10 @@ def add_reply(request, comment_id):
 #         return redirect('profile')
 #     return redirect('profile')
 
-def chatroom(request):
-    # username = request.POST['username']
-    chat = Profile.objects.all()
-    return render(request, 'chat.html', {'chat': chat})
+def chat(request, username):
+    # Add any logic or data you want to pass to the template
+    context = {
+        'username': username,
+        # Add other context data if needed
+    }
+    return render(request, 'chat.html', context)

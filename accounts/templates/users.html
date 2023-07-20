@@ -91,7 +91,7 @@
                                         <a href="{{ profile }}" class="btn btn btn-outline-success stretched-link">Follow</a>
                                         <br>
                                         <br>
-                                        <a href="chat.html"
+                                        <a href="{% url 'chat_page' username=user.username %}"
                                            class="btn btn btn-outline-info stretched-link">Message</a>
                                     </div>
                                 </div>
