@@ -5,18 +5,15 @@ from django.db.models import Q
 # import username as username
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-<<<<<<< HEAD
 from accounts.forms import CustomUserCreationForm, CommentForm
 from django.contrib.auth.models import User
-=======
 
 import accounts
 from accounts.forms import CustomUserCreationForm
 from django.contrib.auth.models import User as username, User
->>>>>>> development
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_post_suggestion, Comment
+from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_post_suggestion, Comment, Notification
 from .models import get_suggested_connections
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
@@ -142,50 +139,28 @@ def logout_view(request):
         return redirect('home')
 
 
-def posts_view(request,post_id):
-    # print(post_id)
+def posts_view(request, post_id):
     try:
-<<<<<<< HEAD
         post = Post.objects.get(id=post_id)
         post.views += 1
         post.save()
 
-=======
-        posts = Post.objects.get(id=post_id)
-        posts.views += 1 # Increment the views count
-        posts.save()
->>>>>>> development
         if request.user.is_authenticated:
-            is_saved=SavedPost.objects.filter(user=request.user,post=post_id).exists()
+            is_saved = SavedPost.objects.filter(user=request.user, post=post_id).exists()
             postsuggestion = get_post_suggestion(request.user)
-<<<<<<< HEAD
 
         form = CommentForm()
-
-=======
-            # print(is_saved)
-        # if request.user.is_authenticated:
-        #     save_post = request.
->>>>>>> development
     except Post.DoesNotExist:
         return render(request, '404.html', status=404)
 
     context = {
-<<<<<<< HEAD
         'post': post,
-        'pdf_url': post.paper.url,
+        'pdf_url': post.paper.url if post.paper else '',  # Ensure paper URL is valid or use an empty string
         'is_saved': is_saved,
         'suggestedpost': postsuggestion,
-        'comment_form': form
-=======
-        'posts': posts,
-        'pdf_url': posts.paper.url,
-        'is_saved':is_saved,
-        'suggestedpost': postsuggestion
->>>>>>> development
+        'comment_form': form,
     }
     return render(request, 'posts.html', context)
-
 
 def save_paper(request, paper_id):
     return render(request, 'posts.html')
@@ -310,51 +285,51 @@ def profile_fill_view(request):
 
     return render(request, 'profile_fill.html', {'profile': profile})
 
-
 @login_required(login_url='login')
 def create_posts_view(request):
     if request.method == 'POST':
         # Get the form data from the request object
         title = request.POST['title']
         authors = request.POST['authors']
-        # keywords = request.POST['keywords']
         allow_download = 'allow_download' in request.POST
         abstract = request.POST['abstract']
-        published_on=request.POST.get('published_on')
+        published_on = request.POST.get('published_on')
+        on_project = 'on_project' in request.POST
+
         # Get the uploaded PDF file
+        pdf = None
+        if request.FILES.get('pdf'):
+            pdf_file = request.FILES['pdf']
+            fs = FileSystemStorage()
+            filename = fs.save(pdf_file.name, pdf_file)
+            pdf = fs.url(filename)
+
+        # Get the skills from the comma-separated input
         skills_input = request.POST.get('keywords')
-        skills_input=skills_input.lower()
+        skills_input = skills_input.lower()
         skills_list = skills_input.split(',')
 
-        skills = []
+        # Create a new Post object with the form data and user
+        post = Post(
+            title=title,
+            authors=authors,
+            allow_downloading=allow_download,
+            abstract=abstract,
+            paper=pdf,  # Assign the PDF URL to the paper attribute
+            uploaded_by=request.user,
+            published_on=published_on,
+            on_project=on_project
+        )
+        post.save()
+
+        # Add skills to the post
         for skill_name in skills_list:
             skill, created = Skill.objects.get_or_create(name=skill_name.strip())
-            skills.append(skill)
+            post.skills.add(skill)
 
-        if request.FILES.get('pdf'):
-            print("IN IF")
-            pdf = request.FILES['pdf']
-            fs = FileSystemStorage()
-            filename = fs.save(pdf.name, pdf)
-            uploaded_file_url = fs.url(filename)
-            pdf = uploaded_file_url
-            # print(uploaded_file_url)
-        if pdf:
-            # Create a new Post object with the form data and user
-            post = Post(
-                title=title,
-                authors=authors,
-                allow_downloading=allow_download,
-                abstract=abstract,
-                paper=pdf,
-                uploaded_by=request.user,
-                published_on=published_on
-            )
-            post.save()
+        # Redirect to the detail view of the new post
+        return redirect('posts', post_id=post.id)
 
-            post.skills.set(skills)
-            # Redirect to the detail view of the new post
-            return redirect('posts', post.id)
     # Render the form template if the request method is GET
     return render(request, 'create_posts.html')
 
@@ -495,6 +470,7 @@ def search(request):
 #         return render(request, 'posts.html', {'post': post1, 'get_comment': get_comment, 'comment_form': comment_form})
 #     return redirect('posts', post_id=post_id)
 #
+@login_required
 def add_comment(request, post_id):
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -512,7 +488,7 @@ def add_comment(request, post_id):
         return render(request, 'posts.html', {'post': post1, 'get_comment': get_comment, 'comment_form': comment_form})
     return redirect('posts', post_id=post_id)
 
-
+@login_required
 def add_reply(request, comment_id):
     if request.method == 'POST':
         reply_content = request.POST.get('reply_content')
@@ -523,3 +499,44 @@ def add_reply(request, comment_id):
 
         return redirect('posts', post_id=comment.post_id)
     return redirect('home')
+
+@login_required
+def on_project(request):
+    queryset = Post.objects.filter(on_project=True)
+    return render(request, 'on_going.html', {'posts': queryset})
+
+def express_interest(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.user.is_authenticated:
+        if post.interested_users.filter(id=request.user.id).exists():
+            return JsonResponse({'success': False})
+        else:
+            post.interested_users.add(request.user)
+            # Create and save a notification for the post owner
+            notification_message = f"User {request.user.username} has shown interest in your post: {post.title}."
+            notification = Notification(user=post.uploaded_by, message=notification_message)
+            notification.save()
+            return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False})
+
+
+
+def notifications_view(request):
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(user=request.user)
+        notifications_data = [
+            {
+                'message': notification.message,
+                'created_at': notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                'is_read': notification.is_read,
+            }
+            for notification in notifications
+        ]
+        return JsonResponse({'notifications': notifications_data})
+    else:
+        return JsonResponse({'notifications': []})
+
+
+

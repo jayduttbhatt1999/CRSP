@@ -175,25 +175,80 @@
 
         /* #012950f5 */
 
-        label[id*='important']::after {
-            content: "*";
-            color: red;
-        }
-         .notification-icon {
-        position: relative;
-    }
+    /*    label[id*='important']::after {*/
+    /*        content: "*";*/
+    /*        color: red;*/
+    /*    }*/
+    /*     .notification-icon {*/
+    /*    position: relative;*/
+    /*}*/
 
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        top: 30px; /* Adjust this value to position the dropdown as desired */
-        right: 0;
-        background-color: #f9f9f9;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1;
-        min-width: 200px; /* Adjust this value to set the minimum width of the dropdown */
-    }
+    /*.dropdown-content {*/
+    /*    display: none;*/
+    /*    position: absolute;*/
+    /*    top: 30px; !* Adjust this value to position the dropdown as desired *!*/
+    /*    right: 0;*/
+    /*    background-color: #f9f9f9;*/
+    /*    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+    /*    z-index: 1;*/
+    /*    min-width: 200px; !* Adjust this value to set the minimum width of the dropdown *!*/
+    /*}*/
 
-    .dropdown-content .notification-item {
-        padding: 8px 12px;
-    }
+    /*.dropdown-content .notification-item {*/
+    /*    padding: 8px 12px;*/
+    /*}*/
+
+
+
+ /* Styles for the notifications dropdown */
+.notification-icon {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+  z-index: 1;
+}
+
+.show {
+  display: block;
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.unread {
+  background-color: #ffe6e6; /* Light red background for unread notifications */
+}
+
+.read {
+  background-color: #d3f8d3; /* Light gray background for read notifications */
+}
+
+/* Optional styles to make the dropdown look nice with Bootstrap */
+.notification-icon a {
+  color: black;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}

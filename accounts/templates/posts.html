@@ -38,18 +38,18 @@
 
         {% if user.is_authenticated %}
            {% if is_saved %}
-  <a href="{% url 'unsave_post' posts.id %}" class="btn btn-danger" style="transition: 0.08s ease-in;
+            <a href="{% url 'unsave_post' post.id %}" class="btn btn-danger" style="transition: 0.08s ease-in;
     -o-transition: 0.08s ease-in;
     -ms-transition: 0.08s ease-in;
     -moz-transition: 0.08s ease-in;
     -webkit-transition: 0.08s ease-in;">Unsave</a>
-{% else %}
-  <a href="{% url 'save_post' posts.id %}" class="btn btn-success" style="transition: 0.08s ease-in;
+        {% else %}
+            <a href="{% url 'save_post' post.id %}" class="btn btn-success" style="transition: 0.08s ease-in;
     -o-transition: 0.08s ease-in;
     -ms-transition: 0.08s ease-in;
     -moz-transition: 0.08s ease-in;
     -webkit-transition: 0.08s ease-in;">Save</a>
-{% endif %}
+            {%endif %}
         {% endif %}
 {#        <a href="#" class="btn btn-success" style="transition: 0.08s ease-in;#}
 {#        -o-transition: 0.08s ease-in;#}

@@ -1,52 +1,24 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
-
-    <div class="container">
-        <h1>All the current users</h1>
-        <ul>
-            <form method="post" action="{% url 'search_publishers_' %}">
-                {% csrf_token %}
-                {#                    <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"#}
-                {#                           aria-label="Search">#}
-                <div class="input-group mb-3" style="max-width: 1000px;">
-
-                    <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"
-                           aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
-                    </div>
-                </div>
-            </form>
-        </ul>
-        <ul>
-
-            {% for profile in profile_list %}
-                <div class="card mb-3" style="max-width: 1000px;">
-                    <div class="row g-0">
-
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ profile.user.first_name.upper }} {{ profile.user.last_name.upper }} </h5>
-                                <p class="card-text">University - {{ profile.university }}</p>
-
-                                <p class="card-text">Department - {{ profile.department }}</p>
-                                <p class="card-text"><small class="text-muted">Last
-                                    seen {{ profile.user.last_login }}</small></p>
-                                <a href="{{ profile }}" class="btn btn-primary stretched-link">Go To Profile</a>
-                            </div>
-                        </div>
-                        <div class="col-md-4" >
-                            <img src="{{ profile.profile_pic }}" class="img-fluid rounded-start" alt="Not uploaded">
-                        </div>
-                    </div>
-                </div>
-
-            {% endfor %}
-        </ul>
-
-    </div>
-
-
+<div class="container">
+  <div class="row">
+    {% for profile in profile_list %}
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="{{ profile.profile_pic }}" class="card-img-top" alt="Not uploaded">
+          <div class="card-body">
+            <h5 class="card-title">{{ profile.user.first_name|upper }} {{ profile.user.last_name|upper }}</h5>
+            <p class="card-text">University - {{ profile.university }}</p>
+            <p class="card-text">Department - {{ profile.department }}</p>
+            <p class="card-text"><small class="text-muted">Last seen {{ profile.user.last_login }}</small></p>
+            <a href="{{ profile }}" class="btn btn-primary">Check Profile</a>
+          </div>
+        </div>
+      </div>
+      {% if forloop.counter|divisibleby:3 and not forloop.last %}
+        <div class="w-100"></div> <!-- This div clears the float and starts a new row -->
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

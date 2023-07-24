@@ -1,16 +1,28 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
+{#<div class="notification-icon">#}
+{#    <a href="#" onclick="fetchNotifications()">#}
+{#        <i class="fa fa-bell"></i>#}
+{#        {% if notification_count > 0 %}#}
+{#            <span class="badge badge-pill badge-danger">{{ notification_count }}</span>#}
+{#        {% endif %}#}
+{#    </a>#}
+{#    <div id="notification-dropdown" class="dropdown-content">#}
+{#        <div id="notification-dropdown-content">#}
+{#            <!-- The notifications will be displayed here -->#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
 <div class="container mt-3 mb-5">
     <div class="row">
         <div class="col-md-4">
             <div class="card">
                 {% if profile.profile_pic %}
                     <img src="{{ profile.profile_pic }}" class="card-img-top">
-                    {% else %}
+                {% else %}
                     <img src="https://img.freepik.com/premium-vector/accoun-vector-icon-with-long-shadow-white-illustration-isolated-blue-round-background-graphic-web-design_549897-771.jpg" class="card-img-top">
-                    {% endif %}
+                {% endif %}
 
                 <div class="card-body">
                     <h4 class="card-title">{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
@@ -19,18 +31,17 @@
                     <p class="card-text"><strong>Google Scholar:</strong> <a href="{{ profile.gscholar }}" target="_blank">{{ profile.gscholar }}</a></p>
 
                     <p class="card-text"><strong>Area of Interest:</strong>
-                        {% for skil in profile.get_skills %}
-                            {{ skil }},
+                        {% for skill in profile.get_skills %}
+                            {{ skill }},
                         {% endfor %}
                     </p>
                     {% if user.username != profile.user.username %}
                         {% if is_following %}
                             <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-danger">Unfollow</a>
                         {% else %}
-{#                            <a href="{% url 'follow_user' profile.user.i %}" class="btn btn-primary">Follow</a>#}
+                            <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-primary">Follow</a>
                         {% endif %}
                     {% endif %}
-
                 </div>
             </div>
         </div>
@@ -45,18 +56,54 @@
                         <div class="card mb-3">
                             <a href="{% url 'posts' post.id %}">
                                 <div class="card-header">{{ post.title }}</div>
-{#                                <div class="card-body">#}
-{#                                    <p class="card-text">{{ post.abstract }}</p>#}
-{#                            </div>#}
                             </a>
                         </div>
                     {% empty %}
                         <p>No posts yet!</p>
-                        
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+{#    <script>#}
+{#        function fetchNotifications() {#}
+{#    var dropdown = document.getElementById("notification-dropdown");#}
+{#    var content = document.getElementById("notification-dropdown-content");#}
+{##}
+{#    // Make an AJAX request to fetch notifications from the server#}
+{#    var xhr = new XMLHttpRequest();#}
+{#    xhr.open("GET", "{% url 'notifications' %}", true);#}
+{#    xhr.onreadystatechange = function () {#}
+{#        if (xhr.readyState === 4 && xhr.status === 200) {#}
+{#            var data = JSON.parse(xhr.responseText);#}
+{#            content.innerHTML = ""; // Clear any existing notifications#}
+{#            data.notifications.forEach(notification => {#}
+{#                var notificationItem = document.createElement("div");#}
+{#                notificationItem.classList.add("notification-item");#}
+{#                if (notification.is_read) {#}
+{#                    notificationItem.classList.add("read");#}
+{#                } else {#}
+{#                    notificationItem.classList.add("unread");#}
+{#                }#}
+{##}
+{#                var messageParagraph = document.createElement("p");#}
+{#                messageParagraph.textContent = notification.message;#}
+{##}
+{#                var createdParagraph = document.createElement("p");#}
+{#                createdParagraph.innerHTML = "<small>" + notification.created_at + "</small>";#}
+{##}
+{#                notificationItem.appendChild(messageParagraph);#}
+{#                notificationItem.appendChild(createdParagraph);#}
+{#                content.appendChild(notificationItem);#}
+{#            });#}
+{##}
+{#            // Show the dropdown after fetching and displaying the notifications#}
+{#            dropdown.classList.toggle("show");#}
+{#        }#}
+{#    };#}
+{#    xhr.send();#}
+{#}#}
+{#    </script>#}
+
 {% endblock %}

@@ -62,14 +62,16 @@ class Post(models.Model):
     published_on = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
     views = models.IntegerField(default=0)
+    on_project = models.BooleanField(default=False)
+    interested_users = models.ManyToManyField(User, related_name='interested_posts', blank=True)
 
-    def __str__(self):
+def __str__(self):
         return self.title
 
-    def get_skills(self):
-            return [skill.name for skill in self.skills.all()]
+def get_skills(self):
+        return [skill.name for skill in self.skills.all()]
 
-    def is_saved_by(self,user):
+def is_saved_by(self,user):
         return self.savedpost_set.filter(uploaded_by=user).exists()
 
 class Connection(models.Model):
@@ -131,3 +133,13 @@ class Comment(models.Model):
         return self.body
 
         unique_together = ('user', 'post')
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False, blank=True)
+
+    def __str__(self):
+        return self.message
