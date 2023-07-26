@@ -10,13 +10,13 @@ import os
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 from channels_redis import RedisChannelLayer
-from CRSP.routing import websocket_urlpatterns  # Import websocket_urlpatterns
+from CRSP.routing import websocket_urlpatterns  # Import the correct variable from CRSP.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CRSP.settings')
 
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),
     'websocket': URLRouter(
-        websocket_urlpatterns  # Include websocket_urlpatterns here
+        websocket_urlpatterns  # Use the correct variable here
     ),
 })

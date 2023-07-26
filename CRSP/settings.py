@@ -73,7 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CRSP.wsgi.application'
 
-ASGI_APPLICATION = 'CRSP.routing.application'
+ASGI_APPLICATION = 'CRSP.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
