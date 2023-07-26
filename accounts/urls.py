@@ -1,6 +1,8 @@
 from django.urls import path
 from accounts import views
+from . import consumers
 
+# app_name = 'accounts'
 urlpatterns = [
     path('login/', views.login_view, name='login_'),  # With /
     path('login', views.login_view, name='login'),  # Without /
@@ -57,5 +59,12 @@ urlpatterns = [
     path('express-interest/<int:post_id>/', views.express_interest, name='express_interest'),
     # path('update_notification_count/', views.update_notification_count, name='update_notification_count'),
     path('notifications/', views.notifications_view, name='notifications'),
+    # path('profile/<str:username>/chat', views.chat, name='chat'),  # without/
+    path('private_chat/<str:recipient_username>/', views.private_chat, name='private_chat'),
+    path('get_chat_messages/<str:recipient_username>/', views.get_chat_messages, name='get_chat_messages'),
+
 ]
 
+websocket_urlpatterns = [
+    path('ws/chat/', consumers.ChatConsumer.as_asgi()),
+]

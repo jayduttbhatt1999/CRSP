@@ -1,24 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-  <div class="row">
-    {% for profile in profile_list %}
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <img src="{{ profile.profile_pic }}" class="card-img-top" alt="Not uploaded">
-          <div class="card-body">
-            <h5 class="card-title">{{ profile.user.first_name|upper }} {{ profile.user.last_name|upper }}</h5>
-            <p class="card-text">University - {{ profile.university }}</p>
-            <p class="card-text">Department - {{ profile.department }}</p>
-            <p class="card-text"><small class="text-muted">Last seen {{ profile.user.last_login }}</small></p>
-            <a href="{{ profile }}" class="btn btn-primary">Check Profile</a>
-          </div>
+    <div class="container">
+        <div class="row">
+            {% for profile in profile_list %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="{{ profile.profile_pic }}" class="card-img-top" alt="Not uploaded">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ profile.user.first_name|upper }} {{ profile.user.last_name|upper }}</h5>
+                            <p class="card-text">University - {{ profile.university }}</p>
+                            <p class="card-text">Department - {{ profile.department }}</p>
+                            <p class="card-text"><small class="text-muted">Last
+                                seen {{ profile.user.last_login }}</small></p>
+                            <a href="{{ profile }}" class="btn btn-primary">Check Profile</a>
+
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                    <div class="w-100"></div> <!-- This div clears the float and starts a new row -->
+                {% endif %}
+            {% endfor %}
         </div>
-      </div>
-      {% if forloop.counter|divisibleby:3 and not forloop.last %}
-        <div class="w-100"></div> <!-- This div clears the float and starts a new row -->
-      {% endif %}
-    {% endfor %}
-  </div>
-</div>
+    </div>
 {% endblock %}
