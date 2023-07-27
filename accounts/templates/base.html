@@ -240,10 +240,11 @@
     var dropdown = document.getElementById("notification-dropdown");
     var content = document.getElementById("notification-dropdown-content");
 
-    // Make an AJAX request to fetch notifications from the server
+    // Making an AJAX request to fetch notifications from the server
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "{% url 'notifications' %}", true);
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange ationItem.classList.add("read");
+                } else {= function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var data = JSON.parse(xhr.responseText);
             content.innerHTML = ""; // Clear any existing notifications
@@ -251,8 +252,7 @@
                 var notificationItem = document.createElement("div");
                 notificationItem.classList.add("notification-item");
                 if (notification.is_read) {
-                    notificationItem.classList.add("read");
-                } else {
+                    notific
                     notificationItem.classList.add("unread");
                 }
 

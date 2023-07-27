@@ -96,7 +96,7 @@ def get_suggested_connections(user):
         if u_profile.skills.filter(name__in=skills).exists():
             suggestions.append(u)
 
-    print(suggestions)
+    # print(suggestions)
     return suggestions
 
 def get_post_suggestion(user):

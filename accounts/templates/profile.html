@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<head>
+    <style>
+        .card{
+            border: none !important;
+            background-color: white;
+        }
+    </style>
+</head>
 {#<div class="notification-icon">#}
 {#    <a href="#" onclick="fetchNotifications()">#}
 {#        <i class="fa fa-bell"></i>#}
@@ -17,45 +24,47 @@
 <div class="container mt-3 mb-5">
     <div class="row">
         <div class="col-md-4">
-            <div class="card">
+            <div class="card" style="border: none">
                 {% if profile.profile_pic %}
-                    <img src="{{ profile.profile_pic }}" class="card-img-top">
+                    <img src="{{ profile.profile_pic }}" class="rounded-circle mt-3" style="width: 60%; height: 60%; margin-left: 20%;">
                 {% else %}
                     <img src="https://img.freepik.com/premium-vector/accoun-vector-icon-with-long-shadow-white-illustration-isolated-blue-round-background-graphic-web-design_549897-771.jpg" class="card-img-top">
                 {% endif %}
 
                 <div class="card-body">
-                    <h4 class="card-title">{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
-                    <p class="card-text"><strong>Department:</strong> {{ profile.department }}</p>
-                    <p class="card-text"><strong>University:</strong> {{ profile.university }}</p>
-                    <p class="card-text"><strong>Google Scholar:</strong> <a href="{{ profile.gscholar }}" target="_blank">{{ profile.gscholar }}</a></p>
+                    <h4 class="card-title text-center">{{ profile.user.username}}</h4>
+{#                    <p class="card-text"><strong>Department:</strong> {{ profile.department }}</p>#}
+                    <p class="card-text text-center"><strong>{{ profile.university }}</strong></p>
+                    <p class="card-text text-center"><a href="{{ profile.gscholar }}" target="_blank">{{ profile.gscholar }}</a></p>
 
-                    <p class="card-text"><strong>Area of Interest:</strong>
+                    <p class="card-text"><strong>Interests:</strong>
                         {% for skill in profile.get_skills %}
-                            {{ skill }},
+                            {{ skill }}
                         {% endfor %}
                     </p>
                     {% if user.username != profile.user.username %}
+                        <div class="d-flex justify-content-center">
                         {% if is_following %}
                             <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-danger">Unfollow</a>
                         {% else %}
                             <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-primary">Follow</a>
                         {% endif %}
+                        </div>
                     {% endif %}
                 </div>
             </div>
         </div>
 
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header text-white" style="background-color: #4bb8c2;">
+            <div class="card" style="border: none;">
+                <div class="card-header text-white" style="background-color: #4bb8c2; border: none">
                     <h5>My Posts</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="border: none;">
                     {% for post in posts %}
-                        <div class="card mb-3">
-                            <a href="{% url 'posts' post.id %}">
-                                <div class="card-header">{{ post.title }}</div>
+                        <div class="card mb-3" style="border: none;">
+                            <a href="{% url 'posts' post.id %}" style="color: black">
+                                <div class="card-header" style="border-bottom: none;">{{ post.title }}</div>
                             </a>
                         </div>
                     {% empty %}

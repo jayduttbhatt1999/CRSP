@@ -1,28 +1,52 @@
 {% extends 'base1.html' %}
 {% block content %}
-    <div class="container" style="margin-top: 30px;">
+    <style>
+        .card-body{
+            color: black;
+        }
+        .card-footer{
+            background-color: #4bb8c2;
+        }
+        .text-muted{
+            color: black !important;
+        }
+    </style>
+
+     <div class="container ml-5 mt-5">
         <div class="row">
             <div class="col-md-9">
-                <h2>Recently Published</h2>
+                <h2 style="color: #012950f5"><i class="fa fa-book ml-3"></i>&nbsp;&nbsp;Recently Published</h2>
                 {% for post in posts %}
                     {#          <a href="{% url 'posts/{{ post.pid }}' %}">#}
-                    <a href="{% url 'posts' post.id %}">
-                        <div class="card mb-3">
+
+                        <div class="card md-6 pb-10" style="border: none">
                             <div class="card-body">
-                                <h5 class="card-title">{{ post.title }}</h5>
+                                <a href="{% url 'posts' post.id %}" style="color: black"><h5 class="card-title">{{ post.title }}</h5> </a>
 {#                                <p class="card-text">{{ post.abstract }}</p>#}
+                                <p class="card-text"><i class="fa fa-user-circle-o" aria-hidden="true" style="color: white; background-color: black"></i>&nbsp;&nbsp;{{ post.uploaded_by.username }}</p>
                                 <p class="card-text">{{ post.keywords }}</p>
                             </div>
                             <div class="card-footer text-muted">Posted on {{ post.published_on }}</div>
                         </div>
-                    </a>
+
                 {% empty %}
+                    <div class="col-md-6">
                     <p>Your connections have not posted anything!</p>
+                    </div>
+{#                    <nav class="navbar navbar-light">#}
+{#                        <form class="form-inline" method="post" action="{% url 'search_publishers_' %}">#}
+{#                            {% csrf_token %}#}
+{#                            <input class="form-control mr-sm-2" type="search" name="searched" placeholder="Find Uwin Publishers" aria-label="Search">#}
+{#                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>#}
+{#                        </form>#}
+{#                    </nav>#}
+
                 {% endfor %}
+
             </div>
 
-
             <div class="col-md-3">
+            <div class="side-container"></div>
                 <div class="card">
                     <div class="card-header">Saved Posts</div>
 
@@ -32,10 +56,10 @@
                                 <li class="list-group-item"><a
                                         href="{% url 'posts' savedpost.post.id %}">{{ savedpost.post.title }}</a></li>
                             {% endfor %}
-                            </ul>
                         {% else %}
-                            <p> No suggested connections at this time.</p>
+                            <p class="m-3"> No suggested connections at this time.</p>
                         {% endif %}
+                    </ul>
                 </div>
                 <div class="card mt-4">
                     <div class="card-header">Suggestions to Read</div>
@@ -46,10 +70,10 @@
                                 <li class="list-group-item"><a
                                         href="{% url 'posts' suggested.id %}">{{ suggested.title }}</a></li>
                             {% endfor %}
-                            </ul>
                         {% else %}
-                            <p> No suggested connections at this time.</p>
+                            <p class="m-3"> No suggested connections at this time.</p>
                         {% endif %}
+                    </ul>
                 </div>
                 <div class="card mt-4">
                     <div class="card-header">People to Connect</div>
@@ -61,10 +85,13 @@
                             {% endfor %}
                         </ul>
                     {% else %}
-                        <p> No suggested connections at this time.</p>
+                        <p class="m-3"> No suggested connections at this time.</p>
                     {% endif %}
                 </div>
             </div>
+        </div>
+     </div>
+    </div>
             <a href="{% url 'create_posts' %}"
                class="btn btn-primary rounded-circle btn-lg d-flex justify-content-center align-items-center fixed-bottom float-right m-3 "
                style="width: 60px; height: 60px; background-color: #4bb8c2; border-color: #4bb8c2; transition: 0.08s ease-in;
@@ -74,6 +101,7 @@
   -webkit-transition: 0.08s ease-in;">
                 <span class="fa fa-plus"></span>
             </a>
+        </div>
         </div>
     </div>
 {% endblock %}
