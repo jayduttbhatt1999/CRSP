@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h3>Private Chat with {{ recipient_username }}</h3>
+                <div id="chat-box" class="border p-3" style="height: 300px; overflow-y: scroll;">
+                    <!-- Messages will be displayed here -->
+                </div>
+                <div class="input-group mt-3">
+                    <input type="text" id="message-input" class="form-control" placeholder="Type your message...">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" id="send-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+        // WebSocket connection
+
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/private_chat/{{ recipient_username }}/');
+        
+        // Function to append new messages to the chat box
+        function appendMessage(message, isSelf) {
+            const chatBox = document.getElementById('chat-box');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message' + (isSelf ? ' self' : '');
+            messageDiv.innerHTML = '<strong>' + (isSelf ? 'You' : '{{ recipient_username }}') + ': </strong>' + message;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+        }
+        
+        // Function to send a message
+        function sendMessage(message) {
+            socket.send(JSON.stringify({
+                'message': message
+            }));
+        }
+
+        // Event listener for the send button
+        document.getElementById('send-btn').addEventListener('click', function() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+            if (message) {
+                sendMessage(message);
+                appendMessage(message, true); // Append the message to the chat box (self message)
+                messageInput.value = '';
+            }
+        });
+
+        // Event listener for the Enter key to send message
+        document.getElementById('message-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const messageInput = document.getElementById('message-input');
+                const message = messageInput.value.trim();
+                if (message) {
+                    sendMessage(message);
+                    appendMessage(message, true); // Append the message to the chat box (self message)
+                    messageInput.value = '';
+                }
+            }
+        });
+
+        // Event listener for receiving messages from the WebSocket
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            appendMessage(data.message, false); // Append the received message to the chat box (other user message)
+        };
+    </script>
+{% endblock %}
