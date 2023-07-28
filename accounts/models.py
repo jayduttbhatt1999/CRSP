@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
@@ -64,14 +62,16 @@ class Post(models.Model):
     published_on = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
     views = models.IntegerField(default=0)
+    on_project = models.BooleanField(default=False)
+    interested_users = models.ManyToManyField(User, related_name='interested_posts', blank=True)
 
-    def __str__(self):
+def __str__(self):
         return self.title
 
-    def get_skills(self):
-            return [skill.name for skill in self.skills.all()]
+def get_skills(self):
+        return [skill.name for skill in self.skills.all()]
 
-    def is_saved_by(self,user):
+def is_saved_by(self,user):
         return self.savedpost_set.filter(uploaded_by=user).exists()
 
 class Connection(models.Model):
@@ -96,7 +96,7 @@ def get_suggested_connections(user):
         if u_profile.skills.filter(name__in=skills).exists():
             suggestions.append(u)
 
-    print(suggestions)
+    # print(suggestions)
     return suggestions
 
 def get_post_suggestion(user):
@@ -135,11 +135,11 @@ class Comment(models.Model):
         unique_together = ('user', 'post')
 
 
-class Chatroom(models.Model):
-    name = models.ForeignKey(User, on_delete=models.CASCADE)
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False, blank=True)
 
-class Message(models.Model):
-    value = models.CharField(max_length=100000)
-    date = models.DateTimeField(default=datetime.now, blank=True)
-    user = models.CharField(max_length=100000)
-    room = models.CharField(max_length=100000)
+    def __str__(self):
+        return self.message

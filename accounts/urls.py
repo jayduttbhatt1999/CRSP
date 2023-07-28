@@ -34,10 +34,13 @@ urlpatterns = [
 
     path('follow_user/<str:username>', views.follow_user, name='follow_user'),  # without/
     path('follow_user/<str:username>/', views.follow_user, name='follow_user_'),  # with/
+# path('follow_user/<str:username>/', views.follow_user, name='follow_user'),
+
 
     path('save_post/<int:post_id>/', views.save_post, name='save_post_'),
     path('unsave_post/<int:post_id>/', views.unsave_post, name='unsave_post_'),
-    path('save_post/<int:post_id>', views.save_post, name='save_post'),
+    path('save_post/<int:post_id>/', views.save_post, name='save_post'),
+    # path('save_post/<int:post_id>', views.save_post, name='save_post'),
     path('unsave_post/<int:post_id>', views.unsave_post, name='unsave_post'),
 
     path('pdf_download/<int:post_id>/', views.pdf_download, name='pdf_download_'),
@@ -52,8 +55,9 @@ urlpatterns = [
     path('add_comment/<int:post_id>/', views.add_comment, name='add_comment'),
     # path('add_reply/<int:comment_id>/', views.reply, name='add_reply'),
     path('add_reply/<int:comment_id>/', views.add_reply, name='add_reply'),
-    # path('profile/<str:username>/personal_comment/', views.personal_comment, name='personal_comment'),
-    # path('profile/<str:username>/personal_reply/', views.personal_reply, name='personal_reply'),
-    path('profile/<str:username>/chat', views.chat, name='chat_page'),
-    # path('profile/message/<str:username>_')
+    path('on_project/', views.on_project, name='on_project'),
+    path('express-interest/<int:post_id>/', views.express_interest, name='express_interest'),
+    # path('update_notification_count/', views.update_notification_count, name='update_notification_count'),
+    path('notifications/', views.notifications_view, name='notifications'),
 ]
+

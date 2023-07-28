@@ -24,7 +24,7 @@ admin.site.index_title = "Welcome to University of Windsor Research Sharing Plat
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('admin', admin.site.urls),
+    # path('admin', admin.site.urls),
     path('account/',include('accounts.urls')),
     path('',include('accounts.urls')),
     path('keneel/',include('keneel.urls')),

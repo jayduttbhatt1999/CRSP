@@ -1,106 +1,352 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-    <style>
-        body {
-            margin-top: 20px;
-            background: #FAFAFA;
-        }
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-        /*==================================================
-          Nearby People CSS
-          ==================================================*/
+        <style>
+            body{
+              font-family: 'Ubuntu', sans-serif !important;
+            }
+.carousel {
+	margin: 50px auto;
+	padding: 0 70px;
+}
+.carousel .item {
+	color: #747d89;
+	min-height: 325px;
+    text-align: center;
+	overflow: hidden;
+}
+.carousel .thumb-wrapper {
+	padding: 25px 15px;
+	background: #fff;
+	border-radius: 6px;
+	text-align: center;
+	position: relative;
+	box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}
+.carousel .item .img-box {
+	height: 120px;
+	margin-bottom: 20px;
+	width: 100%;
+	position: relative;
+}
+.carousel .item img {
+	max-width: 100%;
+	max-height: 100%;
+	display: inline-block;
+	position: absolute;
+	bottom: 0;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+}
+.carousel .item h4 {
+	font-size: 18px;
+}
+.carousel .item h4, .carousel .item p, .carousel .item ul {
+	margin-bottom: 5px;
+}
+.profile{
+    border-radius: 15px;
+    background: transparent; color: #4bb8c2;
+    border-width: 2px; border-style:
+        solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+    -o-transition: 0.08s ease-in;
+    -ms-transition: 0.08s ease-in;
+    -moz-transition: 0.08s ease-in;
+    -webkit-transition: 0.08s ease-in;
+}
 
-        .people-nearby .google-maps {
-            background: #f8f8f8;
-            border-radius: 4px;
-            border: 1px solid #f1f2f2;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .people-nearby .google-maps .map {
-            height: 300px;
-            width: 100%;
-            border: none;
-        }
-
-        .people-nearby .nearby-user {
-            padding: 20px 0;
-            border-top: 1px solid #f1f2f2;
-            border-bottom: 1px solid #f1f2f2;
-            margin-bottom: 20px;
-        }
-
-        img.profile-photo-lg {
-            height: 150px;
-            width: 150px;
-            border-radius: 50%;
-        }
-    </style>
-
+.carousel .carousel-control {
+	height: 44px;
+	width: 40px;
+	background: #4bb8c2;
+    margin: auto 0;
+    border-radius: 4px;
+	opacity: 0.8;
+}
+.carousel .carousel-control:hover {
+	background: #4bb8c2;
+	opacity: 1;
+}
+.carousel .carousel-control i {
+    font-size: 36px;
+    position: absolute;
+    top: 50%;
+    display: inline-block;
+    margin: -19px 0 0 0;
+    z-index: 5;
+    left: 0;
+    right: 0;
+    color: #fff;
+	text-shadow: none;
+    font-weight: bold;
+}
+.carousel .item-price {
+	font-size: 13px;
+	padding: 2px 0;
+}
+.carousel .item-price strike {
+	opacity: 0.7;
+	margin-right: 5px;
+}
+.carousel .carousel-control.left i {
+	margin-left: -2px;
+}
+.carousel .carousel-control.right i {
+	margin-right: -4px;
+}
+.carousel .carousel-indicators {
+	bottom: -50px;
+}
+.carousel-indicators li, .carousel-indicators li.active {
+	width: 10px;
+	height: 10px;
+	margin: 4px;
+	border-radius: 50%;
+	border: none;
+}
+.carousel-indicators li {
+	background: rgba(0, 0, 0, 0.2);
+}
+.carousel-indicators li.active {
+	background: rgba(0, 0, 0, 0.6);
+}
+.carousel .wish-icon {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	z-index: 99;
+	cursor: pointer;
+	font-size: 16px;
+	color: #abb0b8;
+}
+.carousel .wish-icon .fa-heart {
+	color: #ff6161;
+}
+.row{
+    margin-top: 5% !important;
+}
+.carousel {
+    margin-top: 0 !important;
+}
+.card-text{
+    color: black !important;
+}
+.text-muted{
+    color: black !important;
+}
+        </style>
+    <link rel="stylesheet" href = "{% static 'css/user.css' %}">
+    </head>
+<nav class="navbar navbar-expand-md navbar-dark navbar-fixed-top sticky-top">
     <div class="container">
+        <!-- <img src="https://www.uwindsor.ca/sites/default/files/uwindsor-new-logo-iphone_320x480_2.jpg" width="30" height="30" style="display: inline-block;" alt="uwin"> -->
+        <a class="navbar-brand" href="{% url 'index' %}">UWinCRSP</a>
 
-        {#        <h1>All the current users</h1>#}
-        <br>
-        <br>
-        {#        <ul>#}
-        <form method="post" action="{% url 'search_publishers_' %}">
-            {% csrf_token %}
-            <div class="input-group">
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link custom-color" href="{% url 'aboutUs' %}">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-color" href="#team">Our Team</a>
+                    </li>
+            </ul>&nbsp;&nbsp;
+            <form method="post" action="#">
+                {% csrf_token %}
+                {#                    <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"#}
+                {#                           aria-label="Search">#}
+                <div class="input-group mb-3 mt-3" style="width: 250px;">
 
-                <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"
-                       aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+                    <input class="form-control" type="search" name="searched" placeholder="Search"
+                           aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i> </button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+    </div>
+</nav>
 
-        {% for profile in profile_list %}
-            <div class="container">
-                {#                <div class="row">#}
-                <div class="row">
-                    <div class="col-md-10">
-                        <div class="people-nearby">
-                            <div class="nearby-user">
+
+<nav class="navbar navbar-expand-md navbar-dark navbar-fixed-top" style="background-color: white; margin-top: 4.8% ">
+    <div class="container">
+        <!-- <img src="https://www.uwindsor.ca/sites/default/files/uwindsor-new-logo-iphone_320x480_2.jpg" width="30" height="30" style="display: inline-block;" alt="uwin"> -->
+{#        <a class="navbar-brand" href="{% url 'index' %}" style="font-family: 'Righteous', serif;">UWinCRSP</a>#}
+
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+
+                {% if user.is_authenticated %}
+                     <li class="nav-item">
+                         <a class="nav-link" id="hover-underline-animation" href="{% url 'index' %}">Home</a>
+                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile_' %}">Publishers</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'on_project' %}">On Going Projects</a>
+                    </li>&nbsp;
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> {{ user.username }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </li>
+                    <div class="notification-icon">
+                    <a href="#" onclick="fetchNotifications()">
+                        <i class="fa fa-bell mt-3"></i>
+                        {% if notification_count > 0 %}
+                            <span class="badge badge-pill badge-danger">{{ notification_count }}</span>
+                        {% endif %}
+                    </a>
+                    <div id="notification-dropdown" class="dropdown-content">
+                        <div id="notification-dropdown-content">
+                        </div>
+                    </div>
+                </div>&nbsp;&nbsp;
+                <form method="post" action="{% url 'search_publishers_' %}">
+                {% csrf_token %}
+                    <div class="input-group mb-3 mt-2" style="width: 220px;">
+                        <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"
+                               aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" id="hover-underline-animation" href="{% url 'index' %}">Home</a>
+                    </li>
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" id="hover-underline-animation" href="{% url 'aboutUs' %}"#}
+{#                           style="color: azure; font-family: 'Righteous', serif;">About Us</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" id="hover-underline-animation" href="#team"#}
+{#                           style="color: azure; font-family: 'Righteous', serif;">Our Team</a>#}
+{#                    </li>#}
+                    <li class="nav-item">
+                        <a class="nav-link" id="hover-underline-animation" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="hover-underline-animation" href="{% url 'registration' %}">Register</a>
+                    </li>
+
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-md-12">
+            <h2 style="color: #012950f5" class="text-center">Publishers</h2>
+            <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
+                <!-- Carousel indicators -->
+                <ol class="carousel-indicators">
+                    {% for profile in profile_list %}
+                        <li data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
+                    {% endfor %}
+                </ol>
+                <div class="carousel-inner">
+                    {% for profile in profile_list %}
+                        {% if forloop.counter0|divisibleby:"4" %}
+                            <div class="item {% if forloop.first %}active{% endif %}">
                                 <div class="row">
-                                    <div class="col-md-3 col-sm-3">
-                                        {% if profile.profile_pic %}
-                                            <img src="{{ profile.profile_pic }}" class="profile-photo-lg"
-                                                 alt="user">
-                                        {% else %}
-                                            <img src="https://img.freepik.com/premium-vector/accoun-vector-icon-with-long-shadow-white-illustration-isolated-blue-round-background-graphic-web-design_549897-771.jpg"
-                                                 class="card-img-top" alt="Profile Pic">
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-md-7 col-sm-7">
-                                        <h5 name="username" ><a href="{{ profile }}"
-                                               class="profile-link">{{ profile.user.first_name.upper }} {{ profile.user.last_name.upper }} </a>
-                                        </h5>
-                                        <p class="card-text">Department - {{ profile.department }}</p>
-                                        <p class="text-muted">University - {{ profile.university }}</p>
-                                        <p class="card-text"><small class="text-muted">Last
-                                            seen {{ profile.user.last_login }}</small></p>
-                                    </div>
-                                    <div class="col">
-                                        <a href="{{ profile }}" class="btn btn-outline-primary stretched-link">Go To
-                                            Profile</a>
-                                        <br>
-                                        <br>
-                                        <a href="{{ profile }}" class="btn btn btn-outline-success stretched-link">Follow</a>
-                                        <br>
-                                        <br>
-                                        <a href="{% url 'chat_page' username=user.username %}"
-                                           class="btn btn btn-outline-info stretched-link">Message</a>
-                                    </div>
+                        {% endif %}
+                        <div class="col-sm-3">
+                            <div class="thumb-wrapper">
+                                <div class="img-box">
+                                    <img src="{{ profile.profile_pic }}" class="rounded-circle" alt="Not uploaded">
+                                </div>
+                                <div class="thumb-content">
+                                    <p class="card-text text-center"><strong>{{ profile.user.first_name }} {{ profile.user.last_name }}</strong></p>
+{#                                    <p class="card-text text-center">University - {{ profile.university }}</p>#}
+                                    <p class="card-text text-center">{{ profile.department }}</p>
+                                    <p class="card-text text-center"><small class="text-muted">Last seen {{ profile.user.last_login }}</small></p>
+                                    <a href="{{ profile }}" class="btn btn-primary profile mt-2">Check Profile</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        {% if forloop.counter0|add:"1"|divisibleby:"4" or forloop.last %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
-            </div>
 
-        {% endfor %}
+                <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <a class="carousel-control right" href="#myCarousel" data-slide="next">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+        </div>
     </div>
+</div>
+
+
+{#<div class="container">#}
+{#  <div class="row">#}
+{#    {% for profile in profile_list %}#}
+{#      <div class="col-md-4">#}
+{#        <div class="card mb-4">#}
+{#          <img src="{{ profile.profile_pic }}" class="card-img-top" alt="Not uploaded">#}
+{#          <div class="card-body">#}
+{#            <h5 class="card-title">{{ profile.user.first_name|upper }} {{ profile.user.last_name|upper }}</h5>#}
+{#            <p class="card-text">University - {{ profile.university }}</p>#}
+{#            <p class="card-text">Department - {{ profile.department }}</p>#}
+{#            <p class="card-text"><small class="text-muted">Last seen {{ profile.user.last_login }}</small></p>#}
+{#            <a href="{{ profile }}" class="btn btn-primary">Check Profile</a>#}
+{#          </div>#}
+{#        </div>#}
+{#      </div>#}
+{#    {% endfor %}#}
+{#  </div>#}
+{#</div>#}
+    <script>
+	$(document).ready(function(){
+		$(".wish-icon i").click(function(){
+			$(this).toggleClass("fa-heart fa-heart-o");
+		});
+	});
+</script>
 {% endblock %}

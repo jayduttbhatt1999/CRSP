@@ -2,31 +2,82 @@
 {% block content %}
 
    {% if search_result %}
-        <h3 class="mt-3 text-center">Topic:&nbsp;<a href="{% url 'post_search' %}?query={{ query|urlencode }}" style="text-decoration: none; color: black">{{ query }}</a></h3>
-        <ol class="row">
-            {% for post in search_result %}
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card h-100 mt-3">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ post.title }}</h5>
-                            <p class="card-text text-justify">{{ post.abstract | truncatechars:100 }}</p>
-{#                            <a href="{% url 'posts' post.id %}" class="btn btn-primary">Read More</a>#}
-                            {% if user.is_authenticated %}
+       <div class="container ml-5 mt-5">
+          <div class="row">
+              <div class="col-md-9">
+                    <h2 style="color: #012950f5" class="text-center"><i class="fa fa-book ml-3"></i>Topic:&nbsp;<a href="{% url 'post_search' %}?query={{ query|urlencode }}" style="text-decoration: none; color: black">{{ query }}</a></h2>
+                    {% for post in search_result %}
+                        <div class="card md-6 pb-10" style="border: none">
+                            <div class="card-body">
+                                 <h5 class="card-title">{{ post.title }}</h5>
+{#                            <p class="card-text text-justify">{{ post.abstract | truncatechars:100 }}</p>#}
+                                  <p class="card-text"><i class="fa fa-user-circle-o" aria-hidden="true" style="color: white; background-color: black"></i>&nbsp;&nbsp;{{ post.uploaded_by.username }}&nbsp; &nbsp;
+                                 {% if user.is_authenticated %}
                                 <a href="{% url 'posts' post.id %}" class="btn btn-primary">Read More</a>
                             {% else %}
                                  <a href="{% url 'login' %}?next={% url 'posts' post.id %}" class="btn btn-primary">Read More</a>
                             {% endif %}
-
+                            </div>
+                        </p>
+                                <div class="card-footer text-muted">Posted on {{ post.published_on }}</div>
                         </div>
-                    </div>
-                </div>
-                {% if forloop.counter|divisibleby:4 and not forloop.last %}
-                    <div class="w-100"></div>
-                {% endif %}
-            {% endfor %}
-        </ol>
-    {% else %}
+                    {% endfor %}
+              </div>
+                      {% else %}
         <p>No results found.</p>
     {% endif %}
+          </div>
+       </div>
+{#        <h3 class="mt-3 text-center">Topic:&nbsp;<a href="{% url 'post_search' %}?query={{ query|urlencode }}" style="text-decoration: none; color: black">{{ query }}</a></h3>#}
+{#        <ol class="row">#}
+{#            {% for post in search_result %}#}
+{#                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">#}
+{#                    <div class="card h-100 mt-3">#}
+{#                        <div class="card-body">#}
+{#                            <h5 class="card-title">{{ post.title }}</h5>#}
+{#                            <p class="card-text text-justify">{{ post.abstract | truncatechars:100 }}</p>#}
+{#                            <a href="{% url 'posts' post.id %}" class="btn btn-primary">Read More</a>#}
+{#                            {% if user.is_authenticated %}#}
+{#                                <a href="{% url 'posts' post.id %}" class="btn btn-primary">Read More</a>#}
+{#                            {% else %}#}
+{#                                 <a href="{% url 'login' %}?next={% url 'posts' post.id %}" class="btn btn-primary">Read More</a>#}
+{#                            {% endif %}#}
+{##}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                {% if forloop.counter|divisibleby:4 and not forloop.last %}#}
+{#                    <div class="w-100"></div>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#        </ol>#}
+{#    {% else %}#}
+{#        <p>No results found.</p>#}
+{#    {% endif %}#}
+{##}
+{##}
+{##}
+{#      <div class="container ml-5 mt-5">#}
+{#        <div class="row">#}
+{#            <div class="col-md-9">#}
+{#                <h2 style="color: #012950f5"><i class="fa fa-book ml-3"></i>&nbsp;&nbsp;Recently Published</h2>#}
+{#                {% for post in posts %}#}
+                    {#          <a href="{% url 'posts/{{ post.pid }}' %}">#}
+{##}
+{#                        <div class="card md-6 pb-10" style="border: none">#}
+{#                            <div class="card-body">#}
+{#                                <a href="{% url 'posts' post.id %}" style="color: black"><h5 class="card-title">{{ post.title }}</h5> </a>#}
+{#                                <p class="card-text">{{ post.abstract }}</p>#}
+{#                                <p class="card-text"><i class="fa fa-user-circle-o" aria-hidden="true" style="color: white; background-color: black"></i>&nbsp;&nbsp;{{ post.uploaded_by.username }}</p>#}
+{#                                <p class="card-text">{{ post.keywords }}</p>#}
+{#                            </div>#}
+{#                            <div class="card-footer text-muted">Posted on {{ post.published_on }}</div>#}
+{#                        </div>#}
+{##}
+{#                {% empty %}#}
+{#                    <div class="col-md-6">#}
+{#                    <p>Your connections have not posted anything!</p>#}
+{#                    </div>#}
+
 {% endblock %}
 
