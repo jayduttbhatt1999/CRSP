@@ -145,14 +145,25 @@ class Notification(models.Model):
         return self.message
 
 
+# class ResearchCollaborationPost(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     research_proposal = models.TextField()
+#     required_expertise = models.CharField(max_length=200)
+#     collaboration_format = models.CharField(max_length=100)
+#     contact_info = models.CharField(max_length=200)
+#     additional_details = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
+#
+#     def __str__(self):
+#         return f"{self.user.username}: {self.research_proposal}"
+
 class ResearchCollaborationPost(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    research_proposal = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Associate the post with a user
+    title = models.CharField(max_length=100)
+    description = models.TextField()
     required_expertise = models.CharField(max_length=200)
     collaboration_format = models.CharField(max_length=100)
-    contact_info = models.CharField(max_length=200)
-    additional_details = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username}: {self.research_proposal}"
+        return self.title

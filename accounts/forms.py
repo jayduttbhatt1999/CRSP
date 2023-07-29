@@ -35,4 +35,4 @@ class CommentForm(forms.ModelForm):
 class ResearchCollaborationPostForm(forms.ModelForm):
     class Meta:
         model = ResearchCollaborationPost
-        fields = ['research_proposal', 'required_expertise', 'collaboration_format', 'contact_info', 'additional_details']
+        fields = ['title', 'description', 'required_expertise', 'collaboration_format']
