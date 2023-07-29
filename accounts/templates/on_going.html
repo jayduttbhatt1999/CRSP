@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load interest_tags %}
+{% block content %}
+        <style>
+        .card-body{
+            color: black;
+        }
+        .card-footer{
+            background-color: #4bb8c2;
+        }
+        .text-muted{
+            color: black !important;
+        }
+    </style>
+    <div class="container ml-5 mt-5">
+        <div class="row">
+            <div class="col-md-9">
+                 <h2 style="color: #012950f5"><i class="fa fa-book ml-3"></i>&nbsp;&nbsp;Ongoing Projects</h2>
+                    {% for post in posts %}
+                        <div class="card md-6" style="border: none">
+                            <div class="card-body">
+                                <a href="{% url 'posts' post.id %}" style="color: black"><h5 class="card-title">{{ post.title }}</h5> </a>
+                                <p class="card-text"><i class="fa fa-user-circle-o" aria-hidden="true" style="color: white; background-color: black"></i>&nbsp;&nbsp;{{ post.uploaded_by.first_name }}&nbsp;{{ post.uploaded_by.last_name }}&nbsp; &nbsp;
+{#                                <p class="card-text">{{ post.keywords }}</p>#}
+
+                                     {% if user.is_authenticated %}
+                                        {% if user in post.interested_users.all %}
+                                            <p class="text-success">You have shown interest in this post.</p>
+                                        {% else %}
+                                            <button class="btn btn-primary" onclick="expressInterest({{ post.id }})" data-express-url="{% url 'express_interest' post.id %}">Interested</button>
+                                        {% endif %}
+                                    {% else %}
+                                        <p class="text-muted">Please log in to express interest.</p>
+                                    {% endif %}
+                                    <div id="interest-notification-{{ post.id }}"></div>
+                                </p>
+                            </div>
+                            <div class="card-footer text-muted">Posted on {{ post.published_on }}</div>
+                        </div>
+                         {% empty %}
+                            <p>No posts yet!</p>
+                        {% endfor %}
+{#                <div class="card">#}
+{#                    <div class="card-header text-white" style="background-color: #4bb8c2;">#}
+{##}
+{#                    </div>#}
+{##}
+{##}
+{#                            <div class="card mb-3">#}
+{##}
+{#                                <div class="card-footer">#}
+{#                                     <!-- Interest notification placeholder -->#}
+{#                                    <p>Published on {{ post.published_on|date:'F d, Y' }} by {{ post.uploaded_by }}</p>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        {% empty %}#}
+{#                            <p>No posts yet!</p>#}
+{#                        {% endfor %}#}
+{#                    </div>#}
+                </div>
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+    <div class="col-md-3">
+            <div class="side-container"></div>
+                <div class="card">
+                    <div class="card-header">Saved Posts</div>
+
+                    <ul class="list-group list-group-flush">
+                        {% if savedlist %}
+                            {% for savedpost in savedlist %}
+                                <li class="list-group-item"><a
+                                        href="{% url 'posts' savedpost.post.id %}">{{ savedpost.post.title }}</a></li>
+                            {% endfor %}
+                        {% else %}
+                            <p class="m-3"> No suggested connections at this time.</p>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header">Suggestions to Read</div>
+                    <ul class="list-group list-group-flush">
+
+                        {% if suggestedpost %}
+                            {% for suggested in suggestedpost %}
+                                <li class="list-group-item"><a
+                                        href="{% url 'posts' suggested.id %}">{{ suggested.title }}</a></li>
+                            {% endfor %}
+                        {% else %}
+                            <p class="m-3"> No suggested connections at this time.</p>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header">People to Connect</div>
+                    {% if suggestions %}
+                        <ul class="list-group list-group-flush">
+                            {% for user in suggestions %}
+                                <li class="list-group-item"><a
+                                        href="{% url 'profile' user.username %}">{{ user.username }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="m-3"> No suggested connections at this time.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+     </div>
+    </div>
+   <script>
+    function expressInterest(postId) {
+        // Send AJAX request to express interest
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/express-interest/' + postId + '/');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    document.getElementById('interest-notification-' + postId).innerHTML = '<p class="text-success">Interested</p>';
+                    // Hide the "Interested" button by removing it from the DOM
+                    const button = document.getElementById('interest-btn-' + postId);
+                    button.parentNode.removeChild(button);
+
+                    // Update the notification count on the bell icon
+                    const notificationCountElement = document.getElementById('notification-count');
+                    const currentCount = parseInt(notificationCountElement.textContent);
+                    notificationCountElement.textContent = currentCount + 1;
+                } else {
+                    document.getElementById('interest-notification-' + postId).innerHTML = '<p class="text-danger">Error showing interest.</p>';
+                }
+            } else {
+                document.getElementById('interest-notification-' + postId).innerHTML = '<p class="text-danger">Error showing interest.</p>';
+            }
+        };
+        xhr.send(JSON.stringify({ post_id: postId }));
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,254 @@
+ body {
+            overflow-x: hidden;
+            font-family: 'Ubuntu', sans-serif;
+        }
+    .navbar{
+        background-color: #012950f5;
+    }
+    .navbar-brand{
+        font-size: 1.3rem;
+    }
+    .nav-link{
+        color: black !important;
+        font-size: 1.1rem;
+    }
+     .custom-color{
+        color: white !important;
+         font-size: 1.1rem;
+    }
+        /* <!--Footer Style--> */
+        footer {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            position: relative;
+            top: 80px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #012950f5;
+            height: auto;
+            width: 100vw;
+            padding-top: 40px;
+            color: #fff;
+        }
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        .footer-content h3 {
+            font-size: 2.1rem;
+            font-weight: 500;
+            text-transform: capitalize;
+            line-height: 3rem;
+        }
+        .footer-content p {
+            max-width: 500px;
+            margin: 10px auto;
+            line-height: 28px;
+            font-size: 14px;
+            color: #cacdd2;
+            justify-content: center;
+            text-align: center;
+        }
+        .socials {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0 3rem 0;
+        }
+        .socials li {
+            margin: 0 10px;
+        }
+        .socials a {
+            text-decoration: none;
+            color: #fff;
+            border: 1.1px solid white;
+            padding: 5px;
+            border-radius: 50%;
+
+        }
+        .socials a i {
+            font-size: 1.1rem;
+            width: 20px;
+            transition: color .4s ease;
+        }
+        .socials a:hover i {
+            color: #cfd2d6;
+        }
+        .footer-bottom {
+            background: #000;
+            width: 100vw;
+            padding: 20px;
+            padding-bottom: 40px;
+            text-align: center;
+        }
+        .footer-bottom p {
+            float: left;
+            font-size: 14px;
+            word-spacing: 2px;
+            text-transform: capitalize;
+        }
+        .footer-bottom p a {
+            color: #cfd2d6;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .footer-bottom span {
+            text-transform: uppercase;
+            opacity: .4;
+            font-weight: 200;
+        }
+        .footer-menu {
+            float: right;
+        }
+        .footer-menu ul {
+            display: flex;
+        }
+        .footer-menu ul li {
+            padding-right: 10px;
+            display: block;
+        }
+        .footer-menu ul li a {
+            color: #cfd2d6;
+            text-decoration: none;
+        }
+        .footer-menu ul li a:hover {
+            color: #cfd2d6;
+        }
+        @media (max-width: 500px) {
+            .footer-menu ul {
+                display: flex;
+                margin-top: 10px;
+                margin-bottom: 20px;
+            }
+        }
+        /* <!-- about section style--> */
+        .about {
+            transition: all 0.3s;
+        }
+        .about:hover {
+            transform: scale(1.1);
+        }
+        /*@import url(https://fonts.googleapis.com/css?family=Righteous);*/
+        a {
+            transition: all 0.3s;
+        }
+        a:hover {
+            transform: scale(1.1);
+        }
+        button {
+            transition: all 0.2s;
+        }
+        p {
+            text-justify: auto;
+            text-align: justify;
+        }
+
+        /* <!--Underline navbar options--> */
+        #hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        #hover-underline-animation:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        #hover-underline-animation:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* #012950f5 */
+
+    /*    label[id*='important']::after {*/
+    /*        content: "*";*/
+    /*        color: red;*/
+    /*    }*/
+    /*     .notification-icon {*/
+    /*    position: relative;*/
+    /*}*/
+
+    /*.dropdown-content {*/
+    /*    display: none;*/
+    /*    position: absolute;*/
+    /*    top: 30px; !* Adjust this value to position the dropdown as desired *!*/
+    /*    right: 0;*/
+    /*    background-color: #f9f9f9;*/
+    /*    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+    /*    z-index: 1;*/
+    /*    min-width: 200px; !* Adjust this value to set the minimum width of the dropdown *!*/
+    /*}*/
+
+    /*.dropdown-content .notification-item {*/
+    /*    padding: 8px 12px;*/
+    /*}*/
+
+
+
+ /* Styles for the notifications dropdown */
+.notification-icon {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+  z-index: 1;
+}
+
+.show {
+  display: block;
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.unread {
+  background-color: #ffe6e6; /* Light red background for unread notifications */
+}
+
+.read {
+  background-color: #d3f8d3; /* Light gray background for read notifications */
+}
+
+/* Optional styles to make the dropdown look nice with Bootstrap */
+.notification-icon a {
+  color: black;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
