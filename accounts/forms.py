@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Comment
+from .models import ResearchCollaborationPost
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -29,3 +30,9 @@ class CommentForm(forms.ModelForm):
 #     class Meta:
 #         model = Comment
 #         fields = ['body']
+
+
+class ResearchCollaborationPostForm(forms.ModelForm):
+    class Meta:
+        model = ResearchCollaborationPost
+        fields = ['research_proposal', 'required_expertise', 'collaboration_format', 'contact_info', 'additional_details']

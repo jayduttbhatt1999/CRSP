@@ -34,8 +34,7 @@ urlpatterns = [
 
     path('follow_user/<str:username>', views.follow_user, name='follow_user'),  # without/
     path('follow_user/<str:username>/', views.follow_user, name='follow_user_'),  # with/
-# path('follow_user/<str:username>/', views.follow_user, name='follow_user'),
-
+    # path('follow_user/<str:username>/', views.follow_user, name='follow_user'),
 
     path('save_post/<int:post_id>/', views.save_post, name='save_post_'),
     path('unsave_post/<int:post_id>/', views.unsave_post, name='unsave_post_'),
@@ -59,5 +58,7 @@ urlpatterns = [
     path('express-interest/<int:post_id>/', views.express_interest, name='express_interest'),
     # path('update_notification_count/', views.update_notification_count, name='update_notification_count'),
     path('notifications/', views.notifications_view, name='notifications'),
+    path('collab/', views.collab, name='collab'),
+    path('collaboration-board/', views.research_collaboration_board, name='research_collaboration_board'),
+    path('post-collaboration/', views.post_collaboration, name='post_collaboration'),
 ]
-

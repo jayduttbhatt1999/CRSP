@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Research Collaboration Opportunities</h2>
+  {% if posts %}
+    <ul>
+      {% for post in posts %}
+        <li>
+          <h3>{{ post.user.username }}</h3>
+          <p>{{ post.research_proposal }}</p>
+          <p>Required Expertise: {{ post.required_expertise }}</p>
+          <p>Collaboration Format: {{ post.collaboration_format }}</p>
+          <p>Contact Information: {{ post.contact_info }}</p>
+          <p>Additional Details: {{ post.additional_details }}</p>
+          <p>Posted on: {{ post.created_at }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No collaboration opportunities available.</p>
+  {% endif %}
+{% endblock %}

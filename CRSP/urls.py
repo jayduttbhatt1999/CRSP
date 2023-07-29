@@ -23,9 +23,9 @@ admin.site.site_title = "UWinCRSP Admin Portal"
 admin.site.index_title = "Welcome to University of Windsor Research Sharing Platform Admin Page"
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # path('admin', admin.site.urls),
-    path('account/',include('accounts.urls')),
-    path('',include('accounts.urls')),
-    path('keneel/',include('keneel.urls')),
-]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path('admin/', admin.site.urls),
+                  # path('admin', admin.site.urls),
+                  path('account/', include('accounts.urls')),
+                  path('', include('accounts.urls')),
+                  path('keneel/', include('keneel.urls')),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

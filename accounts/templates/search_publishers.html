@@ -1,4 +1,3 @@
-{% extends 'base1.html' %}
 {% load static %}
 <!--this base file is used for template in some files -->
 <!DOCTYPE html>
@@ -30,84 +29,384 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css'>
     <!--Style begin-->
-    <title>{% block title %} {% endblock %}</title>
-<style>
+    <style media="screen">
+        @import url(https://fonts.googleapis.com/css?family=Righteous);
+
         body {
-            margin-top: 20px;
-            background: #FAFAFA;
+            overflow-x: hidden;
         }
 
-        /*==================================================
-          Nearby People CSS
-          ==================================================*/
+        /* <!--Footer Style--> */
 
-        .people-nearby .google-maps {
-            background: #f8f8f8;
-            border-radius: 4px;
-            border: 1px solid #f1f2f2;
-            padding: 20px;
-            margin-bottom: 20px;
+        footer {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            position: relative;
+            top: 80px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #012950f5;
+            height: auto;
+            width: 100vw;
+
+            padding-top: 40px;
+            color: #fff;
         }
 
-        .people-nearby .google-maps .map {
-            height: 300px;
-            width: 100%;
-            border: none;
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
         }
 
-        .people-nearby .nearby-user {
-            padding: 20px 0;
-            border-top: 1px solid #f1f2f2;
-            border-bottom: 1px solid #f1f2f2;
-            margin-bottom: 20px;
+        .footer-content h3 {
+            font-size: 2.1rem;
+            font-weight: 500;
+            text-transform: capitalize;
+            line-height: 3rem;
         }
 
-        img.profile-photo-lg {
-            height: 150px;
-            width: 150px;
+        .footer-content p {
+            max-width: 500px;
+            margin: 10px auto;
+            line-height: 28px;
+            font-size: 14px;
+            color: #cacdd2;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .socials {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0 3rem 0;
+        }
+
+        .socials li {
+            margin: 0 10px;
+        }
+
+        .socials a {
+            text-decoration: none;
+            color: #fff;
+            border: 1.1px solid white;
+            padding: 5px;
             border-radius: 50%;
+
         }
+
+        .socials a i {
+            font-size: 1.1rem;
+            width: 20px;
+            transition: color .4s ease;
+
+        }
+
+        .socials a:hover i {
+            color: #cfd2d6;
+        }
+
+        .footer-bottom {
+            background: #000;
+            width: 100vw;
+            padding: 20px;
+            padding-bottom: 40px;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            float: left;
+            font-size: 14px;
+            word-spacing: 2px;
+            text-transform: capitalize;
+        }
+
+        .footer-bottom p a {
+            color: #cfd2d6;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .footer-bottom span {
+            text-transform: uppercase;
+            opacity: .4;
+            font-weight: 200;
+        }
+
+        .footer-menu {
+            float: right;
+
+        }
+
+        .footer-menu ul {
+            display: flex;
+        }
+
+        .footer-menu ul li {
+            padding-right: 10px;
+            display: block;
+        }
+
+        .footer-menu ul li a {
+            color: #cfd2d6;
+            text-decoration: none;
+        }
+
+        .footer-menu ul li a:hover {
+            color: #cfd2d6;
+        }
+
+        @media (max-width: 500px) {
+            .footer-menu ul {
+                display: flex;
+                margin-top: 10px;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* <!-- about section style--> */
+        .about {
+            transition: all 0.3s;
+        }
+
+        .about:hover {
+            transform: scale(1.1);
+        }
+
+        a {
+            transition: all 0.3s;
+        }
+
+        a:hover {
+            transform: scale(1.1);
+        }
+
+        button {
+            transition: all 0.2s;
+        }
+
+        p {
+            text-justify: auto;
+            text-align: justify;
+        }
+
+        /* <!--Underline navbar options--> */
+
+        #hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        #hover-underline-animation:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        #hover-underline-animation:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* #012950f5 */
+
+        label[id*='important']::after {
+            content: "*";
+            color: red;
+        }
+
     </style>
+
+    <!--Style end -->
+
+
+    <title></title>
 
 </head>
 
 <body>
 
+<!-- original nav -->
+<nav class="navbar navbar-expand-md navbar-dark navbar-fixed-top sticky-top" style="background-color: #012950f5">
+    <div class="container">
+        <!-- <img src="https://www.uwindsor.ca/sites/default/files/uwindsor-new-logo-iphone_320x480_2.jpg" width="30" height="30" style="display: inline-block;" alt="uwin"> -->
+        <a class="navbar-brand" href="{% url 'index' %}" style="font-family: 'Righteous', serif;">UWinCRSP</a>
 
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> {{ user.username }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" id="hover-underline-animation" href="{% url 'index' %}"
+                           style="color: azure; font-family: 'Righteous', serif;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="hover-underline-animation" href="{% url 'aboutUs' %}"
+                           style="color: azure; font-family: 'Righteous', serif;">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="hover-underline-animation" href="#team"
+                           style="color: azure; font-family: 'Righteous', serif;">Our Team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="hover-underline-animation" href="{% url 'login' %}"
+                           style="color: azure; font-family: 'Righteous', serif;">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="hover-underline-animation" href="{% url 'registration' %}"
+                           style="color: azure; font-family: 'Righteous', serif;">Register</a>
+                    </li>
+
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!--Any flash messages pop up in any page because this is the base template-->
+{% if messages %}
+    <div class="alert alert-dismissible" role="alert">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+        <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+        >
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
 <div class="container">
     {% block content %}
         {% if searched %}
-            <h2 style="color: #012950f5"><i class="fa fa-user ml-5"></i>&nbsp;&nbsp;{{ searched }}</h2>
+            <h3> Here are the result for {{ searched }}</h3>
             <br/>
             {% if publishers %}
                 {% for publisher in publishers %}
-                    <div class="card mb-3 ml-5 justify-content-center" style="max-width: 32%;">
+                    <div class="card mb-3" style="max-width: 1000px;">
                         <div class="row g-0">
-                            {# Remove the col-md-8 class and replace it with col-12 on smaller screens #}
-                            <div class="col-12">
-                                <div class="card-body text-center">
+{#                            <div class="col-md-4">#}
+
+{#                                {% if profile.profile_pic %}#}
+{#                                         <img src="{{ profile.profile_pic }}" class="img-fluid rounded-start"#}
+{#                                         alt="Not uploaded">#}
+{#                                {% endif %}#}
+
+{#                            </div>#}
+
+                            <div class="col-md-8">
+                                <div class="card-body">
                                     <h5 class="card-title">{{ publisher.first_name }} {{ publisher.last_name }}</h5>
-                                    <h6 class="card-text">Connect: <a href="mailto:{{ publisher.email }}">{{ publisher.email }}</a></h6>
-                                    <h6 class="card-text">Last updated post on {{ publisher.last_login }}</h6>
-                                    {# Remove other col-md-* classes if necessary #}
-                                    <p class="card-text text-center"> Active since:  {{ publisher.date_joined }}</p>
+                                    <h6 class="card-text">{{ publisher.first_name}}'s Uwin email id is {{ publisher.email }}</h6>
+                                    <h6 class="card-text">Last updated post in on {{ publisher.last_login }}</h6>
+{#                                    <p class="card-text">University - {{ profile.university }}</p>#}
+
+                                    <p class="card-text"> {{ publisher.first_name }} is active from {{ publisher.date_joined}}</p>
 {#                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>#}
-                                    <a href="{% url 'profile' publisher %}" class="btn btn-primary btn-block rounded-pill" style="width: 27%; margin-left:35%; border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
-                    -o-transition: 0.08s ease-in;
-                    -ms-transition: 0.08s ease-in;
-                    -moz-transition: 0.08s ease-in;
-                    -webkit-transition: 0.08s ease-in;">Go to Profile</a>
+                                    <a href="{% url 'profile' publisher %}" class="btn btn-primary stretched-link">Go To
+                                        Profile</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {#                <a href="{{ profile }}">  {{ publisher }} - {{ publisher.email }}</a><br/>#}
                 {% endfor %}
             {% else %}
-                <h1>Hey! This publisher does not exist in our database</h1>
+                <h1> Hey! This publisher does not exist in our database</h1>
             {% endif %}
         {% endif %}
+
     {% endblock %}
 </div>
+
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script
+        src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"
+></script>
+
+<!-- A plugin for password show/hide  -->
+<script src="https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"></script>
+
+
+<footer>
+
+    <div class="footer-content">
+        <h3>UWinCRSP</h3>
+        <p>With UWinCRSP, you can easily look for researchers in your field and collaborate, share, discuss, or
+            connect.</p>
+        <ul class="socials">
+            <li><a href="https://www.facebook.com/UWindsor/"><i class="fa fa-facebook"></i></a></li>
+            <li><a href="https://www.instagram.com/uwindsor/"><i class="fa fa-instagram"></i></a></li>
+            <li><a href="https://www.linkedin.com/school/uwindsor/"><i class="fa fa-linkedin-square"></i></a></li>
+        </ul>
+    </div>
+    <div class="footer-bottom">
+        <p>copyright &copy; <a href="#">UWinCRSP</a></p>
+        <div class="footer-menu">
+            <ul class="f-menu">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'aboutUs' %}">About Us</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 
 </body>
 </html>
