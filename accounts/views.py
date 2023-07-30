@@ -1,5 +1,3 @@
-
-
 from django.db.models import Q
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -21,7 +19,8 @@ from .forms import ResearchCollaborationPostForm
 
 
 def research_collaboration_board(request):
-    posts = ResearchCollaborationPost.objects.filter(user=request.user).order_by('-created_at')
+    posts = ResearchCollaborationPost.objects.exclude(user=request.user).order_by('-created_at')
+    print(posts)  # Add this line to print the contents of the queryset
     return render(request, 'collab.html', {'posts': posts})
 
 
@@ -198,6 +197,7 @@ def user_profile_list(request):
     profile_list = Profile.objects.all()
     return render(request, 'users.html', {'profile_list': profile_list})
 
+
 def search_publishers(request):
     if request.method == "POST":
         searched = request.POST['searched']
@@ -213,6 +213,7 @@ def search_publishers(request):
         })
     else:
         return render(request, 'search_publishers.html', {})
+
 
 def searched_publishers(request):
     try:
@@ -376,9 +377,19 @@ def profile_view(request, username):
         profile = Profile.objects.get(user=userObj)
         posts = Post.objects.filter(uploaded_by=userObj).order_by('-published_on')
         is_following = Connection.objects.filter(follower=request.user, following=userObj).exists()
-        context = {'user': request.user, 'profile': profile, 'posts': posts, 'is_following': is_following}
+
+        # Check if the current profile being viewed is not the same as the logged-in user's profile
+        is_own_profile = request.user == userObj
+
+        context = {
+            'user': request.user,
+            'profile': profile,
+            'posts': posts,
+            'is_following': is_following,
+            'is_own_profile': is_own_profile,  # Add this variable to the context
+        }
     except Profile.DoesNotExist:
-        return redirect(request, 'profile_fill')
+        return redirect('profile_fill')
 
     return render(request, 'profile.html', context)
 

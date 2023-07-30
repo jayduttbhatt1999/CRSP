@@ -59,6 +59,7 @@ urlpatterns = [
     # path('update_notification_count/', views.update_notification_count, name='update_notification_count'),
     path('notifications/', views.notifications_view, name='notifications'),
     path('collab/', views.collab, name='collab'),
-    path('collaboration-board/', views.research_collaboration_board, name='research_collaboration_board'),
-    path('post-collaboration/', views.post_collaboration, name='post_collaboration'),
+    path('research_collaboration_board/', views.research_collaboration_board, name='research_collaboration_board'),
+    path('post_collaboration/', views.research_collaboration_board, name='post_collaboration'),
+    # Use the same view function for both URLs
 ]

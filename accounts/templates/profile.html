@@ -56,7 +56,9 @@
                                     </form>
                                 </div>
                                 <div class="col col-lg-4">
-                                    <button type="submit" class="btn btn-primary"><a href="{% url 'collab' %}" class="btn btn-primary">Collab</a> </button>
+                                    <button type="submit" class="btn btn-primary"><a href="{% url 'research_collaboration_board' %}"
+                                                                                     class="btn btn-primary">Collab</a>
+                                    </button>
                                 </div>
                                 {#                                <div class="col col-lg-4">#}
                                 {#                                    <button type="submit" class="btn btn-primary">Collab</button>#}
@@ -86,6 +88,11 @@
                     </div>
                 </div>
             </div>
+            {% if is_own_profile %}
+                <div class="mt-3">
+                    <a href="{% url 'post_collaboration' %}" class="btn btn-primary">Add Research Collaboration</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 
