@@ -60,6 +60,6 @@ urlpatterns = [
     path('notifications/', views.notifications_view, name='notifications'),
     path('collab/', views.collab, name='collab'),
     path('research_collaboration_board/', views.research_collaboration_board, name='research_collaboration_board'),
-    path('post_collaboration/', views.research_collaboration_board, name='post_collaboration'),
+    path('post_collaboration/', views.post_collaboration, name='post_collaboration'),
     # Use the same view function for both URLs
 ]
