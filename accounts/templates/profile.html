@@ -56,8 +56,9 @@
                                     </form>
                                 </div>
                                 <div class="col col-lg-4">
-                                    <button type="submit" class="btn btn-primary"><a href="{% url 'research_collaboration_board' %}"
-                                                                                     class="btn btn-primary">Collab</a>
+                                    <button type="submit" class="btn btn-primary"><a
+                                            href="{% url 'research_collaboration_board' %}"
+                                            class="btn btn-primary">Collab</a>
                                     </button>
                                 </div>
                                 {#                                <div class="col col-lg-4">#}
@@ -95,5 +96,28 @@
             {% endif %}
         </div>
     </div>
+    {% if messages %}
+        <div class="alert alert-dismissible">
+            {% for message in messages %}
+                <p class="alert alert-{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    {% endif %}
+    {% if notifications %}
+        <div class="alert alert-dismissible" role="alert">
+            {% for message in notifications %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-label="Close"
+            >
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
 
 {% endblock %}

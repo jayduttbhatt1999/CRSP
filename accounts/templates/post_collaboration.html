@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Post a Research Collaboration</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Post Collaboration</button>
-  </form>
+
+    <div class="container">
+    <h3>Post a Research Collaboration</h3>
+        <div class="form-group">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-secondary" type="submit">Post Collaboration</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

@@ -1,21 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Research Collaboration Opportunities</h2>
-  {% if posts %}
-    <ul>
-      {% for post in posts %}
-        <li>
-          <h3>{{ post.user.username }}</h3>
-          <p>Title: {{ post.title }}</p>
-          <p>Description: {{ post.description }}</p>
-          <p>Required Expertise: {{ post.required_expertise }}</p>
-          <p>Collaboration Format: {{ post.collaboration_format }}</p>
-          <p>Posted on: {{ post.created_at }}</p>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No collaboration opportunities available.</p>
-  {% endif %}
+    <div class="container">
+        <div class="form-group">
+            <h2>Research Collaboration Opportunities</h2>
+            {% if posts %}
+                <ul class="list-group ">
+                    {% for post in posts %}
+                        <br><br>
+                        <li class="list-group-item">
+                            <h3>{{ post.user.first_name }} {{ post.user.last_name }} posted this
+                                on {{ post.created_at }}</h3>
+                            <div class="container">
+                                <h4>Title: {{ post.title }}</h4>
+                                <p>Description: {{ post.description }}</p>
+                                <p>Required Expertise: {{ post.required_expertise }}</p>
+                                <p>Collaboration Format: {{ post.collaboration_format }}</p>
+                                <p>Posted on: {{ post.created_at }}</p>
+                            </div>
+                            <button type="button" class="btn btn-primary"
+                                    onclick="collaborate('{{ post.id }}', '{{ post.user.username }}')">
+                                Collaborate
+                            </button>
+                            <br><br>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No collaboration opportunities available.</p>
+            {% endif %}
+            <!-- JavaScript to handle collaboration button click -->
+            <script>
+                function collaborate(postId, username) {
+                    // You can implement the logic to handle the collaboration here
+                    // For example, you can send an AJAX request to the backend to save the collaboration data
+
+                    // Once the collaboration is successful, you can trigger the notification system
+                    sendNotification(postId, username);
+                }
+
+                function sendNotification(postId, username) {
+                    // You can implement the logic to send notifications here
+                    // For example, you can use a library like Pusher or Django Channels to handle real-time notifications
+                    // This example demonstrates a simple alert for demonstration purposes
+                    alert("Collaboration request sent to " + username);
+                }
+            </script>
+        </div>
+    </div>
 {% endblock %}

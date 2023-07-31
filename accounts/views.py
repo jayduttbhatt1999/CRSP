@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.db.models import Q
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -21,20 +22,30 @@ from .forms import ResearchCollaborationPostForm
 def research_collaboration_board(request):
     posts = ResearchCollaborationPost.objects.exclude(user=request.user).order_by('-created_at')
     print(posts)  # Add this line to print the contents of the queryset
-    return render(request, 'collab.html', {'posts': posts})
+    notifications = messages.get_messages(request)
+    profile_user = User.objects.get(username=request.user.username)
+    return render(request, 'collab.html', {'posts': posts, 'notifications': notifications, 'profile_user': profile_user})
 
 
 def post_collaboration(request):
+
     if request.method == 'POST':
         form = ResearchCollaborationPostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user
             post.save()
+            messages.success(request, 'Collaboration post created successfully!')
             return redirect('research_collaboration_board')
     else:
         form = ResearchCollaborationPostForm()
     return render(request, 'post_collaboration.html', {'form': form})
+
+
+def profile(request):
+    posts = ResearchCollaborationPost.objects.filter(user=request.user).order_by('-created_at')
+    notifications = messages.get_messages(request)
+    return render(request, 'profile.html', {'posts': posts, 'notifications': notifications})
 
 
 # Function for checking user First login

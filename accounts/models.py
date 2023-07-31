@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 #
 # User.add_to_class('dept', models.CharField(max_length=50))
@@ -65,14 +66,18 @@ class Post(models.Model):
     on_project = models.BooleanField(default=False)
     interested_users = models.ManyToManyField(User, related_name='interested_posts', blank=True)
 
+
 def __str__(self):
-        return self.title
+    return self.title
+
 
 def get_skills(self):
-        return [skill.name for skill in self.skills.all()]
+    return [skill.name for skill in self.skills.all()]
 
-def is_saved_by(self,user):
-        return self.savedpost_set.filter(uploaded_by=user).exists()
+
+def is_saved_by(self, user):
+    return self.savedpost_set.filter(uploaded_by=user).exists()
+
 
 class Connection(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
@@ -85,8 +90,9 @@ class Connection(models.Model):
     class Meta:
         unique_together = ('follower', 'following')
 
+
 def get_suggested_connections(user):
-    profile = Profile.objects.get(user =user.id)
+    profile = Profile.objects.get(user=user.id)
     skills = profile.get_skills()
     following = [c.following_id for c in user.following.all()]
     users = User.objects.exclude(id=user.id).exclude(id__in=following)
@@ -99,8 +105,9 @@ def get_suggested_connections(user):
     # print(suggestions)
     return suggestions
 
+
 def get_post_suggestion(user):
-    profile = Profile.objects.get(user =user)
+    profile = Profile.objects.get(user=user)
     # print(profile)
     skills = profile.get_skills_id()
     suggested_posts = Post.objects.filter(skills__in=skills).exclude(uploaded_by=user).distinct()
