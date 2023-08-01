@@ -1,52 +1,57 @@
 {% extends 'base1.html' %}
 {% block content %}
     <style>
-        .card-body{
+        .card-body {
             color: black;
         }
-        .card-footer{
+
+        .card-footer {
             background-color: #4bb8c2;
         }
-        .text-muted{
+
+        .text-muted {
             color: black !important;
         }
     </style>
 
-     <div class="container ml-5 mt-5">
+    <div class="container ml-5 mt-5">
         <div class="row">
             <div class="col-md-9">
                 <h2 style="color: #012950f5"><i class="fa fa-book ml-3"></i>&nbsp;&nbsp;Recently Published</h2>
                 {% for post in posts %}
                     {#          <a href="{% url 'posts/{{ post.pid }}' %}">#}
 
-                        <div class="card md-6 pb-10" style="border: none">
-                            <div class="card-body">
-                                <a href="{% url 'posts' post.id %}" style="color: black"><h5 class="card-title">{{ post.title }}</h5> </a>
-{#                                <p class="card-text">{{ post.abstract }}</p>#}
-                                <p class="card-text"><i class="fa fa-user-circle-o" aria-hidden="true" style="color: white; background-color: black"></i>&nbsp;&nbsp;{{ post.uploaded_by.first_name }} &nbsp;{{ post.uploaded_by.last_name }}</p>
-                                <p class="card-text">{{ post.keywords }}</p>
-                            </div>
-                            <div class="card-footer text-muted">Posted on {{ post.published_on }}</div>
+                    <div class="card md-6 pb-10" style="border: none">
+                        <div class="card-body">
+                            <a href="{% url 'posts' post.id %}" style="color: black"><h5
+                                    class="card-title">{{ post.title }}</h5></a>
+                            {#                                <p class="card-text">{{ post.abstract }}</p>#}
+                            <p class="card-text"><i class="fa fa-user-circle-o" aria-hidden="true"
+                                                    style="color: white; background-color: black"></i>&nbsp;&nbsp;{{ post.uploaded_by.first_name }}
+                                &nbsp;{{ post.uploaded_by.last_name }}</p>
+                            <p class="card-text">{{ post.keywords }}</p>
                         </div>
+                        <div class="card-footer text-muted">Posted on {{ post.published_on }}</div>
+                    </div>
 
                 {% empty %}
                     <div class="col-md-6">
-                    <p>Your connections have not posted anything!</p>
+                        <p>Your connections have not posted anything!</p>
                     </div>
-{#                    <nav class="navbar navbar-light">#}
-{#                        <form class="form-inline" method="post" action="{% url 'search_publishers_' %}">#}
-{#                            {% csrf_token %}#}
-{#                            <input class="form-control mr-sm-2" type="search" name="searched" placeholder="Find Uwin Publishers" aria-label="Search">#}
-{#                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>#}
-{#                        </form>#}
-{#                    </nav>#}
+                    {#                    <nav class="navbar navbar-light">#}
+                    {#                        <form class="form-inline" method="post" action="{% url 'search_publishers_' %}">#}
+                    {#                            {% csrf_token %}#}
+                    {#                            <input class="form-control mr-sm-2" type="search" name="searched" placeholder="Find Uwin Publishers" aria-label="Search">#}
+                    {#                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>#}
+                    {#                        </form>#}
+                    {#                    </nav>#}
 
                 {% endfor %}
 
             </div>
 
             <div class="col-md-3">
-            <div class="side-container"></div>
+                <div class="side-container"></div>
                 <div class="card">
                     <div class="card-header">Saved Posts</div>
 
@@ -90,16 +95,16 @@
                 </div>
             </div>
         </div>
-     </div>
+    </div>
 
 
-            <a href="{% url 'create_posts' %}"
-               class="btn btn-primary rounded-circle btn-lg d-flex justify-content-center align-items-center fixed-bottom float-right m-3 "
-               style="width: 60px; height: 60px; background-color: #4bb8c2; border-color: #4bb8c2; transition: 0.08s ease-in;
+    <a href="{% url 'create_posts' %}"
+       class="btn btn-primary rounded-circle btn-lg d-flex justify-content-center align-items-center fixed-bottom float-right m-3 "
+       style="width: 60px; height: 60px; background-color: #4bb8c2; border-color: #4bb8c2; transition: 0.08s ease-in;
   -o-transition: 0.08s ease-in;
   -ms-transition: 0.08s ease-in;
   -moz-transition: 0.08s ease-in;
   -webkit-transition: 0.08s ease-in;">
-                <span class="fa fa-plus"></span>
-            </a>
+        <span class="fa fa-plus"></span>
+    </a>
 {% endblock %}

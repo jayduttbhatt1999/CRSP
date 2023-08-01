@@ -8,7 +8,8 @@ from accounts.forms import CommentForm
 from django.contrib.auth.models import User as username, User
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from accounts.models import Post, Connection, Skill, SavedPost, get_post_suggestion, Comment, Notification
+from accounts.models import Post, Connection, Skill, SavedPost, get_post_suggestion, Comment, Notification, \
+    CollaborationNotification, CollaborationPost
 from .models import get_suggested_connections
 from django.core.files.storage import FileSystemStorage
 
@@ -18,17 +19,50 @@ from .models import Profile
 from .models import ResearchCollaborationPost
 from .forms import ResearchCollaborationPostForm
 
-
 def research_collaboration_board(request):
     posts = ResearchCollaborationPost.objects.exclude(user=request.user).order_by('-created_at')
     print(posts)  # Add this line to print the contents of the queryset
     notifications = messages.get_messages(request)
     profile_user = User.objects.get(username=request.user.username)
-    return render(request, 'collab.html', {'posts': posts, 'notifications': notifications, 'profile_user': profile_user})
+    return render(request, 'collab.html',
+                  {'posts': posts, 'notifications': notifications, 'profile_user': profile_user})
+
+@login_required
+def send_collaboration_request(request, post_id):
+    try:
+        research_collaboration_post = ResearchCollaborationPost.objects.get(pk=post_id)
+    except ResearchCollaborationPost.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Collaboration post not found.'}, status=404)
+
+    # You may want to add additional checks here, such as ensuring the sender can send the request.
+
+    # Create a collaboration notification
+    CollaborationNotification.objects.create(sender=request.user, receiver=research_collaboration_post.user, message='You have a new collaboration request.')
+
+    return JsonResponse({'success': True})
+
+
+@login_required
+def collaboration_notifications_view(request):
+    collaboration_notifications = CollaborationNotification.objects.filter(receiver=request.user).order_by(
+        '-created_at')
+    collaboration_notifications_count = collaboration_notifications.filter(is_read=False).count()
+    collaboration_notifications = [
+        {
+            'message': notification.message,
+            'created_at': notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'is_read': notification.is_read,
+        }
+        for notification in collaboration_notifications
+    ]
+    response_data = {
+        'notifications': collaboration_notifications,
+        'collaboration_notifications_count': collaboration_notifications_count,
+    }
+    return JsonResponse(response_data)
 
 
 def post_collaboration(request):
-
     if request.method == 'POST':
         form = ResearchCollaborationPostForm(request.POST)
         if form.is_valid():

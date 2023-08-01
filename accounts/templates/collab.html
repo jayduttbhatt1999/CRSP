@@ -18,10 +18,15 @@
                                 <p>Collaboration Format: {{ post.collaboration_format }}</p>
                                 <p>Posted on: {{ post.created_at }}</p>
                             </div>
-                            <button type="button" class="btn btn-primary"
-                                    onclick="collaborate('{{ post.id }}', '{{ post.user.username }}')">
+
+                            <button class="btn btn-primary"
+                                    onclick="sendCollaborationRequest('{{ post.id }}', '{{ post.user.username }}')">
                                 Collaborate
                             </button>
+                            {#                            <button type="button" class="btn btn-primary"#}
+                            {#                                    onclick="collaborate('{{ post.id }}', '{{ post.user.username }}')">#}
+                            {#                                Collaborate#}
+                            {#                            </button>#}
                             <br><br>
                         </li>
                     {% endfor %}
@@ -31,19 +36,28 @@
             {% endif %}
             <!-- JavaScript to handle collaboration button click -->
             <script>
-                function collaborate(postId, username) {
-                    // You can implement the logic to handle the collaboration here
-                    // For example, you can send an AJAX request to the backend to save the collaboration data
-
-                    // Once the collaboration is successful, you can trigger the notification system
-                    sendNotification(postId, username);
-                }
-
-                function sendNotification(postId, username) {
-                    // You can implement the logic to send notifications here
-                    // For example, you can use a library like Pusher or Django Channels to handle real-time notifications
-                    // This example demonstrates a simple alert for demonstration purposes
-                    alert("Collaboration request sent to " + username);
+                function sendCollaborationRequest(postId, username) {
+                    // Send AJAX request to send collaboration request
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/send_collaboration_request/' + postId + '/');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.success) {
+                                alert("Collaboration request sent to " + username + " for the post " + postId);
+                                // Success! Handle any UI changes here if needed.
+                            } else {
+                                alert(response.message);
+                            }
+                        } else {
+                            alert("Error sending collaboration request.");
+                        }
+                    };
+                    xhr.onerror = function () {
+                        alert("Error sending collaboration request.");
+                    };
+                    xhr.send(JSON.stringify({post_id: postId}));
                 }
             </script>
         </div>

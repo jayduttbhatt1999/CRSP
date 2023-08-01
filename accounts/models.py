@@ -32,6 +32,41 @@ class Skill(models.Model):
         return self.name
 
 
+class ResearchCollaborationPost(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    required_expertise = models.CharField(max_length=200)
+    collaboration_format = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class CollaborationNotification(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_notifications', default=1)
+    receiver = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, related_name='received_notifications')
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.sender.username} -> {self.receiver.username}: {self.message}"
+
+
+class CollaborationPost(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    required_expertise = models.CharField(max_length=100)
+    collaboration_format = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     gscholar = models.URLField(max_length=200, blank=True)

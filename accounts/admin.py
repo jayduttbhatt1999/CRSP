@@ -1,6 +1,6 @@
 from django.contrib import admin
 from keneel.models import register
-from accounts.models import Profile ,Post, Connection, Skill, SavedPost, Comment, Notification, ResearchCollaborationPost
+from accounts.models import Profile ,Post, Connection, Skill, SavedPost, Comment, Notification, ResearchCollaborationPost, CollaborationNotification, ResearchCollaborationPost, CollaborationPost
 # Register your models here.
 
 admin.site.register(register)
@@ -13,6 +13,8 @@ admin.site.register(SavedPost)
 admin.site.register(Comment)
 admin.site.register(Notification)
 admin.site.register(ResearchCollaborationPost)
+admin.site.register(CollaborationNotification)
+admin.site.register(CollaborationPost)
 
 # class PostAdmin(admin.ModelAdmin):
 #     list_display = ('title', 'authors', 'keywords', 'abstract', 'paper', 'allow_downloading', 'published_on', 'uploaded_by')
