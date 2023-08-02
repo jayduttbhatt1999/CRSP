@@ -52,6 +52,8 @@ def collaboration_notifications_view(request):
             'message': notification.message,
             'created_at': notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             'is_read': notification.is_read,
+            'sender': notification.sender.username,
+            # 'post_title': notification.post_til.title
         }
         for notification in collaboration_notifications
     ]

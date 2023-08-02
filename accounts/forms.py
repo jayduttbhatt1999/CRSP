@@ -37,7 +37,7 @@ class ResearchCollaborationPostForm(forms.ModelForm):
         fields = ['title', 'description', 'required_expertise', 'collaboration_format']
         widgets = {
             'title': forms.TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'Title of your research article or your project'}),
+                attrs={'class': 'form-control', 'placeholder': 'Title of your research article or your project', 'style': 'width: 100%; font-size: 18px;'}),
             'description': forms.Textarea(
                 attrs={'class': 'form-control', 'placeholder': 'A brief description of your work'}),
             'required_expertise': forms.TextInput(

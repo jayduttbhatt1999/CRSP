@@ -284,7 +284,7 @@
                     }
 
                     var messageParagraph = document.createElement("p");
-                    messageParagraph.textContent = notification.message;
+                     messageParagraph.textContent = "You have a new collaboration request from " + notification.sender + " for " ;
 
                     var createdParagraph = document.createElement("p");
                     createdParagraph.innerHTML = "<small>" + notification.created_at + "</small>";
