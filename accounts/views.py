@@ -523,3 +523,130 @@ def add_reply(request, comment_id):
 
         return redirect('posts', post_id=comment.post_id)
     return redirect('home')
+<<<<<<< HEAD
+=======
+
+@login_required(login_url='login')
+def on_project(request):
+    queryset = Post.objects.filter(on_project=True)
+    return render(request, 'on_going.html', {'posts': queryset})
+
+@login_required(login_url='login')
+def on_project(request):
+    queryset = Post.objects.filter(on_project=True)
+    paginator = Paginator(queryset, 4)  # Show 4 ongoing project posts per page
+    page = request.GET.get('page')
+
+    try:
+        paginated_posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page.
+        paginated_posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver the last page of results.
+        paginated_posts = paginator.page(paginator.num_pages)
+
+    context = {'paginated_posts': paginated_posts}
+    return render(request, 'on_going.html', context)
+
+
+def express_interest(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.user.is_authenticated:
+        if post.interested_users.filter(id=request.user.id).exists():
+            return JsonResponse({'success': False})
+        else:
+            post.interested_users.add(request.user)
+            # Create and save a notification for the post owner
+            notification_message = f"User {request.user.username} has shown interest in your post: {post.title}."
+            notification = Notification(user=post.uploaded_by, message=notification_message)
+            notification.save()
+            return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False})
+
+
+@login_required(login_url='login')
+def notifications_view(request):
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(user=request.user)
+        notifications_data = [
+            {
+                'message': notification.message,
+                'created_at': notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                'is_read': notification.is_read,
+            }
+            for notification in notifications
+        ]
+        return JsonResponse({'notifications': notifications_data})
+    else:
+        return JsonResponse({'notifications': []})
+
+def research_collaboration_board(request):
+    posts = ResearchCollaborationPost.objects.exclude(user=request.user).order_by('-created_at')
+    print(posts)  # Add this line to print the contents of the queryset
+    notifications = messages.get_messages(request)
+    profile_user = User.objects.get(username=request.user.username)
+    return render(request, 'collab.html',
+                  {'posts': posts, 'notifications': notifications, 'profile_user': profile_user})
+
+@login_required
+def send_collaboration_request(request, post_id):
+    try:
+        research_collaboration_post = ResearchCollaborationPost.objects.get(pk=post_id)
+    except ResearchCollaborationPost.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Collaboration post not found.'}, status=404)
+
+    # You may want to add additional checks here, such as ensuring the sender can send the request.
+
+    # Create a collaboration notification
+    CollaborationNotification.objects.create(sender=request.user, receiver=research_collaboration_post.user, message='You have a new collaboration request.')
+
+    return JsonResponse({'success': True})
+
+
+@login_required
+def collaboration_notifications_view(request):
+    collaboration_notifications = CollaborationNotification.objects.filter(receiver=request.user).order_by(
+        '-created_at')
+    collaboration_notifications_count = collaboration_notifications.filter(is_read=False).count()
+    collaboration_notifications = [
+        {
+            'message': notification.message,
+            'created_at': notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'is_read': notification.is_read,
+        }
+        for notification in collaboration_notifications
+    ]
+    response_data = {
+        'notifications': collaboration_notifications,
+        'collaboration_notifications_count': collaboration_notifications_count,
+    }
+    return JsonResponse(response_data)
+
+
+def post_collaboration(request):
+    if request.method == 'POST':
+        form = ResearchCollaborationPostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            messages.success(request, 'Collaboration post created successfully!')
+            return redirect('research_collaboration_board')
+    else:
+        form = ResearchCollaborationPostForm()
+    return render(request, 'post_collaboration.html', {'form': form})
+
+
+def profile(request):
+    posts = ResearchCollaborationPost.objects.filter(user=request.user).order_by('-created_at')
+    notifications = messages.get_messages(request)
+    return render(request, 'profile.html', {'posts': posts, 'notifications': notifications})
+
+
+def collab(request):
+    context = {}
+    return render(request, "collab.html", context)
+>>>>>>> b097b85 (Final working code)

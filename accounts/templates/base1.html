@@ -233,9 +233,55 @@ label[id*='important']::after {content: "*"; color:red;}
               </li>
           </ul>
         </div>
+<<<<<<< HEAD
       </div>
     </nav>
 
+=======
+      </li>
+      <li class="nav-item">
+        <a class="nav-link notification-icon" href="#" onclick="fetchNotifications()"><i class="fa fa-bell mt-1"></i></a>
+          <span id="bell-icon-count" class="badge badge-pill badge-danger" style="display: none;"></span>
+          <div id="notification-dropdown" class="dropdown-content">
+              <div id="notification-dropdown-content"></div>
+      </li>
+              <div class="notification-icon">
+                        <a href="#" onclick="fetchReceivedCollabRequests()">
+                            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                            {% if collaboration_notifications_count > 0 %}
+                                <span class="badge badge-pill badge-danger">{{ collaboration_notifications_count }}</span>
+                            {% endif %}
+                        </a>
+                        <div id="notification-dropdown" class="dropdown-content">
+                            <div id="notification-dropdown-content">
+                            </div>
+                        </div>
+                    </div>&nbsp;&nbsp;
+    </ul>
+    <form method="post" action="{% url 'search_publishers_' %}">
+                {% csrf_token %}
+                    <div class="input-group mb-3 mt-2" style="width: 220px;">
+                        <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"
+                               aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+      {% else %}
+       <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">Home</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+      </li> <li class="nav-item">
+        <a class="nav-link" href="{% url 'registration' %}">Register</a>
+      </li>
+    {% endif %}
+  </div>
+</nav>
+</div>
+>>>>>>> b097b85 (Final working code)
     <!--Any flash messages pop up in any page because this is the base template-->
     {% if messages %}
     <div class="alert alert-dismissible" role="alert">
@@ -296,8 +342,110 @@ label[id*='important']::after {content: "*"; color:red;}
                   </ul>
                 </div>
     </div>
+<<<<<<< HEAD
     
     </footer>  
+=======
+
+    </footer>
+    <script>
+
+        function fetchReceivedCollabRequests() {
+        var dropdown = document.getElementById("notification-dropdown");
+        var content = document.getElementById("notification-dropdown-content");
+
+        // Make an AJAX request to fetch received collaboration requests from the server
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "{% url 'collaboration_notifications' %}", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                content.innerHTML = "";
+                {#// Clear any existing notifications#}
+                data.notifications.forEach(notification => {
+                    var notificationItem = document.createElement("div");
+                    notificationItem.classList.add("notification-item");
+                    if (notification.is_read) {
+                        notificationItem.classList.add("read");
+                    } else {
+                        notificationItem.classList.add("unread");
+                    }
+
+                    var messageParagraph = document.createElement("p");
+                    messageParagraph.textContent = "you have a new collab request for your recent post "
+
+                    var createdParagraph = document.createElement("p");
+                    createdParagraph.innerHTML = "<small>" + notification.created_at + "</small>";
+
+                    notificationItem.appendChild(messageParagraph);
+                    notificationItem.appendChild(createdParagraph);
+                    content.appendChild(notificationItem);
+                });
+
+                {#// Show the dropdown after fetching and displaying the received collaboration requests#}
+                dropdown.classList.toggle("show");
+            }
+        };
+        xhr.send();
+    }
+function fetchNotifications() {
+  var dropdown = document.getElementById("notification-dropdown");
+  var content = document.getElementById("notification-dropdown-content");
+
+  // Making an AJAX request to fetch notifications from the server
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "{% url 'notifications' %}", true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var data = JSON.parse(xhr.responseText);
+      content.innerHTML = ""; // Clear any existing notifications
+      data.notifications.forEach(notification => {
+        var notificationItem = document.createElement("div");
+        notificationItem.classList.add("notification-item");
+        if (notification.is_read) {
+          notificationItem.classList.add("read");
+        } else {
+          notificationItem.classList.add("unread");
+        }
+
+        var messageParagraph = document.createElement("p");
+        messageParagraph.textContent = notification.message;
+
+        var createdParagraph = document.createElement("p");
+        createdParagraph.innerHTML = "<small>" + notification.created_at + "</small>";
+
+        notificationItem.appendChild(messageParagraph);
+        notificationItem.appendChild(createdParagraph);
+        content.appendChild(notificationItem);
+      });
+
+      // Show the dropdown after fetching and displaying the notifications
+      dropdown.classList.add("show");
+
+      // Update the bell icon count and make it always visible
+      {#var bellIconCount = document.getElementById("bell-icon-count");#}
+      {#bellIconCount.textContent = data.notifications.length;#}
+      {#bellIconCount.style.display = "inline";#}
+    }
+  };
+  xhr.send();
+}
+
+// Event listener to toggle the visibility of the dropdown when the bell icon is clicked
+function toggleDropdown() {
+  var dropdown = document.getElementById("notification-dropdown");
+  dropdown.classList.toggle("show");
+}
+
+// Event listener to hide the dropdown when someone clicks outside of it
+document.addEventListener("click", function(event) {
+  var dropdown = document.getElementById("notification-dropdown");
+  if (!dropdown.contains(event.target)) {
+    dropdown.classList.remove("show");
+  }
+});
+    </script>
+>>>>>>> b097b85 (Final working code)
 
   </body>
 </html>
