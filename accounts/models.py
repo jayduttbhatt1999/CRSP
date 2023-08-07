@@ -52,7 +52,7 @@ class Profile(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=200)
     authors = models.CharField(max_length=200)
-    # keywords = models.CharField(max_length=200)
+    keywords = models.CharField(max_length=200, blank=True)
     skills = models.ManyToManyField('Skill')
     abstract = models.CharField(max_length=2000)
     paper = models.FileField(upload_to='papers/')
@@ -62,6 +62,8 @@ class Post(models.Model):
     published_on = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
     views = models.IntegerField(default=0)
+    on_project = models.BooleanField(default=False)
+    interested_users = models.ManyToManyField(User, related_name='interested_posts', blank=True)
 
     def __str__(self):
         return self.title
@@ -131,3 +133,46 @@ class Comment(models.Model):
         return self.body
 
         unique_together = ('user', 'post')
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False, blank=True)
+
+    def __str__(self):
+        return self.message
+
+class ResearchCollaborationPost(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    required_expertise = models.CharField(max_length=200)
+    collaboration_format = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class CollaborationNotification(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_notifications', default=1)
+    receiver = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, related_name='received_notifications')
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.sender.username} -> {self.receiver.username}: {self.message}"
+
+
+class CollaborationPost(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    required_expertise = models.CharField(max_length=100)
+    collaboration_format = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

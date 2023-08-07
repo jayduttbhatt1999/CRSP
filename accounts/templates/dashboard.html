@@ -1,128 +1,159 @@
 {% extends 'base1.html' %}
-
 {% block content %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Catamaran&family=Playfair+Display+SC&family=Prata&family=Ubuntu:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        .card-body{
+            color: black;
+        }
+        .card-footer{
+            background-color: #4bb8c2;
+        }
+        .text-muted{
+            color: black !important;
+        }
+        .sidenav {
+            overflow: hidden;
+            height: 500px; /* Set the height to control the visible area and enable scrolling */
+            position: relative;
+        }
+        .hr_style{
+            width: 320%;
+            background-color: black;
+            {#border: 0.5px solid #3b444b;#}
+        }
 
+    .sidenav-min-height {
+        min-height: 10px; /* Set a minimum height for the sidenav */
+    }
+</style>
 
-    <div class="container" style="margin-top: 30px;">
-        <div class="row">
-            <div class="col-md-9">
-                <h2>Recently Published</h2>
-                {% for post in posts %}
-                    {#          <a href="{% url 'posts/{{ post.pid }}' %}">#}
-                    <a href="{% url 'posts' post.id %}">
-                        <div class="card mb-3">
-                            <div class="card-body">
+        <div class="container mt-5">
+            <div class="sidenav" id="sidenav">
+                <div class="post">
+                    <div class="recent-heading">
+                        <h2 class="text-center pt-2" style="color: black">Trending Publications&nbsp;&nbsp;<img src="../static/image/fire.png" height="20px" width="20px;"></h2>
+                    </div>
+                    <div class="recent-posts" style="padding: 25px; justify-content: end; font-size: 0.8rem">
+                        {% for post in recent_posts %}
+                            <a href="{% url 'posts' post.id %}" style="color: black">
                                 <h5 class="card-title">{{ post.title }}</h5>
-                                <p class="card-text">{{ post.abstract }}</p>
-                                <p class="card-text">{{ post.keywords }}</p>
+                            </a>
+                        {% empty %}
+                            <div class="col-md-6">
+                                <p>No posts published in the last 4 days.</p>
                             </div>
-                            <div class="card-footer text-muted">Posted on {{ post.published_on }}</div>
-                        </div>
-                    </a>
-                {% empty %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+<div class="container ml-5 mt-5">
+    <div class="row">
+        <div class="col-md-9" id = "main-content">
+            <h2 style="color: #012950f5"><i class="fa fa-book ml-3"></i>&nbsp;&nbsp;Recently Published</h2>
+            {% for post in paginated_posts %}
+                <div class="card md-6 pb-10" style="border: none">
+                    <div class="card-body">
+                        <a href="{% url 'posts' post.id %}" style="color: black">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                        </a>
+                        <p class="card-text"><i class="fa fa-user-circle-o" aria-hidden="true" style="color: white; background-color: black"></i>&nbsp;&nbsp;{{ post.uploaded_by.first_name }} &nbsp;{{ post.uploaded_by.last_name }}</p>
+                        <p class="card-text">{{ post.keywords }}</p>
+                    </div>
+                    <div class="card-footer text-muted">Posted on {{ post.published_on }}</div>
+                </div>
+            {% empty %}
+                <div class="col-md-6 sidenav-min-height">
                     <p>Your connections have not posted anything!</p>
-                    <nav class="navbar navbar-light">
-                        <form class="form-inline" method="post" action="{% url 'search_publishers_' %}">
-                            {% csrf_token %}
-                            <input class="form-control mr-sm-2" type="search" name="searched" placeholder="Find Uwin Publishers" aria-label="Search">
-                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
-                        </form>
-                    </nav>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
-                    <!-- <a href = '#'>
-                      <div class="card mb-3">
-                        <div class="card-body" style="color: #012950f5;">
-                          <h5 class="card-title">Post 1</h5>
-                          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, eos labore? Nesciunt temporibus hic ipsa deserunt amet soluta, ducimus vitae! Et placeat labore maiores expedita vero sequi doloribus ea at.</p>
+<div class="parent-container" style="display: flex; position: relative">
+    <div class="container ml-2" style="margin-top: 15%">
+        <div class="row">
+            <img src="../static/image/dashobordimage.jpg" height="325" width="500">
+        </div>
+        <div class="row">
+            <b><p class="text-center" style="font-size: 1.2rem; font-family: 'Playfair Display SC', serif;">Get all your research information from the University of Windsor</p></b>
+        </div>
+    </div>
+    <div class="d-flex flex-row">
+        <div class="container" style="margin-left: 30%; margin-top: 30%; font-family: 'Playfair Display SC', serif;">
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <div class="row mb-3">
+                        <div class="news-section">
+                            <div class="article-image">
+                                <img src="../static/image/ai.jpg" alt="Artificial Intelligence" width="100" height="100">
+                            </div>
                         </div>
-                        <div class="card-footer text-muted">Posted on 04/04/2004</div>
-                      </div>
-                    </a> -->
-
-
-                    <!-- <a href = "#">
-                    <div class="card mb-3">
-                      <div class="card-body" style="color: #012950f5;">
-                        <h5 class="card-title">Post 2</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo nam saepe blanditiis incidunt, laboriosam consequuntur dolor laborum delectus vel facere quam eum quis. Ut perferendis laborum magnam reiciendis. Ipsum, ab!</p>
-                      </div>
-                      <div class="card-footer text-muted">Posted on 11/26/1999</div>
+                        <div class="col-md-6">
+                            <div class="data">
+                                <h3 style="font-size: 1.2rem; white-space: nowrap;">University of Windsor Research on Artificial Intelligence</h3>
+                                <p class="read-more" style="white-space: nowrap;"><a href="{% url 'search' %}?query=Artificial%20Intelligence">Read More</a></p>
+                            </div>
+                        </div>
                     </div>
-                    </a>
-                    <a href = "#">
-                    <div class="card mb-3">
-                      <div class="card-body" style="color: #012950f5;">
-                        <h5 class="card-title">Post 3</h5>
-                        <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae, rem animi. Labore repudiandae inventore, dignissimos exercitationem nam rem, eligendi aliquam, iure illum minus voluptates provident. Atque officiis nostrum facere veritatis.</p>
-                      </div>
-                      <div class="card-footer text-muted">Posted on 04/09/1966</div>
+                    <hr class="hr_style">
+                    <div class="row mb-3">
+                        <div class="news-section">
+                            <div class="article-image">
+                                <img src="../static/image/cybersecurity.jpeg" height="100" width="100">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="data">
+                                <h3 style="font-size: 1.2rem; white-space: nowrap;">University of Windsor Research on Cyber Security</h3>
+                                <p class="read-more" style="white-space: nowrap;"><a href="{% url 'search' %}?query=Cybersecurity">Read More</a></p>
+                            </div>
+                        </div>
                     </div>
-                    </a>
-                    <a href = "#">
-                    <div class="card mb-3">
-                      <div class="card-body" style="color: #012950f5;">
-                        <h5 class="card-title">Post 4</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium autem beatae nemo aliquam cumque nam et error, atque quidem, optio expedita provident inventore alias excepturi ut in debitis unde ratione.</p>
-                      </div>
-                      <div class="card-footer text-muted">Posted on 06/05/1964</div>
+                    <hr class="hr_style">
+                    <div class="row mb-3">
+                        <div class="news-section">
+                            <div class="article-image">
+                                <img src="../static/image/database.png" height="100" width="100">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="data">
+                                <h3 style="font-size: 1.2rem; white-space: nowrap;">University of Windsor Research on Database</h3>
+                                <p class="read-more" style="white-space: nowrap;"><a href="{% url 'search' %}?query=Database">Read More</a></p>
+                            </div>
+                        </div>
                     </div>
-                    </a>
-                    <div class="text-center">
-                    <button class="btn btn-primary btn-primary show-more" style="background: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
-                    -o-transition: 0.08s ease-in;
-                    -ms-transition: 0.08s ease-in;
-                    -moz-transition: 0.08s ease-in;
-                    -webkit-transition: 0.08s ease-in;">Show more</button>
-                  </div> -->
-
-
-                {% endfor %}
-            </div>
-
-
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">Saved Posts</div>
-
-                    <ul class="list-group list-group-flush">
-                        {% if savedlist %}
-                            {% for savedpost in savedlist %}
-                                <li class="list-group-item"><a
-                                        href="{% url 'posts' savedpost.post.id %}">{{ savedpost.post.title }}</a></li>
-                            {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p> No suggested connections at this time.</p>
-                        {% endif %}
-                </div>
-                <div class="card mt-4">
-                    <div class="card-header">Suggestions to Read</div>
-                    <ul class="list-group list-group-flush">
-
-                        {% if suggestedpost %}
-                            {% for suggested in suggestedpost %}
-                                <li class="list-group-item"><a
-                                        href="{% url 'posts' suggested.id %}">{{ suggested.title }}</a></li>
-                            {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p> No suggested connections at this time.</p>
-                        {% endif %}
-                </div>
-                <div class="card mt-4">
-                    <div class="card-header">People to Connect</div>
-                    {% if suggestions %}
-                        <ul class="list-group list-group-flush">
-                            {% for user in suggestions %}
-                                <li class="list-group-item"><a
-                                        href="{% url 'profile' user.username %}">{{ user.username }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p> No suggested connections at this time.</p>
-                    {% endif %}
                 </div>
             </div>
+        </div>
+    </div>
+</div></div>
+    <div class="center">
+    <div class="pagination mt-3 justify-content-center">
+        <span class="step-links">
+            {% if paginated_posts.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ paginated_posts.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ paginated_posts.number }} of {{ paginated_posts.paginator.num_pages }}.
+            </span>
+
+            {% if paginated_posts.has_next %}
+                <a href="?page={{ paginated_posts.next_page_number }}">next</a>
+                <a href="?page={{ paginated_posts.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div></div>
+{#<div class="center">#}
+
+{#</div>#}
+{#    </div>#}
+
             <a href="{% url 'create_posts' %}"
                class="btn btn-primary rounded-circle btn-lg d-flex justify-content-center align-items-center fixed-bottom float-right m-3 "
                style="width: 60px; height: 60px; background-color: #4bb8c2; border-color: #4bb8c2; transition: 0.08s ease-in;
@@ -132,8 +163,27 @@
   -webkit-transition: 0.08s ease-in;">
                 <span class="fa fa-plus"></span>
             </a>
-        </div>
 
+<script>
+ {#document.addEventListener("DOMContentLoaded", function () {#}
+ {#       // Get the sidenav element#}
+ {#       const sidenav = document.getElementById("sidenav");#}
+ {##}
+ {#       // Get the second container element#}
+ {#       const secondContainer = document.getElementById("second-container");#}
+ {##}
+ {#       // Check if there are any elements inside the second container#}
+ {#       const hasContentInSecondContainer = secondContainer && secondContainer.children.length > 0;#}
+ {##}
+ {#       // Adjust the sidenav height based on the content in the second container#}
+ {#       if (!hasContentInSecondContainer) {#}
+ {#           // If there is no content in the second container, set sidenav height to 200px or any desired value#}
+ {#           sidenav.style.height = "200px";#}
+ {#       } else {#}
+ {#           // If there is content in the second container, set sidenav height dynamically based on content#}
+ {#           sidenav.style.height = `${secondContainer.scrollHeight}px`;#}
+ {#       }#}
+ {#   });#}
+</script>
 
-    </div>
 {% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load interest_tags %}
+{% block content %}
+    <style>
+
+    </style>
+    <div class="container mt-5">
+      <div class="sidenav" style="font-family: 'Playfair Display SC', serif; font-size: 1.2rem; color: black">
+    <div class="post">
+        <h2 class="text-center pt-2" style="color: black"><b>Saved Posts</b></h2>
+           {% if savedlist %}
+               {% for savedpost in savedlist %}
+                   <ul>
+                        <li class="list-group-item text-center"><a href="{% url 'posts' suggested.id %}">{{ suggested.title }}</a></li>
+                   </ul>
+                {% endfor %}
+            {% else %}
+                    <p class="m-3 text-center">No suggested connections at this time.</p>
+            {% endif %}
+    </div>
+<hr>
+    <div class="suggest">
+        <h2 class="text-center" style="color: black"><b>Suggestions to Read</b></h2>
+         {% if suggestedpost %}
+            {% for suggested in suggestedpost %}
+                <ul>
+                    <li class="list-group-item text-center"><a href="{% url 'posts' suggested.id %}">{{ suggested.title }}</a></li>
+                </ul>
+            {% endfor %}
+        {% else %}
+                <p class="m-3 text-center"> No suggested connections at this time.</p>
+        {% endif %}
+    </div>
+<hr>
+    <div class="people">
+        <h2 class="text-center" style="color: black"><b>People to Connect</b></h2>
+          {% if suggestions %}
+            {% for user in suggestions %}
+                <ul>
+                    <li class="list-group-item text-center"><a href="{% url 'profile' user.username %}">{{ user.username }}</a></li>
+                </ul>
+            {% endfor %}
+          {% else %}
+                <p class="m-3 text-center"> No suggested connections at this time.</p>
+         {% endif %}
+    </div>
+    </div>
+
+
+{% for post in paginated_posts %}
+    <div class="content">
+        <a href="{% url 'posts' post.id %}"><h1 class="post_title">{{ post.title }}</h1></a>
+        <div class="descr">{{ post.published_on }} by {{ post.uploaded_by.first_name }}&nbsp;{{ post.uploaded_by.last_name }}</div>
+        <p class="abstract">{{ post.abstract|truncatewords:20 }}
+       {% if user.is_authenticated %}
+    {% if user in post.interested_users.all %}
+        <p class="text-success">You have shown interest in this post.</p>
+    {% else %}
+        {% if user == post.uploaded_by %}
+            <p class="text-muted">You cannot show interest in your own post.</p>
+        {% else %}
+            <button class="btn btn-primary btn-block rounded-pill mt-2" style="width: 150px; border-radius: 14px; background: transparent; color: #4bb8c2; border-width: 2px; border-style: solid; border-color: #4bb8c2; transition: 0.08s ease-in;
+              -o-transition: 0.08s ease-in;
+              -ms-transition: 0.08s ease-in;
+              -moz-transition: 0.08s ease-in;
+              -webkit-transition: 0.08s ease-in;" onclick="expressInterest({{ post.id }})" data-express-url="{% url 'express_interest' post.id %}">Interested</button>
+        {% endif %}
+    {% endif %}
+{% else %}
+    <p class="text-muted">Please log in to express interest.</p>
+{% endif %}
+        <div id="interest-notification-{{ post.id }}"></div>
+        </p>
+    </div>
+{% empty %}
+    <p>No posts yet!</p>
+{% endfor %}
+
+<div class="center">
+<div class="pagination">
+    <span class="step-links">
+        {% if paginated_posts.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ paginated_posts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ paginated_posts.number }} of {{ paginated_posts.paginator.num_pages }}.
+        </span>
+
+        {% if paginated_posts.has_next %}
+            <a href="?page={{ paginated_posts.next_page_number }}">next</a>
+            <a href="?page={{ paginated_posts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+
+    <div class="clearer"><span></span></div>
+
+</div>
+
+   <script>
+    function expressInterest(postId) {
+        // Send AJAX request to express interest
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/express-interest/' + postId + '/');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    document.getElementById('interest-notification-' + postId).innerHTML = '<p class="text-success">Interested</p>';
+                    // Hide the "Interested" button by removing it from the DOM
+                    const button = document.getElementById('interest-btn-' + postId);
+                    button.parentNode.removeChild(button);
+
+                    // Update the notification count on the bell icon
+                    const notificationCountElement = document.getElementById('notification-count');
+                    const currentCount = parseInt(notificationCountElement.textContent);
+                    notificationCountElement.textContent = currentCount + 1;
+                } else {
+                    document.getElementById('interest-notification-' + postId).innerHTML = '<p class="text-danger">Error showing interest.</p>';
+                }
+            } else {
+                document.getElementById('interest-notification-' + postId).innerHTML = '<p class="text-danger">Error showing interest.</p>';
+            }
+        };
+        xhr.send(JSON.stringify({ post_id: postId }));
+    }
+</script>
+
+{% endblock %}

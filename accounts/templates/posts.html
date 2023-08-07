@@ -2,6 +2,49 @@
 {{ form.media }}
 {% block content %}
 
+    <div class="container">
+  <div class="sidenav mt-5">
+    <div class="post">
+      <h2 class="text-center pt-2">Saved Posts</h2>
+           {% if savedlist %}
+               {% for savedpost in savedlist %}
+                   <ul>
+                        <li class="list-group-item text-center"><a href="{% url 'posts' suggested.id %}">{{ suggested.title }}</a></li>
+                   </ul>
+                {% endfor %}
+            {% else %}
+                    <p class="m-3 text-center"> No suggested connections at this time.</p>
+            {% endif %}
+    </div>
+<hr>
+    <div class="suggest">
+      <h2 class="text-center">Suggestions to Read</h2>
+         {% if suggestedpost %}
+            {% for suggested in suggestedpost %}
+                <ul>
+                    <li class="list-group-item text-center"><a href="{% url 'posts' suggested.id %}">{{ suggested.title }}</a></li>
+                </ul>
+            {% endfor %}
+        {% else %}
+                <p class="m-3 text-center"> No suggested connections at this time.</p>
+        {% endif %}
+    </div>
+<hr>
+    <div class="people">
+        <h2 class="text-center">People to Connect</h2>
+          {% if suggestions %}
+            {% for user in suggestions %}
+                <ul>
+                    <li class="list-group-item text-center"><a href="{% url 'profile' user.username %}">{{ user.username }}</a></li>
+                </ul>
+            {% endfor %}
+          {% else %}
+                <p class="m-3 text-center"> No suggested connections at this time.</p>
+         {% endif %}
+    </div>
+    </div>
+
+
 <div class="container" >
   <div class="row" >
     <div class="col-md-9">
@@ -11,8 +54,8 @@
   <p>{{ post.views }} reads <i class="fa fa-eye" aria-hidden="true"></i></p>
           <p>Title: {{ post.title }}</p>
 
-          <p>Co-authors: {{ posts.authors }}</p>
-          <p>Keywords:
+          <p>Co-authors: {{ post.authors }}</p>
+          <p>Keywords: {{ post.keywords }}
               {% for skil in posts.get_skills %}
               {{ skil }};
               {% endfor %}
@@ -38,18 +81,18 @@
 
         {% if user.is_authenticated %}
            {% if is_saved %}
-  <a href="{% url 'unsave_post' posts.id %}" class="btn btn-danger" style="transition: 0.08s ease-in;
+            <a href="{% url 'unsave_post' post.id %}" class="btn btn-danger" style="transition: 0.08s ease-in;
     -o-transition: 0.08s ease-in;
     -ms-transition: 0.08s ease-in;
     -moz-transition: 0.08s ease-in;
     -webkit-transition: 0.08s ease-in;">Unsave</a>
-{% else %}
-  <a href="{% url 'save_post' posts.id %}" class="btn btn-success" style="transition: 0.08s ease-in;
+        {% else %}
+            <a href="{% url 'save_post' post.id %}" class="btn btn-success" style="transition: 0.08s ease-in;
     -o-transition: 0.08s ease-in;
     -ms-transition: 0.08s ease-in;
     -moz-transition: 0.08s ease-in;
     -webkit-transition: 0.08s ease-in;">Save</a>
-{% endif %}
+            {%endif %}
         {% endif %}
 {#        <a href="#" class="btn btn-success" style="transition: 0.08s ease-in;#}
 {#        -o-transition: 0.08s ease-in;#}
@@ -62,76 +105,12 @@
               <h4 class="card-title">Abstract <i class='fas fa-pencil-alt ml-2' aria-hidden="true" ></i></h4>
               <p class="card-text text-justify">{{ post.abstract }}</p>
             </div>
-{#            <script>#}
-{#                  var pdf = new PDFObject({#}
-{#                  url: "http://127.0.0.1:8000{{ pdf_url }}",#}
-{#                  id: "pdfRendered",#}
-{#                      pdfOpenParams: {#}
-{#                      view: "FitH"  }#}
-{#                      }).embed("pdfRenderer");</script>#}
-{#              <div id="pdfRenderer"></div>#}
 
-{#            <div class="embed-responsive embed-responsive-4by3">#}
-{##}
-{#              <iframe class="embed-responsive-item" src="{{ pdf_url }}" allowfullscreen></iframe>#}
-{#                <iframe class="embed-responsive-item" src="http://127.0.0.1:8000/PDFReview_I5wwmfM.pdf" allowfullscreen></iframe>#}
-{##}
-{#                <embed src="http://127.0.0.1:8000/papers/Keneel_Resume__3FFGqR4.pdf" type="application/pdf" width="100%" height="600px" />#}
-{#          </div>#}
-
-            <!-- <div class="text-center" style="margin-top: 10px;">
-                <embed src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" type="application/pdf" width="100%" height="600px" />
-              </div> -->
           </div>
     </div>
-<div class="col-md-3">
-    <div class="card mt-4">
-       <div class="card-header">Suggestions to Read</div>
-       <ul class="list-group list-group-flush">
-        {% if suggestedpost %}
-            {% for suggested in suggestedpost %}
-                  <li class="list-group-item"><a href="{% url 'post' suggested.id %}">{{ suggested.title }}</a></li>
-            {% endfor %}
-        </ul>
-              {% else %}
-            <p> No suggested connections at this time.</p>
-      {% endif %}
-   </div>
-</div>
-{#  <div class="container">#}
-{#      <div class="row ml-0">#}
-{#          {% if not comments %}#}
+  </div>
+{#<div class="col-md-3">#}
 
-{#          {% else %}#}
-{#            {% for comment in comments %}#}
-{#                {{ comment.body }}#}
-{#            {% endfor %}#}
-{#          {% endif %}#}
-{#      </div>#}
-{#      <div class="row ml-0">#}
-{#          <h2 class="mt-3">Comments</h2>#}
-{#      </div>#}
-{#      <div class="row ml-0">#}
-{#          <p class="mt-2">#}
-{#              <strong>{{ user.username }}</strong>#}
-{#          </p>#}
-{#          <form method="post" action="{% url 'add_comment' post_id=post.id %}" class="ml-3">#}
-{#            {% csrf_token %}#}
-{#            {{ form.as_p }}#}
-{#             <button type="submit" class="btn btn-primary">Add Comment</button>#}
-{#        </form>#}
-{#      </div>#}
-{#      <div class="row ml-0">#}
-{#          {% if not Post.comments.all %}#}
-{#             <p>No comments yet...</p>#}
-{#          {% else %}#}
-{#            {% for comment in Post.comments.all %}#}
-{#                {{ comment.date_added }}#}
-{#                {{ comment.body }}#}
-{#            {% endfor%}#}
-{#          {% endif %}#}
-{#      </div>#}
-{#  </div>#}
 <div class="card mt-4 ml-3" style="width: 51.5rem">
     <h4 class="card-header">Comments ({{ post.comments.count }})<i class='fas fa-comment-alt ml-2' aria-hidden="true" ></i></h4>
     <div class="card-body">
