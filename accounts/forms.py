@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Comment
+from .models import Comment, ResearchCollaborationPost
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -29,3 +29,18 @@ class CommentForm(forms.ModelForm):
 #     class Meta:
 #         model = Comment
 #         fields = ['body']
+
+class ResearchCollaborationPostForm(forms.ModelForm):
+    class Meta:
+        model = ResearchCollaborationPost
+        fields = ['title', 'description', 'required_expertise', 'collaboration_format']
+        widgets = {
+            'title': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Title of your research article or your project'}),
+            'description': forms.Textarea(
+                attrs={'class': 'form-control', 'placeholder': 'A brief description of your work'}),
+            'required_expertise': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'The expertise and skills you needed'}),
+            'collaboration_format': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Describe how you want to collaborate'}),
+        }
