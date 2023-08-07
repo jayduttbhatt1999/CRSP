@@ -1,4 +1,5 @@
 <!--this Base file is used in some templates -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -27,215 +28,234 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css'>
-
-    <style media="screen">
-
-
-footer{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    position: relative;
-    top: 80px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #012950f5;
-    height: auto;
-    width: 100vw;
-
-    padding-top: 40px;
-    color: #fff;
-}
-.footer-content{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-}
-.footer-content h3{
-    font-size: 2.1rem;
-    font-weight: 500;
-    text-transform: capitalize;
-    line-height: 3rem;
-}
-.footer-content p{
-    max-width: 500px;
-    margin: 10px auto;
-    line-height: 28px;
-    font-size: 14px;
-    color: #cacdd2;
-    justify-content: center;
-    text-align: center;
-}
-.socials{
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 1rem 0 3rem 0;
-}
-.socials li{
-    margin: 0 10px;
-}
-.socials a{
-    text-decoration: none;
-    color: #fff;
-    border: 1.1px solid white;
-    padding: 5px;
-    border-radius: 50%;
-
-}
-.socials a i{
-    font-size: 1.1rem;
-    width: 20px;
-    transition: color .4s ease;
-
-}
-.socials a:hover i{
-    color: #cfd2d6;
-}
-
-.footer-bottom{
-    background: #000;
-    width: 100vw;
-    padding: 20px;
-padding-bottom: 40px;
-    text-align: center;
-}
-.footer-bottom p{
-float: left;
-    font-size: 14px;
-    word-spacing: 2px;
-    text-transform: capitalize;
-}
-.footer-bottom p a{
-  color:#cfd2d6;
-  font-size: 16px;
-  text-decoration: none;
-}
-.footer-bottom span{
-    text-transform: uppercase;
-    opacity: .4;
-    font-weight: 200;
-}
-.footer-menu{
-  float: right;
-
-}
-.footer-menu ul{
-  display: flex;
-}
-.footer-menu ul li{
-padding-right: 10px;
-display: block;
-}
-.footer-menu ul li a{
-  color: #cfd2d6;
-  text-decoration: none;
-}
-.footer-menu ul li a:hover{
-  color: #cfd2d6;
-}
-
-@media (max-width:500px) {
-.footer-menu ul{
-  display: flex;
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-}
-
-
-
-      @import url(https://fonts.googleapis.com/css?family=Righteous);
-      a{
-        transition: all 0.3s;
-      }
-      a:hover {
-        transform: scale(1.1);
-      }
-      button{
-        transition: all 0.2s;
-      }
-      button:hover{
-        transform: scale(1.1);
-      }
-
-
-#hover-underline-animation {
-  display: inline-block;
-  position: relative;
-}
-
-#hover-underline-animation:after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: white;
-  transform-origin: bottom right;
-  transition: transform 0.25s ease-out;
-}
-
-#hover-underline-animation:hover:after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-
-
-label[id*='important']::after {content: "*"; color:red;} 
-      
-    </style>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran&family=Ubuntu:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href = "{% static 'css/basestyle.css' %}">
     <title>{% block title %} {% endblock %}</title>
   </head>
-
+<style>
+        .navigation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+</style>
   <body>
-    <!-- original nav -->
-    <nav class="navbar navbar-expand-md navbar-dark navbar-fixed-top" style="background-color: #012950f5">
-      <div class="container">
-        <a class="navbar-brand" href="{% url 'index' %}" style="font-family: 'Righteous', serif;">UWinCRSP</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="collapse navbar-collapse justify-content-end"
-          id="navbarNav"
-        >
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" id="hover-underline-animation" href="{% url 'index' %}" style="color: azure; font-family: 'Righteous', serif;">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="hover-underline-animation" href="{% url 'dashboard' %}" style="color: azure; font-family: 'Righteous', serif;">Dashboard</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-user"></i> {{ user.username }}
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{% url 'profile' user.username%}">Profile</a>
-                  <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-                </div>
-              </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  <!--base nav -->
 
+<nav class="navbar navbar-expand-md navbar-dark navbar-fixed-top sticky-top">
+    <div class="container">
+        <!-- <img src="https://www.uwindsor.ca/sites/default/files/uwindsor-new-logo-iphone_320x480_2.jpg" width="30" height="30" style="display: inline-block;" alt="uwin"> -->
+        <a class="navbar-brand" href="{% url 'index' %}">UWinCRSP</a>
+
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link custom-color" href="{% url 'aboutUs' %}">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-color" href="#team">Our Team</a>
+                    </li>
+            </ul>&nbsp;&nbsp;
+{#            <form method="post" action="#">#}
+{#                {% csrf_token %}#}
+{#                                    <input class="form-control" type="search" name="searched" placeholder="Search"#}
+{#                                           aria-label="Search">#}
+{#                <div class="input-group mb-3 mt-3" style="width: 250px;">#}
+{##}
+{#                    <input class="form-control" type="search" name="searched" placeholder="Search"#}
+{#                           aria-label="Search">#}
+{#                    <div class="input-group-append">#}
+{#                        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" ><i class="fa fa-search"></i> </button>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </form>#}
+             <form method="post" action="{% url 'post_search' %}">
+                {% csrf_token %}
+                <div class="input-group mb-3 mt-3" style="max-width: 1000px;">
+
+                    <input class="form-control" value="{{ query }}" type="search" name="searched" placeholder="Search"
+                           aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+             </form>
+        </div>
+    </div>
+</nav>
+    <!-- original nav -->
+{##}
+{#  <nav class="navbar navbar-expand-md navbar-dark navbar-fixed-top" style="background-color: white">#}
+{#    <div class="container">#}
+{#        <!-- <img src="https://www.uwindsor.ca/sites/default/files/uwindsor-new-logo-iphone_320x480_2.jpg" width="30" height="30" style="display: inline-block;" alt="uwin"> -->#}
+{#        <a class="navbar-brand" href="{% url 'index' %}" style="font-family: 'Righteous', serif;">UWinCRSP</a>#}
+{##}
+{#        <button#}
+{#                class="navbar-toggler"#}
+{#                type="button"#}
+{#                data-toggle="collapse"#}
+{#                data-target="#navbarNav"#}
+{#                aria-controls="navbarNav"#}
+{#                aria-expanded="false"#}
+{#                aria-label="Toggle navigation">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{#        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">#}
+{#            <ul class="navbar-nav">#}
+{#                {% if user.is_authenticated %}#}
+{#                     <li class="nav-item">#}
+{#                         <a class="nav-link" id="hover-underline-animation" href="{% url 'index' %}">Home</a>#}
+{#                     </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'profile_' %}">Publishers</a>#}
+{#                    </li>#}
+{#                     <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'on_project' %}">On Going Projects</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item dropdown">#}
+{#                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
+{#                           data-toggle="dropdown"#}
+{#                           aria-haspopup="true" aria-expanded="false">#}
+{#                            <i class="fas fa-user"></i> {{ user.username }}#}
+{#                        </a>#}
+{#                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+{#                            <a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a>#}
+{#                            <a class="dropdown-item" href="{% url 'profile_fill' %}">Add Profile</a>#}
+{#                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>#}
+{#                        </div>#}
+{#                    </li>#}
+{#                                 <div class="notification-icon">#}
+{#  <a href="#" onclick="fetchNotifications()">#}
+{#    <i class="fa fa-bell mt-1"></i>#}
+{#    <span id="bell-icon-count" class="badge badge-pill badge-danger" style="display: none;"></span>#}
+{#  </a>#}
+{#  <div id="notification-dropdown" class="dropdown-content">#}
+{#    <div id="notification-dropdown-content"></div>#}
+{#  </div>#}
+{#</div>#}
+{#                <form method="post" action="{% url 'search_publishers_' %}">#}
+{#                {% csrf_token %}#}
+{#                    <div class="input-group mb-3 mt-2" style="width: 220px;">#}
+{#                        <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"#}
+{#                               aria-label="Search">#}
+{#                        <div class="input-group-append">#}
+{#                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </form>#}
+{#                {% else %}#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" id="hover-underline-animation" href="{% url 'index' %}">Home</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" id="hover-underline-animation" href="{% url 'aboutUs' %}"#}
+{#                           style="color: azure; font-family: 'Righteous', serif;">About Us</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" id="hover-underline-animation" href="#team"#}
+{#                           style="color: azure; font-family: 'Righteous', serif;">Our Team</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" id="hover-underline-animation" href="{% url 'login' %}">Login</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" id="hover-underline-animation" href="{% url 'registration' %}">Register</a>#}
+{#                    </li>#}
+{##}
+{#                {% endif %}#}
+{#            </ul>#}
+{#        </div>#}
+{#    </div>#}
+{#</nav>#}
+<div class="navigation">
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto text-center">
+        {% if user.is_authenticated %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'index' %}">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'profile_' %}">Publisher</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'on_project' %}">Ongoing Projects</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user"></i> {{ user.username }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a>
+            <a class="dropdown-item" href="{% url 'profile_fill' %}">Add Profile</a>
+            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link notification-icon" href="#" onclick="fetchNotifications()"><i class="fa fa-bell mt-1"></i></a>
+          <span id="bell-icon-count" class="badge badge-pill badge-danger" style="display: none;"></span>
+          <div id="notification-dropdown" class="dropdown-content">
+              <div id="notification-dropdown-content"></div>
+      </li>
+              <div class="notification-icon">
+                        <a href="#" onclick="fetchReceivedCollabRequests()">
+                            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                            {% if collaboration_notifications_count > 0 %}
+                                <span class="badge badge-pill badge-danger">{{ collaboration_notifications_count }}</span>
+                            {% endif %}
+                        </a>
+                        <div id="notification-dropdown" class="dropdown-content">
+                            <div id="notification-dropdown-content">
+                            </div>
+                        </div>
+                    </div>&nbsp;&nbsp;
+    </ul>
+    <form method="post" action="{% url 'search_publishers_' %}">
+                {% csrf_token %}
+                    <div class="input-group mb-3 mt-2" style="width: 220px;">
+                        <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"
+                               aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+      {% else %}
+       <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">Home</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+      </li> <li class="nav-item">
+        <a class="nav-link" href="{% url 'registration' %}">Register</a>
+      </li>
+    {% endif %}
+  </div>
+</nav>
+</div>
     <!--Any flash messages pop up in any page because this is the base template-->
     {% if messages %}
     <div class="alert alert-dismissible" role="alert">
@@ -290,14 +310,111 @@ label[id*='important']::after {content: "*"; color:red;}
         <p>copyright &copy; <a href="#">UWinCRSP</a>  </p>
                 <div class="footer-menu">
                   <ul class="f-menu">
-                    <li><a href="">Home</a></li>
+                    <li><a href="https://www.facebook.com/UWindsor">Home</a></li>
                     <li><a href="">About</a></li>
                     <li><a href="">Contact</a></li>
                   </ul>
                 </div>
     </div>
-    
-    </footer>  
+
+    </footer>
+    <script>
+
+        function fetchReceivedCollabRequests() {
+        var dropdown = document.getElementById("notification-dropdown");
+        var content = document.getElementById("notification-dropdown-content");
+
+        // Make an AJAX request to fetch received collaboration requests from the server
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "{% url 'collaboration_notifications' %}", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                content.innerHTML = "";
+                {#// Clear any existing notifications#}
+                data.notifications.forEach(notification => {
+                    var notificationItem = document.createElement("div");
+                    notificationItem.classList.add("notification-item");
+                    if (notification.is_read) {
+                        notificationItem.classList.add("read");
+                    } else {
+                        notificationItem.classList.add("unread");
+                    }
+
+                    var messageParagraph = document.createElement("p");
+                    messageParagraph.textContent = "you have a new collab request for your recent post "
+
+                    var createdParagraph = document.createElement("p");
+                    createdParagraph.innerHTML = "<small>" + notification.created_at + "</small>";
+
+                    notificationItem.appendChild(messageParagraph);
+                    notificationItem.appendChild(createdParagraph);
+                    content.appendChild(notificationItem);
+                });
+
+                {#// Show the dropdown after fetching and displaying the received collaboration requests#}
+                dropdown.classList.toggle("show");
+            }
+        };
+        xhr.send();
+    }
+function fetchNotifications() {
+  var dropdown = document.getElementById("notification-dropdown");
+  var content = document.getElementById("notification-dropdown-content");
+
+  // Making an AJAX request to fetch notifications from the server
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "{% url 'notifications' %}", true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var data = JSON.parse(xhr.responseText);
+      content.innerHTML = ""; // Clear any existing notifications
+      data.notifications.forEach(notification => {
+        var notificationItem = document.createElement("div");
+        notificationItem.classList.add("notification-item");
+        if (notification.is_read) {
+          notificationItem.classList.add("read");
+        } else {
+          notificationItem.classList.add("unread");
+        }
+
+        var messageParagraph = document.createElement("p");
+        messageParagraph.textContent = notification.message;
+
+        var createdParagraph = document.createElement("p");
+        createdParagraph.innerHTML = "<small>" + notification.created_at + "</small>";
+
+        notificationItem.appendChild(messageParagraph);
+        notificationItem.appendChild(createdParagraph);
+        content.appendChild(notificationItem);
+      });
+
+      // Show the dropdown after fetching and displaying the notifications
+      dropdown.classList.add("show");
+
+      // Update the bell icon count and make it always visible
+      {#var bellIconCount = document.getElementById("bell-icon-count");#}
+      {#bellIconCount.textContent = data.notifications.length;#}
+      {#bellIconCount.style.display = "inline";#}
+    }
+  };
+  xhr.send();
+}
+
+// Event listener to toggle the visibility of the dropdown when the bell icon is clicked
+function toggleDropdown() {
+  var dropdown = document.getElementById("notification-dropdown");
+  dropdown.classList.toggle("show");
+}
+
+// Event listener to hide the dropdown when someone clicks outside of it
+document.addEventListener("click", function(event) {
+  var dropdown = document.getElementById("notification-dropdown");
+  if (!dropdown.contains(event.target)) {
+    dropdown.classList.remove("show");
+  }
+});
+    </script>
 
   </body>
 </html>

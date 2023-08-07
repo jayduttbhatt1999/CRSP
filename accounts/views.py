@@ -1,22 +1,27 @@
 import profile
+from datetime import datetime, timedelta
 from multiprocessing import AuthenticationError
 
+from django.contrib import messages
+from django.db import connection
 from django.db.models import Q
 # import username as username
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-<<<<<<< HEAD
 from accounts.forms import CustomUserCreationForm, CommentForm
 from django.contrib.auth.models import User
-=======
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .models import ResearchCollaborationPost, CollaborationNotification
+from .forms import ResearchCollaborationPostForm
+
+
 
 import accounts
 from accounts.forms import CustomUserCreationForm
 from django.contrib.auth.models import User as username, User
->>>>>>> development
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_post_suggestion, Comment
+from accounts.models import Profile, Post, Connection, Skill, SavedPost, get_post_suggestion, Comment, Notification
 from .models import get_suggested_connections
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
@@ -117,14 +122,30 @@ def index(request):
 @login_required(login_url='login')
 def dashboard_view(request):
     following = Connection.objects.filter(follower=request.user).values_list('following', flat=True)
+
     # get the posts published by those users
     posts = Post.objects.filter(uploaded_by__in=following).order_by('-published_on')
     suggestions = get_suggested_connections(request.user)
     savedlist = SavedPost.objects.filter(user=request.user)
     postsuggestion = get_post_suggestion(request.user)
+    four_days_ago = timezone.now() - timedelta(days=15)
+    recent_posts = Post.objects.filter(published_on__gte=four_days_ago)
     # print("post suggestion",postsuggestion)
+    paginator = Paginator(posts, 4)  # Show 4 ongoing project posts per page
+    page = request.GET.get('page')
+    try:
+        paginated_posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page.
+        paginated_posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver the last page of results.
+        paginated_posts = paginator.page(paginator.num_pages)
+
+    # context = {'paginated_posts': paginated_posts}
+
     if posts is not None:
-        return render(request, 'dashboard.html', {'posts': posts, 'suggestions' : suggestions, 'savedlist': savedlist, 'suggestedpost':postsuggestion})
+        return render(request, 'dashboard.html', {'posts': posts, 'suggestions' : suggestions, 'savedlist': savedlist, 'suggestedpost':postsuggestion, 'recent_posts':recent_posts, 'paginated_posts': paginated_posts})
     else:
         return render(request, 'dashboard.html')
 
@@ -141,48 +162,27 @@ def logout_view(request):
         # print("Unsuccessful")
         return redirect('home')
 
-
-def posts_view(request,post_id):
-    # print(post_id)
+@login_required(login_url='login')
+def posts_view(request, post_id):
     try:
-<<<<<<< HEAD
         post = Post.objects.get(id=post_id)
         post.views += 1
         post.save()
 
-=======
-        posts = Post.objects.get(id=post_id)
-        posts.views += 1 # Increment the views count
-        posts.save()
->>>>>>> development
         if request.user.is_authenticated:
-            is_saved=SavedPost.objects.filter(user=request.user,post=post_id).exists()
+            is_saved = SavedPost.objects.filter(user=request.user, post=post_id).exists()
             postsuggestion = get_post_suggestion(request.user)
-<<<<<<< HEAD
 
         form = CommentForm()
-
-=======
-            # print(is_saved)
-        # if request.user.is_authenticated:
-        #     save_post = request.
->>>>>>> development
     except Post.DoesNotExist:
         return render(request, '404.html', status=404)
 
     context = {
-<<<<<<< HEAD
         'post': post,
-        'pdf_url': post.paper.url,
+        'pdf_url': post.paper.url if post.paper else '',  # Ensure paper URL is valid or use an empty string
         'is_saved': is_saved,
         'suggestedpost': postsuggestion,
-        'comment_form': form
-=======
-        'posts': posts,
-        'pdf_url': posts.paper.url,
-        'is_saved':is_saved,
-        'suggestedpost': postsuggestion
->>>>>>> development
+        'comment_form': form,
     }
     return render(request, 'posts.html', context)
 
@@ -190,7 +190,7 @@ def posts_view(request,post_id):
 def save_paper(request, paper_id):
     return render(request, 'posts.html')
 
-
+@login_required(login_url='login')
 def profile_view_test(request,username):
     try:
         userObj=User.objects.get(username=username)
@@ -202,12 +202,22 @@ def profile_view_test(request,username):
 
     return render(request, 'profile.html', context)
 
-
+@login_required(login_url='login')
 def user_profile_list(request):
     profile_list = Profile.objects.all()
-    return render(request, 'users.html', {'profile_list':profile_list})
+    paginator = Paginator(profile_list, 4)  # Show 4 ongoing project posts per page
+    page = request.GET.get('page')
+    try:
+        paginated_posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page.
+        paginated_posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver the last page of results.
+        paginated_posts = paginator.page(paginator.num_pages)
+    return render(request, 'users.html', {'profile_list':profile_list, 'paginated_posts':paginated_posts})
 
-
+@login_required(login_url='login')
 def search_publishers(request):
     if request.method=="POST":
         searched = request.POST['searched']
@@ -224,7 +234,7 @@ def search_publishers(request):
     else:
         return render(request, 'search_publishers.html', {})
 
-
+@login_required(login_url='login')
 def searched_publishers(request):
     try:
         userObj=User.objects.get(username=username)
@@ -241,15 +251,29 @@ def searched_publishers(request):
     #     return render(request, 'search_publishers.html', {'searched': searched, 'profiles': profiles})
     # else:
     #     return render(request, 'search_publishers.html', {})
-
-def post_search(request):
-    query = request.GET.get('query', '')
-    if query:
-        multiple_query = Q(Q(title__icontains=query) | Q(authors__icontains=query) | Q(paper__icontains=query) | Q(abstract__icontains=query))
-        posts = Post.objects.filter(multiple_query)
-    else:
-        posts = Post.objects.all()
-    return render(request, 'search_post_list.html', {'search_result': posts, 'query': query})
+# def post_search(request):
+#     query = request.GET.get('query', '')
+#     if query:
+#         multiple_query = Q(Q(title__icontains=query) | Q(authors__icontains=query) | Q(paper__icontains=query) | Q(abstract__icontains=query))
+#         posts = Post.objects.filter(multiple_query)
+#         four_days_ago = timezone.now() - timedelta(days=15)
+#         recent_posts = Post.objects.filter(published_on__gte=four_days_ago)
+#         paginator = Paginator(posts, 4)  # Show 4 ongoing project posts per page
+#         page = request.GET.get('page')
+#         try:
+#             paginated_posts = paginator.page(page)
+#         except PageNotAnInteger:
+#             # If page is not an integer, deliver the first page.
+#             paginated_posts = paginator.page(1)
+#         except EmptyPage:
+#             # If page is out of range (e.g. 9999), deliver the last page of results.
+#             paginated_posts = paginator.page(paginator.num_pages)
+#     else:
+#         posts = Post.objects.all()
+#         recent_posts = []  # Set recent_posts to an empty list or None as per your requirement
+#         paginated_posts = []  # Set paginated_posts to an empty list or None as per your requirement
+#
+#     return render(request, 'search_post_list.html', {'search_result': posts, 'query': query, 'recent_posts': recent_posts, 'paginated_posts': paginated_posts})
 
 
 def autosuggest(request):
@@ -310,78 +334,95 @@ def profile_fill_view(request):
 
     return render(request, 'profile_fill.html', {'profile': profile})
 
-
 @login_required(login_url='login')
 def create_posts_view(request):
     if request.method == 'POST':
         # Get the form data from the request object
         title = request.POST['title']
         authors = request.POST['authors']
-        # keywords = request.POST['keywords']
         allow_download = 'allow_download' in request.POST
         abstract = request.POST['abstract']
-        published_on=request.POST.get('published_on')
+        published_on = request.POST.get('published_on')
+        keywords = request.POST.get('keywords')
+        on_project = 'on_project' in request.POST
+
         # Get the uploaded PDF file
+        pdf = None
+        if request.FILES.get('pdf'):
+            pdf_file = request.FILES['pdf']
+            fs = FileSystemStorage()
+            filename = fs.save(pdf_file.name, pdf_file)
+            pdf = fs.url(filename)
+
+        # Get the skills from the comma-separated input
         skills_input = request.POST.get('keywords')
-        skills_input=skills_input.lower()
+        skills_input = skills_input.lower()
         skills_list = skills_input.split(',')
 
-        skills = []
+        # Create a new Post object with the form data and user
+        post = Post(
+            title=title,
+            authors=authors,
+            keywords=keywords,
+            allow_downloading=allow_download,
+            abstract=abstract,
+            paper=pdf,  # Assign the PDF URL to the paper attribute
+            uploaded_by=request.user,
+            published_on=published_on,
+            on_project=on_project
+        )
+        post.save()
+
+        # Add skills to the post
         for skill_name in skills_list:
             skill, created = Skill.objects.get_or_create(name=skill_name.strip())
-            skills.append(skill)
+            post.skills.add(skill)
 
-        if request.FILES.get('pdf'):
-            print("IN IF")
-            pdf = request.FILES['pdf']
-            fs = FileSystemStorage()
-            filename = fs.save(pdf.name, pdf)
-            uploaded_file_url = fs.url(filename)
-            pdf = uploaded_file_url
-            # print(uploaded_file_url)
-        if pdf:
-            # Create a new Post object with the form data and user
-            post = Post(
-                title=title,
-                authors=authors,
-                allow_downloading=allow_download,
-                abstract=abstract,
-                paper=pdf,
-                uploaded_by=request.user,
-                published_on=published_on
-            )
-            post.save()
+        # Redirect to the detail view of the new post
+        return redirect('posts', post_id=post.id)
 
-            post.skills.set(skills)
-            # Redirect to the detail view of the new post
-            return redirect('posts', post.id)
     # Render the form template if the request method is GET
     return render(request, 'create_posts.html')
 
 # Function to create a connection between users
+@login_required(login_url='login')
 def follow_user(request, username):
     try:
-        following_user = Profile.objects.get(user=username)
-    except Profile.DoesNotExist:
-        following_user = Profile.objects.create(user=username)
-    try:
-        connection = Connection.objects.get(follower=request.user, following=following_user)
-        connection.delete()
-    except Connection.DoesNotExist:
-        Connection.objects.create(follower=request.user, following=following_user)
+        following_user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return HttpResponse("User not found", status=404)
+
+    if request.method == 'POST':
+        try:
+            connection = Connection.objects.get(follower=request.user, following=following_user)
+            connection.delete()
+        except Connection.DoesNotExist:
+            Connection.objects.create(follower=request.user, following=following_user)
+
     return redirect('profile', username=username)
 
 
 #Function to gather all the details present in the profile model to show in profile page
+@login_required(login_url='login')
 def profile_view(request, username):
     try:
-        userObj=User.objects.get(username=username)
+        userObj = User.objects.get(username=username)
         profile = Profile.objects.get(user=userObj)
         posts = Post.objects.filter(uploaded_by=userObj).order_by('-published_on')
-        is_following = Connection.objects.filter(follower=request.user,following=userObj).exists()
-        context = {'user': request.user, 'profile': profile, 'posts': posts, 'is_following' : is_following}
+        is_following = Connection.objects.filter(follower=request.user, following=userObj).exists()
+
+        # Check if the current profile being viewed is not the same as the logged-in user's profile
+        is_own_profile = request.user == userObj
+
+        context = {
+            'user': request.user,
+            'profile': profile,
+            'posts': posts,
+            'is_following': is_following,
+            'is_own_profile': is_own_profile,  # Add this variable to the context
+        }
     except Profile.DoesNotExist:
-        return redirect(request,'profile_fill')
+        return redirect('profile_fill')
 
     return render(request, 'profile.html', context)
 
@@ -391,7 +432,7 @@ def aboutUs(request):
     return render(request, 'aboutUs.html')
 
 #Function to save post for a user and store in the mode
-@login_required
+@login_required(login_url='login')
 def save_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
 
@@ -400,7 +441,7 @@ def save_post(request, post_id):
 
 
 #Function to unsave a post for a user
-@login_required
+@login_required(login_url='login')
 def unsave_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     saved_post = SavedPost.objects.filter(user=request.user, post=post).first()
@@ -414,9 +455,10 @@ def unsave_post(request, post_id):
 
 #Function to force download a pdf if given the options
 # need to change the path whoeve is using it in their system
+@login_required(login_url='login')
 def pdf_download(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    post_path="C:/Users/Owner/PycharmProjects/CRSP/media"+post.paper.url
+    post_path="C:/Users/shahs/PycharmProjects/CRSP/media"+post.paper.url
     print(post_path)
     # pdf_path = os.path.join('/path/to/pdf/files', str(pdf_file.pdf_file))
     with open(post_path,'rb') as pdf:
@@ -444,18 +486,42 @@ def pdf_download(request, post_id):
 #     }
 #     return render(request, 'search_post_list.html', context)
 
-
+@login_required(login_url='login')
 def post_search(request):
     query = request.GET.get('query', '')
+    recent_posts = Post.objects.none()  # Define a default value as an empty queryset
     if query:
-        multiple_query = Q(Q(title__icontains=query) | Q(authors__icontains=query) | Q(paper__icontains=query) | Q(
-            abstract__icontains=query))
+        multiple_query = Q(Q(title__icontains=query) | Q(authors__icontains=query) | Q(paper__icontains=query) | Q(abstract__icontains=query))
         posts = Post.objects.filter(multiple_query)
+        four_days_ago = timezone.now() - timedelta(days=15)
+        # Filter posts published on or after midnight of four days ago
+        recent_posts = Post.objects.filter(published_on__gte=four_days_ago.replace(hour=0, minute=0, second=0, microsecond=0))
+        paginator = Paginator(posts, 4)  # Show 4 ongoing project posts per page
+        page = request.GET.get('page')
+        try:
+            paginated_posts = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver the first page.
+            paginated_posts = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver the last page of results.
+            paginated_posts = paginator.page(paginator.num_pages)
     else:
         posts = Post.objects.all()
-    return render(request, 'search_post_list.html', {'search_result': posts, 'query': query})
+        paginator = Paginator(posts, 4)  # Show 4 ongoing project posts per page
+        page = request.GET.get('page')
+        try:
+            paginated_posts = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver the first page.
+            paginated_posts = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver the last page of results.
+            paginated_posts = paginator.page(paginator.num_pages)
 
+    return render(request, 'search_post_list.html', {'search_result': posts, 'query': query, 'recent_posts': recent_posts, 'paginated_posts': paginated_posts})
 
+@login_required(login_url='login')
 def autosuggest(request):
     print(request.GET)
     term = request.GET.get('term')
@@ -467,7 +533,7 @@ def autosuggest(request):
         return JsonResponse(suggestions, safe=False)
     return JsonResponse([], safe=False)
 
-
+@login_required(login_url='login')
 def search(request):
     query = request.GET.get('query')
     if query:
@@ -495,6 +561,7 @@ def search(request):
 #         return render(request, 'posts.html', {'post': post1, 'get_comment': get_comment, 'comment_form': comment_form})
 #     return redirect('posts', post_id=post_id)
 #
+@login_required(login_url='login')
 def add_comment(request, post_id):
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -512,7 +579,7 @@ def add_comment(request, post_id):
         return render(request, 'posts.html', {'post': post1, 'get_comment': get_comment, 'comment_form': comment_form})
     return redirect('posts', post_id=post_id)
 
-
+@login_required(login_url='login')
 def add_reply(request, comment_id):
     if request.method == 'POST':
         reply_content = request.POST.get('reply_content')
@@ -523,3 +590,127 @@ def add_reply(request, comment_id):
 
         return redirect('posts', post_id=comment.post_id)
     return redirect('home')
+
+@login_required(login_url='login')
+def on_project(request):
+    queryset = Post.objects.filter(on_project=True)
+    return render(request, 'on_going.html', {'posts': queryset})
+
+@login_required(login_url='login')
+def on_project(request):
+    queryset = Post.objects.filter(on_project=True)
+    paginator = Paginator(queryset, 4)  # Show 4 ongoing project posts per page
+    page = request.GET.get('page')
+
+    try:
+        paginated_posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page.
+        paginated_posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver the last page of results.
+        paginated_posts = paginator.page(paginator.num_pages)
+
+    context = {'paginated_posts': paginated_posts}
+    return render(request, 'on_going.html', context)
+
+
+def express_interest(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.user.is_authenticated:
+        if post.interested_users.filter(id=request.user.id).exists():
+            return JsonResponse({'success': False})
+        else:
+            post.interested_users.add(request.user)
+            # Create and save a notification for the post owner
+            notification_message = f"User {request.user.username} has shown interest in your post: {post.title}."
+            notification = Notification(user=post.uploaded_by, message=notification_message)
+            notification.save()
+            return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False})
+
+
+@login_required(login_url='login')
+def notifications_view(request):
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(user=request.user)
+        notifications_data = [
+            {
+                'message': notification.message,
+                'created_at': notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                'is_read': notification.is_read,
+            }
+            for notification in notifications
+        ]
+        return JsonResponse({'notifications': notifications_data})
+    else:
+        return JsonResponse({'notifications': []})
+
+def research_collaboration_board(request):
+    posts = ResearchCollaborationPost.objects.exclude(user=request.user).order_by('-created_at')
+    print(posts)  # Add this line to print the contents of the queryset
+    notifications = messages.get_messages(request)
+    profile_user = User.objects.get(username=request.user.username)
+    return render(request, 'collab.html',
+                  {'posts': posts, 'notifications': notifications, 'profile_user': profile_user})
+
+@login_required
+def send_collaboration_request(request, post_id):
+    try:
+        research_collaboration_post = ResearchCollaborationPost.objects.get(pk=post_id)
+    except ResearchCollaborationPost.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Collaboration post not found.'}, status=404)
+
+    # You may want to add additional checks here, such as ensuring the sender can send the request.
+
+    # Create a collaboration notification
+    CollaborationNotification.objects.create(sender=request.user, receiver=research_collaboration_post.user, message='You have a new collaboration request.')
+
+    return JsonResponse({'success': True})
+
+
+@login_required
+def collaboration_notifications_view(request):
+    collaboration_notifications = CollaborationNotification.objects.filter(receiver=request.user).order_by(
+        '-created_at')
+    collaboration_notifications_count = collaboration_notifications.filter(is_read=False).count()
+    collaboration_notifications = [
+        {
+            'message': notification.message,
+            'created_at': notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'is_read': notification.is_read,
+        }
+        for notification in collaboration_notifications
+    ]
+    response_data = {
+        'notifications': collaboration_notifications,
+        'collaboration_notifications_count': collaboration_notifications_count,
+    }
+    return JsonResponse(response_data)
+
+
+def post_collaboration(request):
+    if request.method == 'POST':
+        form = ResearchCollaborationPostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            messages.success(request, 'Collaboration post created successfully!')
+            return redirect('research_collaboration_board')
+    else:
+        form = ResearchCollaborationPostForm()
+    return render(request, 'post_collaboration.html', {'form': form})
+
+
+def profile(request):
+    posts = ResearchCollaborationPost.objects.filter(user=request.user).order_by('-created_at')
+    notifications = messages.get_messages(request)
+    return render(request, 'profile.html', {'posts': posts, 'notifications': notifications})
+
+
+def collab(request):
+    context = {}
+    return render(request, "collab.html", context)
