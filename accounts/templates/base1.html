@@ -140,8 +140,8 @@
 {#                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>#}
 {#                        </div>#}
 {#                    </li>#}
-                                 <div class="notification-icon">
-  <a href="#" onclick="fetchNotifications()">
+{#                                 <div class="notification-icon">#}
+{#  <a href="#" onclick="fetchNotifications()">#}
 {#    <i class="fa fa-bell mt-1"></i>#}
 {#    <span id="bell-icon-count" class="badge badge-pill badge-danger" style="display: none;"></span>#}
 {#  </a>#}
@@ -331,7 +331,7 @@
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
                 content.innerHTML = "";
-                // {#// Clear any existing notifications#}
+                {#// Clear any existing notifications#}
                 data.notifications.forEach(notification => {
                     var notificationItem = document.createElement("div");
                     notificationItem.classList.add("notification-item");
@@ -352,7 +352,7 @@
                     content.appendChild(notificationItem);
                 });
 
-                // {#// Show the dropdown after fetching and displaying the received collaboration requests#}
+                {#// Show the dropdown after fetching and displaying the received collaboration requests#}
                 dropdown.classList.toggle("show");
             }
         };
@@ -393,9 +393,9 @@ function fetchNotifications() {
       dropdown.classList.add("show");
 
       // Update the bell icon count and make it always visible
-      // {#var bellIconCount = document.getElementById("bell-icon-count");#}
-      // {#bellIconCount.textContent = data.notifications.length;#}
-      // {#bellIconCount.style.display = "inline";#}
+      {#var bellIconCount = document.getElementById("bell-icon-count");#}
+      {#bellIconCount.textContent = data.notifications.length;#}
+      {#bellIconCount.style.display = "inline";#}
     }
   };
   xhr.send();
