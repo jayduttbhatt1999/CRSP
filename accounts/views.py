@@ -713,4 +713,7 @@ def profile(request):
 
 def collab(request):
     context = {}
+
     return render(request, "collab.html", context)
+    # return render(request, "collab.html", context)
+

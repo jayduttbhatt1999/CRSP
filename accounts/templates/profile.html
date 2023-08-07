@@ -8,7 +8,7 @@
         }
     </style>
 </head>
-{#<div class="notification-icon">#}
+<!-- {#<div class="notification-icon">#}
 {#    <a href="#" onclick="fetchNotifications()">#}
 {#        <i class="fa fa-bell"></i>#}
 {#        {% if notification_count > 0 %}#}
@@ -17,10 +17,10 @@
 {#    </a>#}
 {#    <div id="notification-dropdown" class="dropdown-content">#}
 {#        <div id="notification-dropdown-content">#}
-{#            <!-- The notifications will be displayed here -->#}
+{#            The notifications will be displayed here#}
 {#        </div>#}
 {#    </div>#}
-{#</div>#}
+{#</div>#} -->
 <div class="container mt-3 mb-5">
     <div class="row">
         <div class="col-md-4">
@@ -63,14 +63,14 @@
                 </div>
             {% endif %}
     </div>
-{##}
+<!-- {##}
 {#                 {% if user.username != profile.user.username %}#}
 {#                        {% if is_following %}#}
 {#                            <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-danger">Unfollow</a>#}
 {#                        {% else %}#}
 {#                            <a href="{% url 'follow_user' profile.user.i %}" class="btn btn-primary">Follow</a>#}
 {#                        {% endif %}#}
-{#                    {% endif %}#}
+{#                    {% endif %}#} -->
                 </div>
             </div>
         </div>
@@ -94,9 +94,14 @@
             </div>
         </div>
 
+    </div>
+</div>
+{% endblock %}
+
+
     </div></div>{% comment %}{% endcomment %}
 
-{#    <script>#}
+<!-- {#    <script>#}
 {#        function fetchNotifications() {#}
 {#    var dropdown = document.getElementById("notification-dropdown");#}
 {#    var content = document.getElementById("notification-dropdown-content");#}
@@ -134,6 +139,10 @@
 {#    };#}
 {#    xhr.send();#}
 {#}#}
-{#    </script>#}
+{#    </script>#} -->
+
 
 {% endblock %}
+
+
+
