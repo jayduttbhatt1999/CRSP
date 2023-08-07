@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+    <h3>Post a Research Collaboration</h3>
+        <div class="form-group">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                 <button type="submit" class="btn btn-primary btn-submit" style="background:  #4bb8c2;
+    border-width: 2px; border-style: solid; border-color: #4bb8c2;">Add Collaboration</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="form-group">
+            <h2>Research Collaboration Opportunities</h2>
+            {% if posts %}
+                <ul class="list-group ">
+                    {% for post in posts %}
+                        <br><br>
+                        <li class="list-group-item">
+                            <h3>{{ post.user.first_name }} {{ post.user.last_name }} posted this
+                                on {{ post.created_at }}</h3>
+                            <div class="container">
+                                <h4>Title: {{ post.title }}</h4>
+                                <p>Description: {{ post.description }}</p>
+                                <p>Required Expertise: {{ post.required_expertise }}</p>
+                                <p>Collaboration Format: {{ post.collaboration_format }}</p>
+                                <p>Posted on: {{ post.created_at }}</p>
+                            </div>
+
+                            <button class="btn btn-primary"
+                                    onclick="sendCollaborationRequest('{{ post.id }}', '{{ post.user.username }}' , '{{ post.title }}')">
+                                Collaborate
+                            </button>
+                            {#                            <button type="button" class="btn btn-primary"#}
+                            {#                                    onclick="collaborate('{{ post.id }}', '{{ post.user.username }}')">#}
+                            {#                                Collaborate#}
+                            {#                            </button>#}
+                            <br><br>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No collaboration opportunities available.</p>
+            {% endif %}
+            <!-- JavaScript to handle collaboration button click -->
+            <script>
+                function sendCollaborationRequest(postId, username, title) {
+                    // Send AJAX request to send collaboration request
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/send_collaboration_request/' + postId + '/');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.success) {
+                                alert("Collaboration request sent to " + username + " for the post " + "'" + title + "'");
+                                // Success! Handle any UI changes here if needed.
+                            } else {
+                                alert(response.message);
+                            }
+                        } else {
+                            alert("Error sending collaboration request.");
+                        }
+                    };
+                    xhr.onerror = function () {
+                        alert("Error sending collaboration request.");
+                    };
+                    xhr.send(JSON.stringify({post_id: postId}));
+                }
+            </script>
+        </div>
+    </div>
+{% endblock %}
