@@ -23,10 +23,32 @@
                             {{ skil }},
                         {% endfor %}
                     </p>
-                    {% if user.username != profile.user.username %}
-                        {% if is_following %}
-                            <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-danger">Unfollow</a>
-                        {% else %}
+    <div class="d-flex justify-content-center">
+    {% if user.is_authenticated and user == profile.user %}
+            {# If the logged-in user is the profile owner, do not show the follow button #}
+{#            <p class="text-center">You are viewing your own profile.</p>#}
+        {% else %}
+        <form method="post" action="{% url 'follow_user' profile.user.username %}">
+            {% csrf_token %}
+            {% if is_following %}
+                <button type="submit" class="btn btn-danger">Unfollow</button>
+            {% else %}
+                <button type="submit" class="btn btn-primary">Follow</button>
+            {% endif %}
+        </form>&nbsp; &nbsp;
+        <a href = "{% url 'research_collaboration_board' %}"><button type="submit" class="btn btn-primary">Collab</button></a>
+    {% endif %}
+    {% if is_own_profile %}
+                <div>
+                    <a href="{% url 'post_collaboration' %}" class="btn btn-primary" style="width: 100%">Add Research Collaboration</a>
+                </div>
+            {% endif %}
+    </div>
+{##}
+{#                 {% if user.username != profile.user.username %}#}
+{#                        {% if is_following %}#}
+{#                            <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-danger">Unfollow</a>#}
+{#                        {% else %}#}
 {#                            <a href="{% url 'follow_user' profile.user.i %}" class="btn btn-primary">Follow</a>#}
                         {% endif %}
                     {% endif %}
@@ -57,6 +79,53 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
     </div>
 </div>
 {% endblock %}
+=======
+
+    </div></div>{% comment %}{% endcomment %}
+
+{#    <script>#}
+{#        function fetchNotifications() {#}
+{#    var dropdown = document.getElementById("notification-dropdown");#}
+{#    var content = document.getElementById("notification-dropdown-content");#}
+{##}
+{#    // Make an AJAX request to fetch notifications from the server#}
+{#    var xhr = new XMLHttpRequest();#}
+{#    xhr.open("GET", "{% url 'notifications' %}", true);#}
+{#    xhr.onreadystatechange = function () {#}
+{#        if (xhr.readyState === 4 && xhr.status === 200) {#}
+{#            var data = JSON.parse(xhr.responseText);#}
+{#            content.innerHTML = ""; // Clear any existing notifications#}
+{#            data.notifications.forEach(notification => {#}
+{#                var notificationItem = document.createElement("div");#}
+{#                notificationItem.classList.add("notification-item");#}
+{#                if (notification.is_read) {#}
+{#                    notificationItem.classList.add("read");#}
+{#                } else {#}
+{#                    notificationItem.classList.add("unread");#}
+{#                }#}
+{##}
+{#                var messageParagraph = document.createElement("p");#}
+{#                messageParagraph.textContent = notification.message;#}
+{##}
+{#                var createdParagraph = document.createElement("p");#}
+{#                createdParagraph.innerHTML = "<small>" + notification.created_at + "</small>";#}
+{##}
+{#                notificationItem.appendChild(messageParagraph);#}
+{#                notificationItem.appendChild(createdParagraph);#}
+{#                content.appendChild(notificationItem);#}
+{#            });#}
+{##}
+{#            // Show the dropdown after fetching and displaying the notifications#}
+{#            dropdown.classList.toggle("show");#}
+{#        }#}
+{#    };#}
+{#    xhr.send();#}
+{#}#}
+{#    </script>#}
+
+{% endblock %}
+>>>>>>> b097b85 (Final working code)

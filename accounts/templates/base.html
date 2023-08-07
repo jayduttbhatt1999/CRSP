@@ -305,6 +305,167 @@
     </div>
 </nav>
 
+<!-- original nav -->
+{#<nav class="navbar navbar-expand-md navbar-dark navbar-fixed-top" style="background-color: white">#}
+{#    <div class="container">#}
+{#        <!-- <img src="https://www.uwindsor.ca/sites/default/files/uwindsor-new-logo-iphone_320x480_2.jpg" width="30" height="30" style="display: inline-block;" alt="uwin"> -->#}
+{#        <a class="navbar-brand" href="{% url 'index' %}" style="font-family: 'Righteous', serif;">UWinCRSP</a>#}
+{##}
+{#        <button#}
+{#                class="navbar-toggler"#}
+{#                type="button"#}
+{#                data-toggle="collapse"#}
+{#                data-target="#navbarNav"#}
+{#                aria-controls="navbarNav"#}
+{#                aria-expanded="false"#}
+{#                aria-label="Toggle navigation">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{#        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">#}
+{#            <ul class="navbar-nav">#}
+{##}
+{#                {% if user.is_authenticated %}#}
+{#                     <li class="nav-item">#}
+{#                         <a class="nav-link" id="hover-underline-animation" href="{% url 'index' %}">Home</a>#}
+{#                     </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'profile_' %}">Publishers</a>#}
+{#                    </li>#}
+{#                     <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'on_project' %}">On Going Projects</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item dropdown">#}
+{#                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
+{#                           data-toggle="dropdown"#}
+{#                           aria-haspopup="true" aria-expanded="false">#}
+{#                            <i class="fas fa-user"></i> {{ user.username }}#}
+{#                        </a>#}
+{#                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+{#                            <a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a>#}
+{#                            <a class="dropdown-item" href="{% url 'profile_fill' %}">Add Profile</a>#}
+{#                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>#}
+{#                        </div>#}
+{#                    </li>#}
+{##}
+{#                    <div class="notification-icon">#}
+{#  <a href="#" onclick="fetchNotifications()">#}
+{#    <i class="fa fa-bell mt-1"></i>#}
+{#    <span id="bell-icon-count" class="badge badge-pill badge-danger" style="display: none;"></span>#}
+{#  </a>#}
+{#  <div id="notification-dropdown" class="dropdown-content">#}
+{#    <div id="notification-dropdown-content"></div>#}
+{#  </div>#}
+{#</div>#}
+{#                <form method="post" action="{% url 'search_publishers_' %}">#}
+{#                {% csrf_token %}#}
+{#                    <div class="input-group mb-3 mt-2" style="width: 220px;">#}
+{#                        <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"#}
+{#                               aria-label="Search">#}
+{#                        <div class="input-group-append">#}
+{#                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </form>#}
+{#                {% else %}#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" id="hover-underline-animation" href="{% url 'index' %}">Home</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" id="hover-underline-animation" href="{% url 'login' %}">Login</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" id="hover-underline-animation" href="{% url 'registration' %}">Register</a>#}
+{#                    </li>#}
+{##}
+{#                {% endif %}#}
+{#            </ul>#}
+{#        </div>#}
+{#    </div>#}
+{#</nav>#}
+
+
+<div class="navigation">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-center mx-auto" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto text-center">
+        {% if user.is_authenticated %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'index' %}">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'profile_' %}">Publisher</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'on_project' %}">Ongoing Projects</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user"></i> {{ user.username }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a>
+            <a class="dropdown-item" href="{% url 'profile_fill' %}">Add Profile</a>
+            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link notification-icon" href="#" onclick="fetchNotifications()"><i class="fa fa-bell mt-1"></i></a>
+{#          <span id="bell-icon-count" class="badge badge-pill badge-danger" style="display: none;"></span>#}
+          <div id="notification-dropdown" class="dropdown-content">
+              <div id="notification-dropdown-content"></div>
+      </li>
+            <li>
+
+                 <div class="notification-icon">
+                        <a href="#" onclick="sendCollaborationRequest({{ post.id }}, '{{ post.user.username }}')">
+                            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                            {% if notification_count > 0 %}
+                                <span class="badge badge-pill badge-danger">{{ notification_count }}</span>
+                            {% endif %}
+                        </a>
+                        <div id="notification-dropdown" class="dropdown-content">
+                            <div id="notification-dropdown-content">
+                            </div>
+                        </div>
+                    </div>&nbsp;&nbsp;
+            </li>
+    </ul>
+    <form method="post" action="{% url 'search_publishers_' %}">
+                {% csrf_token %}
+                    <div class="input-group mb-3 mt-2" style="width: 220px;">
+                        <input class="form-control" type="search" name="searched" placeholder="Find Uwin Publishers"
+                               aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+      {% else %}
+       <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">Home</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+      </li> <li class="nav-item">
+        <a class="nav-link" href="{% url 'registration' %}">Register</a>
+      </li>
+    {% endif %}
+  </div>
+</nav>
+
+</div>
+
 <!--Any flash messages pop up in any page because this is the base template-->
 {% if messages %}
     <div class="alert alert-dismissible" role="alert">
