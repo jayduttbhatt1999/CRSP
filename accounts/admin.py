@@ -1,6 +1,7 @@
 from django.contrib import admin
 from keneel.models import register
-from accounts.models import Profile ,Post, Connection, Skill, SavedPost, Comment, Notification, CollaborationNotification, ResearchCollaborationPost, CollaborationPost
+from accounts.models import Profile ,Post, Connection, Skill, SavedPost, Comment
+from accounts.models import Notification, CollaborationNotification, ResearchCollaborationPost, CollaborationPost
 # Register your models here.
 # Register your models here.
 
